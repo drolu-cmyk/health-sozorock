@@ -5,9 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "lint": "eslint . --max-warnings=0",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "build": "next build",
-    "guardrails": "node scripts/guardrail-scan.mjs"
+    "guardrails": "node scripts/guardrail-scan.mjs",
+    "verify": "npm run lint && npm run typecheck && npm run build && npm run guardrails && npm audit --audit-level=moderate"
   },
   "dependencies": {
     "next": "16.2.6",

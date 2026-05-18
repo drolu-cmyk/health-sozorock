@@ -86,6 +86,8 @@ npm run dev
 npm run lint
 npm run typecheck
 npm run build
+npm run guardrails
+npm run verify
 npm audit --audit-level=moderate
 ```
 
