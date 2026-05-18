@@ -17,6 +17,10 @@
   --color-surface: #f7fafc;
   --color-line: #d9e2ec;
   --font-sans: Arial, Helvetica, sans-serif;
+  --spacing-brand-page-x: 1.25rem;
+  --spacing-brand-section-y: 3.5rem;
+  --spacing-brand-card: 1.5rem;
+  --radius-brand-card: 0.5rem;
 }
 
 :root {

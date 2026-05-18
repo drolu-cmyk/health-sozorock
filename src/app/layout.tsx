@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Footer } from "@/components/footer";
 import { SiteHeader } from "@/components/site-header";
+import { brand } from "@/lib/brand";
 
 export const metadata: Metadata = {
-  title: "SozoRock Health | Care for Every ZIP Code",
-  description:
-    "A non-clinical health access intelligence and activation prototype for underserved communities.",
+  title: `${brand.programName} | ${brand.promise}`,
+  description: brand.positioning,
 };
 
 export default function RootLayout({

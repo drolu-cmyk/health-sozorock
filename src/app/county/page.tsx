@@ -1,5 +1,6 @@
 import { AssuranceBadge } from "@/components/assurance-badge";
 import { SectionHeading } from "@/components/section-heading";
+import { brand } from "@/lib/brand";
 import {
   actionQueue,
   assuranceChecks,
@@ -11,8 +12,8 @@ export default function CountyPage() {
   return (
     <div className="mx-auto max-w-7xl px-5 py-12">
       <SectionHeading
-        eyebrow="County Operating Intelligence Layer"
-        title="Geospatial, decision-driven, action-oriented, assurance-controlled."
+        eyebrow={brand.layers.county.name}
+        title={`${brand.layers.county.standard}.`}
         description="A synthetic operating view for turning access signals into decisions, actions, assurance, and measurable impact."
       />
 
