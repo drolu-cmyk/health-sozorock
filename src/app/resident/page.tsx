@@ -10,7 +10,7 @@ export default function ResidentPage() {
       <SectionHeading
         eyebrow="Resident Access Layer"
         title="Simple, clear, private, human."
-        description="A resident-facing shell for starting access support without collecting PHI or creating a clinical workflow."
+        description="A resident-facing shell for starting access support without protected-data intake or clinical workflows."
       />
 
       <section className="mt-10 grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
