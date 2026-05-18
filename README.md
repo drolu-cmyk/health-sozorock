@@ -69,4 +69,24 @@ Automate everything safe to automate. Require human review where trust, complian
 
 ## Current status
 
-Repository bootstrap is underway. Application scaffolding, deployment, AWS target architecture, Google geospatial integration, Voice Access simulation, and guardrail automation will be implemented through issue-based sprints.
+Issue 001 scaffold is underway as a standalone Next.js App Router prototype.
+
+Routes:
+
+- `/`
+- `/resident`
+- `/county`
+- `/about-model`
+
+Local commands:
+
+```bash
+npm install
+npm run dev
+npm run lint
+npm run typecheck
+npm run build
+npm audit --audit-level=moderate
+```
+
+This first build uses mock or synthetic data only and does not require AWS, Google, or OpenAI keys.
