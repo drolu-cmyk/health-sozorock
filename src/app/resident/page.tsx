@@ -1,5 +1,6 @@
 import { AssuranceBadge } from "@/components/assurance-badge";
 import { SectionHeading } from "@/components/section-heading";
+import { brand } from "@/lib/brand";
 import { hubExamples, residentModules } from "@/lib/mock-data";
 
 const accessActions = ["Find Local Support", "Health Access Day", "Digital Help", "Voice Access"];
@@ -8,8 +9,8 @@ export default function ResidentPage() {
   return (
     <div className="mx-auto max-w-7xl px-5 py-12">
       <SectionHeading
-        eyebrow="Resident Access Layer"
-        title="Simple, clear, private, human."
+        eyebrow={brand.layers.resident.name}
+        title={`${brand.layers.resident.standard}.`}
         description="A resident-facing shell for starting access support without protected-data intake or clinical workflows."
       />
 
@@ -17,7 +18,7 @@ export default function ResidentPage() {
         <div className="rounded-lg border border-line bg-white p-6 shadow-sm">
           <AssuranceBadge />
           <h1 className="mt-6 text-4xl font-bold tracking-normal text-foundation-950">
-            Care for Every ZIP Code.
+            {brand.promise}
           </h1>
           <p className="mt-4 text-lg leading-8 text-foundation-700">
             Health access made easier for underserved communities.
@@ -116,7 +117,7 @@ export default function ResidentPage() {
             Provider-Led Pathways
           </p>
           <h2 className="mt-3 text-2xl font-bold text-foundation-950">
-            Providers keep their platforms. We help you get ready.
+            {brand.providerPathway}
           </h2>
           <p className="mt-4 leading-7 text-foundation-700">
             Licensed providers use their own approved platforms, records, and clinical systems.

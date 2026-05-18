@@ -92,3 +92,14 @@ npm audit --audit-level=moderate
 ```
 
 This first build uses mock or synthetic data only and does not require AWS, Google, or OpenAI keys.
+
+## Brand Assets
+
+Place locked, approved brand files in:
+
+- `public/brand/sozorock-health-logo.svg`
+- `public/brand/sozorock-foundation-logo.svg`
+- `public/brand/app-icon.svg`
+- `public/brand/brand-mark.svg`
+
+Do not add substitute logos or approximations. If official assets are missing, the app uses text branding from `src/lib/brand.ts`.

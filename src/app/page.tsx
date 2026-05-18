@@ -3,6 +3,7 @@ import { AssuranceBadge } from "@/components/assurance-badge";
 import { LayerCard } from "@/components/layer-card";
 import { OperatingSequence } from "@/components/operating-sequence";
 import { SectionHeading } from "@/components/section-heading";
+import { brand } from "@/lib/brand";
 import { countyModules, residentModules, syntheticAccessSignals } from "@/lib/mock-data";
 
 export default function Home() {
@@ -12,15 +13,13 @@ export default function Home() {
         <div>
           <AssuranceBadge />
           <h1 className="mt-6 max-w-4xl text-5xl font-bold tracking-normal text-foundation-950 md:text-7xl">
-            Care for Every ZIP Code.
+            {brand.promise}
           </h1>
           <p className="mt-6 max-w-2xl text-xl leading-8 text-foundation-700">
-            SozoRock Health turns hidden access barriers into visible action for
-            underserved communities.
+            {brand.positioning}
           </p>
           <p className="mt-4 max-w-2xl text-lg font-semibold leading-8 text-foundation-900">
-            Residents get access. Counties get intelligence. Providers keep their
-            platforms.
+            {brand.operatingLine}
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
@@ -76,13 +75,13 @@ export default function Home() {
           />
           <div className="mt-10 grid gap-5 lg:grid-cols-2">
             <LayerCard
-              title="Simple, clear, private, human."
+              title={`${brand.layers.resident.standard}.`}
               subtitle="Residents see the fastest non-clinical path to local support, access events, hubs, and provider-led readiness."
               items={residentModules}
               tone="resident"
             />
             <LayerCard
-              title="Geospatial, decision-driven, action-oriented."
+              title={`${brand.layers.county.standard}.`}
               subtitle="County teams see synthetic signals, recommended operational actions, assurance controls, and impact planning."
               items={countyModules}
               tone="county"

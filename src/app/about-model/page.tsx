@@ -1,6 +1,7 @@
 import { AssuranceBadge } from "@/components/assurance-badge";
 import { OperatingSequence } from "@/components/operating-sequence";
 import { SectionHeading } from "@/components/section-heading";
+import { brand } from "@/lib/brand";
 
 const modelBoundaries = [
   "Mock or synthetic data only in the prototype.",
@@ -15,13 +16,13 @@ export default function AboutModelPage() {
       <SectionHeading
         eyebrow="About the model"
         title="A non-clinical access operating layer for underserved communities."
-        description="SozoRock Health connects resident access surfaces with county-ready intelligence while preserving the trust boundary."
+        description={`${brand.programName} connects resident access surfaces with county-ready intelligence while preserving the trust boundary.`}
       />
 
       <section className="mt-10 grid gap-5 lg:grid-cols-2">
         <article className="rounded-lg border border-line bg-white p-6 shadow-sm">
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
-            Resident Access Layer
+            {brand.layers.resident.name}
           </p>
           <h2 className="mt-3 text-2xl font-bold text-foundation-950">
             Residents get access.
@@ -35,7 +36,7 @@ export default function AboutModelPage() {
 
         <article className="rounded-lg border border-line bg-foundation-950 p-6 text-white shadow-sm">
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-100">
-            County Operating Intelligence Layer
+            {brand.layers.county.name}
           </p>
           <h2 className="mt-3 text-2xl font-bold">
             Counties get intelligence.
