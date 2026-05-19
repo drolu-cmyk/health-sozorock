@@ -85,6 +85,11 @@ export default function CountyPage() {
                 <p className="mt-1 text-sm text-foundation-700">
                   {signal.recommendedAction}
                 </p>
+                {signal.marker.positionStatus === "fallback" ? (
+                  <p className="mt-2 text-xs font-semibold text-warning-600">
+                    {signal.marker.positionNote}
+                  </p>
+                ) : null}
               </div>
             ))}
           </div>

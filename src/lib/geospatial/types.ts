@@ -8,6 +8,8 @@ export type TravelBurdenLevel = "Elevated" | "Moderate" | "Low";
 
 export type GeospatialProviderMode = "mock";
 
+export type MarkerPositionStatus = "configured" | "fallback";
+
 export type MapPoint = {
   xPercent: number;
   yPercent: number;
@@ -19,6 +21,8 @@ export type MapMarker = {
   label: string;
   priority: AccessPriority;
   position: MapPoint;
+  positionStatus: MarkerPositionStatus;
+  positionNote?: string;
   recommendedAction: string;
 };
 

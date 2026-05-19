@@ -5,6 +5,7 @@ import type {
   GeospatialOperatingPicture,
   GeospatialProvider,
   HubCoverageLevel,
+  MarkerPositionStatus,
   MapPoint,
   TravelBurdenLevel,
 } from "@/lib/geospatial/types";
@@ -14,6 +15,8 @@ const markerPositionsByZip: Record<string, MapPoint> = {
   "27516": { xPercent: 46, yPercent: 46 },
   "27703": { xPercent: 72, yPercent: 30 },
 };
+
+const fallbackMarkerPosition: MapPoint = { xPercent: 50, yPercent: 58 };
 
 const serviceAreas = [
   {
@@ -76,12 +79,22 @@ const hubCoverage = [
 
 function buildAccessSignals(): GeospatialAccessSignal[] {
   return countyAccessSignals.map((signal) => {
+    const configuredPosition = markerPositionsByZip[signal.zip];
+    const position = configuredPosition ?? fallbackMarkerPosition;
+    const positionStatus: MarkerPositionStatus = configuredPosition
+      ? "configured"
+      : "fallback";
+
     const marker = {
       id: `mock-marker-${signal.zip}`,
       zip: signal.zip,
       label: `ZIP ${signal.zip}`,
       priority: signal.priority as AccessPriority,
-      position: markerPositionsByZip[signal.zip],
+      position,
+      positionStatus,
+      positionNote: configuredPosition
+        ? undefined
+        : `Fallback mock position used for ZIP ${signal.zip}.`,
       recommendedAction: signal.nextAction,
     };
 
