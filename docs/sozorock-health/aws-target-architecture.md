@@ -21,7 +21,7 @@ The target architecture must preserve the two connected layers:
 
 The operating model remains:
 
-**Signal -> Decision -> Action -> Assurance -> Impact**
+**Signal → Decision → Action → Assurance → Impact**
 
 ## Current Prototype State
 
