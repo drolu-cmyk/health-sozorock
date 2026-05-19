@@ -93,6 +93,27 @@ npm audit --audit-level=moderate
 
 This first build uses mock or synthetic data only and does not require AWS, Google, or OpenAI keys.
 
+## Preview deployment safety
+
+Preview deployment is a manual approval step. Do not deploy from Codex unless explicitly authorized.
+
+The current prototype is preview-ready only when these boundaries remain true:
+
+- **No PHI. Consent-based. Non-clinical.**
+- Prototype uses synthetic data only.
+- Voice Access is static and non-clinical.
+- Geospatial view is mock/provider-neutral.
+- Human review required before action.
+- Planning support, not automated decision-making.
+- No environment variables or secrets are required.
+- No AWS resources, Google APIs, OpenAI APIs, backend services, database, authentication, storage, notifications, email, SMS, or paid services are required.
+- No real resident data capture is active.
+- No unsupported county, library, provider, or partner claim is present.
+
+Before manual preview deployment, run the local commands above and complete:
+
+- `docs/sozorock-health/preview-deployment-checklist.md`
+
 ## Brand Assets
 
 Place locked, approved brand files in:
