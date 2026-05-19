@@ -1,6 +1,7 @@
 import { AssuranceBadge } from "@/components/assurance-badge";
 import { SectionHeading } from "@/components/section-heading";
 import { brand } from "@/lib/brand";
+import { humanReviewBoundaryCopy } from "@/lib/human-review-data";
 import { residentModules } from "@/lib/mock-data";
 import {
   healthAccessDayEvents,
@@ -111,6 +112,9 @@ export default function ResidentPage() {
           </p>
           <p className="mt-4 rounded-lg border border-line bg-warning-100 p-4 text-sm font-semibold leading-6 text-warning-600">
             {voiceAccessSafetyCopy.review}
+          </p>
+          <p className="mt-4 rounded-lg border border-line bg-signal-100 p-4 text-sm font-semibold leading-6 text-signal-600">
+            {humanReviewBoundaryCopy.planning}
           </p>
           <p className="mt-4 rounded-lg border border-line bg-access-100 p-4 text-sm font-semibold leading-6 text-access-700">
             {brand.trustBoundary}
