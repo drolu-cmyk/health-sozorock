@@ -120,6 +120,7 @@ The current prototype is preview-ready only when these boundaries remain true:
 Before manual preview deployment, run the local commands above and complete:
 
 - `docs/sozorock-health/preview-deployment-checklist.md`
+- `docs/sozorock-health/manual-preview-smoke-test.md`
 
 ## Brand Assets
 
