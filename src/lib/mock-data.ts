@@ -45,24 +45,24 @@ export const syntheticAccessSignals = [
 export const actionQueue = [
   {
     action: "Prepare county access report",
-    owner: "Data and Insights Support",
+    owner: "Reporting",
     due: "2026-06-18",
-    status: "Human review",
-    source: "Synthetic ZIP access signals",
+    reviewState: "Draft",
+    source: "Mock evidence: synthetic ZIP access signals",
   },
   {
     action: "Run assurance review",
-    owner: "Community Access Team",
+    owner: "Governance Review",
     due: "2026-06-20",
-    status: "Ready",
-    source: "Mock action queue",
+    reviewState: "Completed",
+    source: "Mock evidence: action queue",
   },
   {
     action: "Schedule Health Access Day",
-    owner: "Access Workforce",
+    owner: "Community Operations",
     due: "2026-07-02",
-    status: "Draft",
-    source: "Synthetic readiness trend",
+    reviewState: "Needs Review",
+    source: "Mock evidence: synthetic readiness trend",
   },
 ];
 
