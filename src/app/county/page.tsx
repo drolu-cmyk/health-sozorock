@@ -193,7 +193,7 @@ export default function CountyPage() {
             </div>
             <AssuranceBadge />
           </div>
-          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {countyAssuranceControls.map((control) => (
               <div
                 className="flex gap-3 rounded-lg border border-line bg-surface p-4 text-sm font-bold text-foundation-800"
