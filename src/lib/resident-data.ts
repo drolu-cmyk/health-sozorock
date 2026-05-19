@@ -2,18 +2,22 @@ export const residentAccessActions = [
   {
     title: "Find Local Support",
     description: "See nearby access options and trusted community support paths.",
+    href: "#health-equity-hubs",
   },
   {
     title: "Health Access Day",
     description: "Find a 2026 community event for education and digital readiness.",
+    href: "#health-access-day",
   },
   {
     title: "Digital Help",
     description: "Get ready to use a device, internet connection, or provider platform.",
+    href: "#provider-led-pathways",
   },
   {
     title: "Voice Access",
     description: "Speak or tap to find non-clinical local support.",
+    href: "#voice-access",
   },
 ] as const;
 

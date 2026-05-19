@@ -62,7 +62,7 @@ export default function ResidentPage() {
             {residentAccessActions.map((action) => (
               <a
                 className="rounded-lg border border-line bg-surface px-4 py-4 text-left hover:border-access-600 hover:bg-access-100"
-                href={`#${action.title.toLowerCase().replaceAll(" ", "-")}`}
+                href={action.href}
                 key={action.title}
               >
                 <span className="block text-sm font-bold text-foundation-950">{action.title}</span>
