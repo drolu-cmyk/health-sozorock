@@ -59,9 +59,16 @@ Before building, read:
 - `docs/sozorock-health/product-brief.md`
 - `docs/sozorock-health/screen-build-spec.md`
 - `docs/sozorock-health/architecture.md`
+- `docs/sozorock-health/aws-target-architecture.md`
+- `docs/sozorock-health/aws-cost-gates.md`
 - `docs/sozorock-health/brand-system.md`
 - `docs/sozorock-health/content-guardrails.md`
 - `docs/sozorock-health/automation-operating-model.md`
+
+AWS planning docs:
+
+- [AWS target architecture](docs/sozorock-health/aws-target-architecture.md)
+- [AWS cost gates](docs/sozorock-health/aws-cost-gates.md)
 
 ## Automation stance
 
