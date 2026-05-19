@@ -3,12 +3,12 @@ import { OperatingSequence } from "@/components/operating-sequence";
 import { SectionHeading } from "@/components/section-heading";
 import { brand } from "@/lib/brand";
 import {
-  countyAccessSignals,
   countyActionQueue,
   countyAssuranceControls,
   countyDecisionSupport,
   scenarioPlans,
 } from "@/lib/county-data";
+import { getCountyGeospatialProvider } from "@/lib/geospatial";
 import { countyModules } from "@/lib/mock-data";
 
 const statusClass = {
@@ -16,6 +16,9 @@ const statusClass = {
   Ready: "bg-access-100 text-access-700",
   "Human review": "bg-warning-100 text-warning-600",
 } as const;
+
+const geospatialProvider = getCountyGeospatialProvider();
+const countyOperatingPicture = geospatialProvider.getOperatingPicture();
 
 export default function CountyPage() {
   return (
@@ -58,16 +61,20 @@ export default function CountyPage() {
               </h2>
             </div>
             <span className="rounded-lg bg-surface px-4 py-3 text-sm font-bold text-foundation-700">
-              Static map-style view
+              Mock map-style view
             </span>
           </div>
 
           <div className="map-grid relative mt-6 min-h-[380px] overflow-hidden rounded-lg border border-line bg-surface p-4">
             <div className="absolute inset-4 rounded-lg border border-line/70" aria-hidden="true" />
-            {countyAccessSignals.map((signal) => (
+            {countyOperatingPicture.accessSignals.map((signal) => (
               <div
-                className={`absolute ${signal.mapPosition} w-44 rounded-lg border border-line bg-white p-4 shadow-sm`}
+                className="absolute w-44 rounded-lg border border-line bg-white p-4 shadow-sm"
                 key={signal.zip}
+                style={{
+                  left: `${signal.marker.position.xPercent}%`,
+                  top: `${signal.marker.position.yPercent}%`,
+                }}
               >
                 <p className="text-xs font-bold uppercase tracking-[0.14em] text-access-700">
                   ZIP {signal.zip}
@@ -75,13 +82,15 @@ export default function CountyPage() {
                 <p className="mt-2 text-2xl font-bold text-foundation-950">
                   {signal.priority}
                 </p>
-                <p className="mt-1 text-sm text-foundation-700">{signal.nextAction}</p>
+                <p className="mt-1 text-sm text-foundation-700">
+                  {signal.recommendedAction}
+                </p>
               </div>
             ))}
           </div>
 
           <div className="mt-5 grid gap-3 lg:grid-cols-3">
-            {countyAccessSignals.map((signal) => (
+            {countyOperatingPicture.accessSignals.map((signal) => (
               <div className="rounded-lg border border-line bg-surface p-4" key={signal.zip}>
                 <p className="text-xs font-bold uppercase tracking-[0.14em] text-access-700">
                   Priority ZIP {signal.zip}

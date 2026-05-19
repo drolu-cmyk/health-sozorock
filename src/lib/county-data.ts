@@ -8,7 +8,6 @@ export const countyAccessSignals = [
     digitalReadiness: "Device setup support",
     engagement: "Strong event interest",
     nextAction: "Schedule Health Access Day",
-    mapPosition: "left-[14%] top-[22%]",
   },
   {
     zip: "27516",
@@ -19,7 +18,6 @@ export const countyAccessSignals = [
     digitalReadiness: "Voice Access orientation",
     engagement: "Hub awareness rising",
     nextAction: "Add Digital Access Guide hours",
-    mapPosition: "left-[46%] top-[46%]",
   },
   {
     zip: "27703",
@@ -30,7 +28,6 @@ export const countyAccessSignals = [
     digitalReadiness: "Local support awareness",
     engagement: "Community input received",
     nextAction: "Update access point information",
-    mapPosition: "left-[72%] top-[30%]",
   },
 ] as const;
 
