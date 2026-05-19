@@ -7,8 +7,8 @@ import {
   providerPathwayActions,
   residentAccessActions,
   residentHubExamples,
-  voiceAccessPrompts,
 } from "@/lib/resident-data";
+import { voiceAccessSafetyCopy, voiceAccessSimulationItems } from "@/lib/voice-access-data";
 
 export default function ResidentPage() {
   return (
@@ -83,22 +83,40 @@ export default function ResidentPage() {
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-signal-600">
             Voice Access
           </p>
-          <h2 className="mt-3 text-2xl font-bold text-foundation-950">Speak or tap to find local support.</h2>
-          <div className="mt-5 space-y-3">
-            {voiceAccessPrompts.map((prompt) => (
-              <div
-                className="rounded-lg bg-signal-100 px-4 py-3 text-sm font-semibold text-foundation-900"
-                key={prompt}
-              >
-                {prompt}
+          <h2 className="mt-3 text-2xl font-bold text-foundation-950">
+            Speak or tap to find local support.
+          </h2>
+          <p className="mt-4 text-sm leading-6 text-foundation-700">
+            This static simulation shows prewritten resident support paths without listening,
+            recording, storage, or external calls.
+          </p>
+          <div className="mt-5 grid gap-3">
+            {voiceAccessSimulationItems.map((item) => (
+              <div className="rounded-lg border border-line bg-surface p-4" key={item.prompt}>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <p className="text-base font-bold text-foundation-950">{item.prompt}</p>
+                  <span className="w-fit rounded-lg bg-signal-100 px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-signal-600">
+                    {item.category}
+                  </span>
+                </div>
+                <p className="mt-3 text-sm leading-6 text-foundation-700">{item.response}</p>
+                <p className="mt-3 rounded-lg border border-line bg-white px-4 py-3 text-sm font-semibold leading-6 text-foundation-800">
+                  {item.nextStep}
+                </p>
               </div>
             ))}
           </div>
           <p className="mt-5 rounded-lg border border-line bg-surface p-4 text-sm font-semibold leading-6 text-foundation-700">
-            Voice Access provides non-clinical support and does not give medical advice.
+            {voiceAccessSafetyCopy.boundary}
+          </p>
+          <p className="mt-4 rounded-lg border border-line bg-warning-100 p-4 text-sm font-semibold leading-6 text-warning-600">
+            {voiceAccessSafetyCopy.review}
+          </p>
+          <p className="mt-4 rounded-lg border border-line bg-access-100 p-4 text-sm font-semibold leading-6 text-access-700">
+            {brand.trustBoundary}
           </p>
           <p className="mt-4 text-sm leading-6 text-foundation-700">
-            This is static prototype copy. It does not connect to live AI.
+            {voiceAccessSafetyCopy.staticMode}
           </p>
         </article>
 
