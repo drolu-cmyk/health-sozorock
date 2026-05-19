@@ -68,7 +68,7 @@ export default function CountyPage() {
 
       <section className="mx-auto grid max-w-7xl gap-5 px-5 pb-5 xl:grid-cols-[1.18fr_0.82fr]">
         <article
-          className="rounded-lg border border-line bg-white p-6 shadow-sm"
+          className="min-w-0 rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6"
           id="geospatial-access-operating-picture"
         >
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
@@ -145,7 +145,7 @@ export default function CountyPage() {
           </div>
         </article>
 
-        <article className="rounded-lg border border-line bg-foundation-950 p-6 text-white shadow-sm">
+        <article className="min-w-0 rounded-lg border border-line bg-foundation-950 p-5 text-white shadow-sm sm:p-6">
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-100">
             AI Decision Support
           </p>
@@ -194,35 +194,85 @@ export default function CountyPage() {
         </article>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-5 px-5 py-5 xl:grid-cols-[1.05fr_0.95fr]">
-        <article className="rounded-lg border border-line bg-white p-6 shadow-sm">
+      <section className="mx-auto grid max-w-7xl gap-5 px-5 py-5 2xl:grid-cols-[1.05fr_0.95fr]">
+        <article className="min-w-0 rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
             Action Queue
           </p>
           <h2 className="mt-3 text-2xl font-bold text-foundation-950">
             Assigned work from synthetic access signals.
           </h2>
-          <div className="mt-5 overflow-x-auto">
-            <table className="w-full min-w-[1080px] border-collapse text-left text-sm">
+          <div className="mt-5 grid gap-3 md:hidden">
+            {countyActionQueue.map((item) => (
+              <div className="rounded-lg border border-line bg-surface p-4" key={item.action}>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <p className="text-sm font-bold text-foundation-950">{item.action}</p>
+                  <span
+                    className={`w-fit rounded-lg px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] ${
+                      statusClass[item.reviewState]
+                    }`}
+                  >
+                    {item.reviewState}
+                  </span>
+                </div>
+                <dl className="mt-4 grid gap-3 text-sm">
+                  <div>
+                    <dt className="text-xs font-bold uppercase tracking-[0.12em] text-foundation-700">
+                      Owner
+                    </dt>
+                    <dd className="mt-1 font-semibold text-foundation-950">{item.owner}</dd>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <dt className="text-xs font-bold uppercase tracking-[0.12em] text-foundation-700">
+                        Priority
+                      </dt>
+                      <dd className="mt-1 font-semibold text-foundation-950">{item.priority}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs font-bold uppercase tracking-[0.12em] text-foundation-700">
+                        Due date
+                      </dt>
+                      <dd className="mt-1 font-semibold text-foundation-950">{item.dueDate}</dd>
+                    </div>
+                  </div>
+                  <div>
+                    <dt className="text-xs font-bold uppercase tracking-[0.12em] text-foundation-700">
+                      Evidence source
+                    </dt>
+                    <dd className="mt-1 leading-6 text-foundation-700">{item.evidence}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs font-bold uppercase tracking-[0.12em] text-foundation-700">
+                      Action gate
+                    </dt>
+                    <dd className="mt-1 leading-6 text-foundation-700">{item.actionGate}</dd>
+                  </div>
+                </dl>
+              </div>
+            ))}
+          </div>
+          <div className="mt-5 hidden max-w-full overflow-x-auto rounded-lg border border-line md:block">
+            <table className="w-full min-w-[980px] border-collapse text-left text-sm">
               <thead>
-                <tr className="border-b border-line text-xs uppercase tracking-[0.12em] text-foundation-700">
-                  <th className="py-3 pr-4">Action</th>
-                  <th className="py-3 pr-4">Priority</th>
-                  <th className="py-3 pr-4">Owner</th>
-                  <th className="py-3 pr-4">Due date</th>
-                  <th className="py-3 pr-4">Review state</th>
-                  <th className="py-3 pr-4">Evidence source</th>
-                  <th className="py-3">Action gate</th>
+                <tr className="border-b border-line bg-surface text-xs uppercase tracking-[0.12em] text-foundation-700">
+                  <th className="px-4 py-3">Action</th>
+                  <th className="px-4 py-3">Priority</th>
+                  <th className="px-4 py-3">Owner</th>
+                  <th className="px-4 py-3">Due date</th>
+                  <th className="px-4 py-3">Review state</th>
+                  <th className="px-4 py-3">Evidence source</th>
+                  <th className="px-4 py-3">Action gate</th>
                 </tr>
               </thead>
               <tbody>
                 {countyActionQueue.map((item) => (
                   <tr className="border-b border-line last:border-0" key={item.action}>
-                    <td className="py-4 pr-4 font-bold text-foundation-950">{item.action}</td>
-                    <td className="py-4 pr-4 text-foundation-700">{item.priority}</td>
-                    <td className="py-4 pr-4 text-foundation-700">{item.owner}</td>
-                    <td className="py-4 pr-4 text-foundation-700">{item.dueDate}</td>
-                    <td className="py-4 pr-4">
+                    <td className="px-4 py-4 font-bold text-foundation-950">{item.action}</td>
+                    <td className="px-4 py-4 text-foundation-700">{item.priority}</td>
+                    <td className="px-4 py-4 text-foundation-700">{item.owner}</td>
+                    <td className="px-4 py-4 text-foundation-700">{item.dueDate}</td>
+                    <td className="px-4 py-4">
                       <span
                         className={`rounded-lg px-3 py-1 text-xs font-bold ${
                           statusClass[item.reviewState]
@@ -231,8 +281,8 @@ export default function CountyPage() {
                         {item.reviewState}
                       </span>
                     </td>
-                    <td className="py-4 pr-4 text-foundation-700">{item.evidence}</td>
-                    <td className="py-4 text-foundation-700">{item.actionGate}</td>
+                    <td className="px-4 py-4 text-foundation-700">{item.evidence}</td>
+                    <td className="px-4 py-4 text-foundation-700">{item.actionGate}</td>
                   </tr>
                 ))}
               </tbody>
@@ -240,7 +290,7 @@ export default function CountyPage() {
           </div>
         </article>
 
-        <article className="rounded-lg border border-line bg-white p-6 shadow-sm">
+        <article className="min-w-0 rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.14em] text-assurance-600">
@@ -305,7 +355,7 @@ export default function CountyPage() {
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-5 px-5 py-5 xl:grid-cols-[0.95fr_1.05fr]">
-        <article className="rounded-lg border border-line bg-white p-6 shadow-sm">
+        <article className="min-w-0 rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-warning-600">
             Human Review Workflow
           </p>
@@ -351,7 +401,7 @@ export default function CountyPage() {
           </div>
         </article>
 
-        <article className="rounded-lg border border-line bg-white p-6 shadow-sm">
+        <article className="min-w-0 rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
             Review Queue
           </p>
@@ -403,7 +453,7 @@ export default function CountyPage() {
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-5 px-5 py-5 pb-12 lg:grid-cols-[1.05fr_0.95fr]">
-        <article className="rounded-lg border border-line bg-white p-6 shadow-sm">
+        <article className="min-w-0 rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
             Scenario Planning
           </p>
@@ -453,7 +503,7 @@ export default function CountyPage() {
           </p>
         </article>
 
-        <article className="rounded-lg border border-line bg-foundation-950 p-6 text-white shadow-sm">
+        <article className="min-w-0 rounded-lg border border-line bg-foundation-950 p-5 text-white shadow-sm sm:p-6">
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-100">
             County modules
           </p>
