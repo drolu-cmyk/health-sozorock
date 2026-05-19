@@ -74,12 +74,15 @@ export const countyActionQueue = [
 ] as const;
 
 export const countyAssuranceControls = [
-  "No PHI",
-  "Consent-based",
-  "Non-clinical",
-  "Human review",
-  "Provider responsibility",
-  "Synthetic data only",
+  "Consent captured.",
+  "No protected health information collected.",
+  "Non-clinical boundary reviewed.",
+  "Synthetic data source verified.",
+  "Human review required before action.",
+  "Provider responsibility confirmed.",
+  "Report generated with controls.",
+  "Action evidence recorded.",
+  "County-facing output marked as planning support.",
 ] as const;
 
 export const scenarioPlans = [
