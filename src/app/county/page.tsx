@@ -9,12 +9,29 @@ import {
   scenarioPlans,
 } from "@/lib/county-data";
 import { getCountyGeospatialProvider } from "@/lib/geospatial";
+import {
+  humanReviewBoundaryCopy,
+  humanReviewQueue,
+  humanReviewStages,
+} from "@/lib/human-review-data";
 import { countyModules } from "@/lib/mock-data";
 
 const statusClass = {
   Draft: "bg-signal-100 text-signal-600",
   Ready: "bg-access-100 text-access-700",
   "Human review": "bg-warning-100 text-warning-600",
+} as const;
+
+const reviewStageClass = {
+  complete: "border-assurance-600/30 bg-assurance-100 text-assurance-600",
+  review: "border-warning-600/30 bg-warning-100 text-warning-600",
+  ready: "border-access-600/30 bg-access-100 text-access-700",
+} as const;
+
+const reviewQueueClass = {
+  "Boundary checked": "bg-assurance-100 text-assurance-600",
+  "Human review": "bg-warning-100 text-warning-600",
+  "Evidence recorded": "bg-access-100 text-access-700",
 } as const;
 
 const geospatialProvider = getCountyGeospatialProvider();
@@ -224,6 +241,104 @@ export default function CountyPage() {
           <p className="mt-5 rounded-lg border border-line bg-access-100 p-4 text-sm font-semibold leading-6 text-access-700">
             Human review required before action.
           </p>
+        </article>
+      </section>
+
+      <section className="mx-auto grid max-w-7xl gap-5 px-5 py-5 xl:grid-cols-[0.95fr_1.05fr]">
+        <article className="rounded-lg border border-line bg-white p-6 shadow-sm">
+          <p className="text-sm font-bold uppercase tracking-[0.14em] text-warning-600">
+            Human Review Workflow
+          </p>
+          <h2 className="mt-3 text-2xl font-bold text-foundation-950">
+            Signal to review to evidence.
+          </h2>
+          <p className="mt-4 text-sm leading-6 text-foundation-700">
+            Resident signals, Voice Access outputs, geospatial recommendations, and action
+            queue items stay static until human review is complete.
+          </p>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            {humanReviewStages.map((stage) => (
+              <div
+                className="rounded-lg border border-line bg-surface p-4"
+                key={stage.name}
+              >
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <p className="text-sm font-bold text-foundation-950">{stage.name}</p>
+                  <span
+                    className={`w-fit rounded-lg border px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] ${
+                      reviewStageClass[stage.status]
+                    }`}
+                  >
+                    {stage.status}
+                  </span>
+                </div>
+                <p className="mt-3 text-sm leading-6 text-foundation-700">
+                  {stage.description}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            <span className="rounded-lg bg-warning-100 px-4 py-3 text-sm font-bold text-warning-600">
+              {humanReviewBoundaryCopy.required}
+            </span>
+            <span className="rounded-lg bg-signal-100 px-4 py-3 text-sm font-bold text-signal-600">
+              {humanReviewBoundaryCopy.planning}
+            </span>
+            <span className="rounded-lg bg-access-100 px-4 py-3 text-sm font-bold text-access-700">
+              {humanReviewBoundaryCopy.trust}
+            </span>
+          </div>
+        </article>
+
+        <article className="rounded-lg border border-line bg-white p-6 shadow-sm">
+          <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
+            Review Queue
+          </p>
+          <h2 className="mt-3 text-2xl font-bold text-foundation-950">
+            Static review examples before action.
+          </h2>
+          <div className="mt-5 grid gap-3">
+            {humanReviewQueue.map((item) => (
+              <div className="rounded-lg border border-line bg-surface p-4" key={item.source}>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <p className="text-sm font-bold text-foundation-950">{item.source}</p>
+                    <p className="mt-1 text-sm leading-6 text-foundation-700">
+                      {item.signal}
+                    </p>
+                  </div>
+                  <span
+                    className={`w-fit rounded-lg px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] ${
+                      reviewQueueClass[item.status]
+                    }`}
+                  >
+                    {item.status}
+                  </span>
+                </div>
+                <dl className="mt-4 grid gap-3 text-sm md:grid-cols-2">
+                  <div>
+                    <dt className="font-bold text-foundation-950">Review need</dt>
+                    <dd className="mt-1 leading-6 text-foundation-700">{item.reviewNeed}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-bold text-foundation-950">Reviewer</dt>
+                    <dd className="mt-1 leading-6 text-foundation-700">{item.reviewer}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-bold text-foundation-950">Evidence recorded</dt>
+                    <dd className="mt-1 leading-6 text-foundation-700">{item.evidence}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-bold text-foundation-950">Planning output</dt>
+                    <dd className="mt-1 leading-6 text-foundation-700">
+                      {item.planningOutput}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            ))}
+          </div>
         </article>
       </section>
 
