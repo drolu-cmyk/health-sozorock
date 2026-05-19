@@ -4,6 +4,7 @@ import { SectionHeading } from "@/components/section-heading";
 import { brand } from "@/lib/brand";
 import {
   countyActionQueue,
+  countyAssuranceReviewLog,
   countyAssuranceControls,
   countyDecisionSupport,
   scenarioPlans,
@@ -18,8 +19,10 @@ import { countyModules } from "@/lib/mock-data";
 
 const statusClass = {
   Draft: "bg-signal-100 text-signal-600",
-  Ready: "bg-access-100 text-access-700",
-  "Human review": "bg-warning-100 text-warning-600",
+  "Needs Review": "bg-warning-100 text-warning-600",
+  Approved: "bg-access-100 text-access-700",
+  Deferred: "border border-line bg-surface text-foundation-700",
+  Completed: "bg-assurance-100 text-assurance-600",
 } as const;
 
 const reviewStageClass = {
@@ -161,9 +164,32 @@ export default function CountyPage() {
           <p className="mt-6 rounded-lg border border-white/15 bg-white/8 p-4 text-sm font-bold">
             {countyDecisionSupport.reviewControl}
           </p>
+          <div className="mt-4 grid gap-3 rounded-lg border border-white/15 bg-white/8 p-4 text-sm text-blue-100">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <span className="font-semibold text-white">Review state</span>
+              <span
+                className={`w-fit rounded-lg px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] ${
+                  statusClass[countyDecisionSupport.reviewState]
+                }`}
+              >
+                {countyDecisionSupport.reviewState}
+              </span>
+            </div>
+            <p>
+              <span className="font-semibold text-white">Owner:</span>{" "}
+              {countyDecisionSupport.reviewOwner}
+            </p>
+            <p>
+              <span className="font-semibold text-white">Evidence source:</span>{" "}
+              {countyDecisionSupport.evidenceSource}
+            </p>
+            <p>
+              <span className="font-semibold text-white">Action gate:</span>{" "}
+              {countyDecisionSupport.actionGate}
+            </p>
+          </div>
           <p className="mt-4 text-sm leading-6 text-blue-100">
-            Recommendations are planning support for human decision-making, not automated
-            action.
+            {humanReviewBoundaryCopy.planning}
           </p>
         </article>
       </section>
@@ -177,15 +203,16 @@ export default function CountyPage() {
             Assigned work from synthetic access signals.
           </h2>
           <div className="mt-5 overflow-x-auto">
-            <table className="w-full min-w-[820px] border-collapse text-left text-sm">
+            <table className="w-full min-w-[1080px] border-collapse text-left text-sm">
               <thead>
                 <tr className="border-b border-line text-xs uppercase tracking-[0.12em] text-foundation-700">
                   <th className="py-3 pr-4">Action</th>
                   <th className="py-3 pr-4">Priority</th>
                   <th className="py-3 pr-4">Owner</th>
                   <th className="py-3 pr-4">Due date</th>
-                  <th className="py-3 pr-4">Status</th>
-                  <th className="py-3">Evidence source</th>
+                  <th className="py-3 pr-4">Review state</th>
+                  <th className="py-3 pr-4">Evidence source</th>
+                  <th className="py-3">Action gate</th>
                 </tr>
               </thead>
               <tbody>
@@ -198,13 +225,14 @@ export default function CountyPage() {
                     <td className="py-4 pr-4">
                       <span
                         className={`rounded-lg px-3 py-1 text-xs font-bold ${
-                          statusClass[item.status]
+                          statusClass[item.reviewState]
                         }`}
                       >
-                        {item.status}
+                        {item.reviewState}
                       </span>
                     </td>
-                    <td className="py-4 text-foundation-700">{item.evidence}</td>
+                    <td className="py-4 pr-4 text-foundation-700">{item.evidence}</td>
+                    <td className="py-4 text-foundation-700">{item.actionGate}</td>
                   </tr>
                 ))}
               </tbody>
@@ -241,6 +269,38 @@ export default function CountyPage() {
           <p className="mt-5 rounded-lg border border-line bg-access-100 p-4 text-sm font-semibold leading-6 text-access-700">
             Human review required before action.
           </p>
+          <div className="mt-5 grid gap-3">
+            {countyAssuranceReviewLog.map((entry) => (
+              <div className="rounded-lg border border-line bg-white p-4" key={entry.check}>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <p className="text-sm font-bold text-foundation-950">{entry.check}</p>
+                    <dl className="mt-3 grid gap-2 text-sm text-foundation-700">
+                      <div>
+                        <dt className="font-bold text-foundation-950">Owner</dt>
+                        <dd className="mt-1">{entry.owner}</dd>
+                      </div>
+                      <div>
+                        <dt className="font-bold text-foundation-950">Evidence source</dt>
+                        <dd className="mt-1">{entry.evidenceSource}</dd>
+                      </div>
+                      <div>
+                        <dt className="font-bold text-foundation-950">Action gate</dt>
+                        <dd className="mt-1">{entry.actionGate}</dd>
+                      </div>
+                    </dl>
+                  </div>
+                  <span
+                    className={`w-fit shrink-0 rounded-lg px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] ${
+                      statusClass[entry.reviewState]
+                    }`}
+                  >
+                    {entry.reviewState}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </article>
       </section>
 
@@ -353,7 +413,16 @@ export default function CountyPage() {
           <div className="mt-5 grid gap-3">
             {scenarioPlans.map((scenario) => (
               <div className="rounded-lg border border-line bg-surface p-4" key={scenario.title}>
-                <p className="text-sm font-bold text-foundation-950">{scenario.title}</p>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <p className="text-sm font-bold text-foundation-950">{scenario.title}</p>
+                  <span
+                    className={`w-fit rounded-lg px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] ${
+                      statusClass[scenario.reviewState]
+                    }`}
+                  >
+                    {scenario.reviewState}
+                  </span>
+                </div>
                 <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-3">
                   <div>
                     <dt className="text-foundation-700">Focus</dt>
@@ -370,6 +439,12 @@ export default function CountyPage() {
                     <dd className="mt-1 font-bold text-foundation-950">{scenario.workforce}</dd>
                   </div>
                 </dl>
+                <p className="mt-4 text-sm font-semibold text-foundation-800">
+                  {scenario.sourceLabel}
+                </p>
+                <p className="mt-2 rounded-lg border border-line bg-white px-4 py-3 text-sm font-semibold leading-6 text-foundation-700">
+                  {scenario.actionGate}
+                </p>
               </div>
             ))}
           </div>

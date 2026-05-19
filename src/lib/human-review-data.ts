@@ -2,6 +2,25 @@ export type ReviewStageStatus = "complete" | "review" | "ready";
 
 export type ReviewQueueStatus = "Boundary checked" | "Human review" | "Evidence recorded";
 
+export const countyReviewStates = [
+  "Draft",
+  "Needs Review",
+  "Approved",
+  "Deferred",
+  "Completed",
+] as const;
+
+export type CountyReviewState = (typeof countyReviewStates)[number];
+
+export const countyReviewOwners = [
+  "Community Operations",
+  "Data and Insights",
+  "Governance Review",
+  "Reporting",
+] as const;
+
+export type CountyReviewOwner = (typeof countyReviewOwners)[number];
+
 export type HumanReviewStage = {
   name: string;
   description: string;
