@@ -124,6 +124,8 @@ Before manual preview deployment, run the local commands above and complete:
 - `docs/sozorock-health/manual-preview-review-record.md`
 - [Live preview share packet](docs/sozorock-health/live-preview-share-packet.md)
 - [Stakeholder feedback log](docs/sozorock-health/stakeholder-feedback-log.md)
+- [Custom domain readiness plan](docs/sozorock-health/custom-domain-readiness-plan.md)
+- [Custom domain DNS record](docs/sozorock-health/custom-domain-dns-record.md)
 
 ## Brand Assets
 
