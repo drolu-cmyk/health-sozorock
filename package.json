@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "lint": "eslint . --max-warnings=0",
+    "test": "node --test tests/*.test.mjs",
     "typecheck": "next typegen && tsc --noEmit",
     "build": "next build",
     "guardrails": "node scripts/guardrail-scan.mjs",

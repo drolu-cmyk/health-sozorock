@@ -70,7 +70,14 @@ export const residentHubExamples = [
 ] as const;
 
 export const providerPathwayActions = [
-  "Learn More",
-  "Prepare for a Visit",
-  "Find Available Support",
+  "Learn the pathway",
+  "Prepare for a provider platform",
+  "Review access support",
+] as const;
+
+export const healthAccessDayInfoActions = [
+  "Event details",
+  "Access support options",
+  "What to expect",
+  "No sign-up in prototype",
 ] as const;
