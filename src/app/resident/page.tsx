@@ -5,6 +5,7 @@ import { humanReviewBoundaryCopy } from "@/lib/human-review-data";
 import { residentModules } from "@/lib/mock-data";
 import {
   healthAccessDayEvents,
+  healthAccessDayInfoActions,
   providerPathwayActions,
   residentAccessActions,
   residentHubExamples,
@@ -13,9 +14,9 @@ import { voiceAccessSafetyCopy, voiceAccessSimulationItems } from "@/lib/voice-a
 
 export default function ResidentPage() {
   return (
-    <div className="bg-surface">
-      <section className="mx-auto max-w-7xl px-5 py-10 md:py-14">
-        <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+    <div className="bg-[linear-gradient(180deg,#ffffff_0%,#f7fafc_52%,#eef4f8_100%)]">
+      <section className="mx-auto max-w-7xl px-5 py-8 md:py-12">
+        <div className="grid gap-6 lg:grid-cols-[0.86fr_1.14fr] lg:items-end">
           <div>
             <SectionHeading
               eyebrow={brand.layers.resident.name}
@@ -23,8 +24,13 @@ export default function ResidentPage() {
               description="A resident-facing experience for starting access support with plain language, synthetic information, and clear boundaries."
             />
           </div>
-          <div className="rounded-lg border border-access-600/20 bg-white p-5 shadow-sm">
-            <AssuranceBadge />
+          <div className="rounded-lg border border-access-600/20 bg-white p-4 shadow-sm sm:p-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <AssuranceBadge />
+              <span className="rounded-lg bg-surface px-3 py-2 text-sm font-bold text-foundation-700">
+                Static app preview
+              </span>
+            </div>
             <p className="mt-4 text-sm font-semibold leading-6 text-foundation-700">
               No live AI, no external integrations, and no protected-data intake in this prototype.
             </p>
@@ -32,8 +38,13 @@ export default function ResidentPage() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-5 px-5 pb-5 lg:grid-cols-[0.95fr_1.05fr]">
-        <article className="rounded-lg border border-line bg-white p-6 shadow-sm" id="welcome">
+      <section className="mx-auto grid max-w-7xl gap-5 px-5 pb-5 lg:grid-cols-[0.88fr_1.12fr]">
+        <article className="rounded-[1.75rem] border border-foundation-950/10 bg-foundation-950 p-3 shadow-xl" id="welcome">
+          <div className="rounded-[1.35rem] bg-white p-5">
+            <div className="mb-5 flex items-center justify-between text-xs font-bold text-foundation-950">
+              <span>9:41</span>
+              <span>Static</span>
+            </div>
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
             Welcome
           </p>
@@ -44,7 +55,7 @@ export default function ResidentPage() {
             Health access made easier for underserved communities.
           </p>
           <a
-            className="mt-6 inline-flex rounded-lg bg-foundation-950 px-5 py-3 text-sm font-bold text-white hover:bg-foundation-800"
+            className="mt-6 inline-flex min-w-36 items-center justify-center rounded-lg bg-access-700 px-5 py-3 text-sm font-bold text-white hover:bg-access-600"
             href="#access-start"
           >
             Get Started
@@ -52,9 +63,15 @@ export default function ResidentPage() {
           <p className="mt-5 text-sm leading-6 text-foundation-700">
             Data collected: none on this screen.
           </p>
+            <div className="mt-8 grid grid-cols-4 gap-2 border-t border-line pt-4 text-center text-[0.68rem] font-bold text-foundation-700">
+              {["Home", "Guide", "Support", "More"].map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+            </div>
+          </div>
         </article>
 
-        <article className="rounded-lg border border-line bg-white p-6 shadow-sm" id="access-start">
+        <article className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6" id="access-start">
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
             Access Start
           </p>
@@ -62,7 +79,7 @@ export default function ResidentPage() {
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             {residentAccessActions.map((action) => (
               <a
-                className="rounded-lg border border-line bg-surface px-4 py-4 text-left hover:border-access-600 hover:bg-access-100"
+                className="rounded-lg border border-line bg-white px-4 py-4 text-left shadow-sm hover:border-access-600 hover:bg-access-100"
                 href={action.href}
                 key={action.title}
               >
@@ -80,7 +97,7 @@ export default function ResidentPage() {
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-5 px-5 py-5 lg:grid-cols-[0.85fr_1.15fr]">
-        <article className="rounded-lg border border-line bg-white p-6 shadow-sm" id="voice-access">
+        <article className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6" id="voice-access">
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-signal-600">
             Voice Access
           </p>
@@ -124,7 +141,7 @@ export default function ResidentPage() {
           </p>
         </article>
 
-        <article className="rounded-lg border border-line bg-white p-6 shadow-sm" id="health-access-day">
+        <article className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6" id="health-access-day">
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
             Health Access Day
           </p>
@@ -144,22 +161,20 @@ export default function ResidentPage() {
             ))}
           </div>
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
-            {["Register / RSVP", "Find Events Near Me", "Request Reminder", "See What to Expect"].map(
-              (item) => (
-                <span
-                  className="rounded-lg border border-line bg-white px-4 py-3 text-sm font-bold text-foundation-900"
-                  key={item}
-                >
-                  {item}
-                </span>
-              ),
-            )}
+            {healthAccessDayInfoActions.map((item) => (
+              <span
+                className="rounded-lg border border-line bg-white px-4 py-3 text-sm font-bold text-foundation-900"
+                key={item}
+              >
+                {item}
+              </span>
+            ))}
           </div>
         </article>
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-5 px-5 py-5 lg:grid-cols-[1.15fr_0.85fr]">
-        <article className="rounded-lg border border-line bg-white p-6 shadow-sm" id="health-equity-hubs">
+        <article className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6" id="health-equity-hubs">
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
             Health Equity Hubs
           </p>
@@ -184,7 +199,7 @@ export default function ResidentPage() {
           </p>
         </article>
 
-        <article className="rounded-lg border border-line bg-white p-6 shadow-sm" id="provider-led-pathways">
+        <article className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6" id="provider-led-pathways">
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
             Provider-Led Pathways
           </p>
