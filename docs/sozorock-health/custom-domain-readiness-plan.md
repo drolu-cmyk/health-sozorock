@@ -135,7 +135,7 @@ Confirm:
 - Action Queue remains readable
 - trust boundary remains visible
 - `Care for Every ZIP Code.` remains visible
-- `Signal -> Decision -> Action -> Assurance -> Impact` remains visible in the deployed UI as the locked arrow phrase
+- `Signal → Decision → Action → Assurance → Impact` remains visible in the deployed UI as the locked arrow phrase
 - `Providers keep their platforms. We help you get ready.` remains visible
 
 ## No-Index Preview Metadata Check
