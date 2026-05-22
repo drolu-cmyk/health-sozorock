@@ -122,6 +122,8 @@ Before manual preview deployment, run the local commands above and complete:
 - `docs/sozorock-health/preview-deployment-checklist.md`
 - `docs/sozorock-health/manual-preview-smoke-test.md`
 - `docs/sozorock-health/manual-preview-review-record.md`
+- [Live preview share packet](docs/sozorock-health/live-preview-share-packet.md)
+- [Stakeholder feedback log](docs/sozorock-health/stakeholder-feedback-log.md)
 
 ## Brand Assets
 
