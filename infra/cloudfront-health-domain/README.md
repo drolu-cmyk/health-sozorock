@@ -32,7 +32,16 @@ The template does not create, update, or delete records for:
 | --- | --- | --- | --- |
 | `DomainName` | `health.sozorockfoundation.org` | Yes | Locked by pattern and rule to the health subdomain only. |
 | `OriginDomainName` | `main.d1bmgq1fk26xqh.amplifyapp.com` | Yes | Locked by pattern and rule to the existing Amplify fallback origin. |
-| `HostedZoneId` | none | Yes | Route 53 hosted zone ID for `sozorockfoundation.org`. |
+| `HostedZoneId` | none | Yes | Route 53 hosted zone ID for `sozorockfoundation.org` or a delegated `health.sozorockfoundation.org` hosted zone. |
+
+## Route 53 Automation Prerequisite
+
+Full automation works only when one of the following is true:
+
+- `sozorockfoundation.org` is already managed in Route 53, and the workflow uses that hosted zone ID.
+- `health.sozorockfoundation.org` has been delegated to a Route 53 hosted zone, and the workflow uses the hosted zone ID for the delegated health subdomain.
+
+If the domain is managed by an external DNS provider and the `health` subdomain has not been delegated to Route 53, the CloudFormation stack cannot complete DNS automation. In that case, the authorized domain owner must first delegate only `health.sozorockfoundation.org` to Route 53 without changing `sozorockfoundation.org` or `www.sozorockfoundation.org`.
 
 ## Deployment
 

@@ -75,6 +75,15 @@ Before any domain activation, the deployment owner should confirm:
 - the preview remains non-clinical and uses no real resident data
 - no app code changes are required for the custom domain
 
+## Route 53 Automation Prerequisite
+
+Full automation works only when one of the following is true:
+
+- `sozorockfoundation.org` is already managed in Route 53, and the workflow uses that hosted zone ID.
+- `health.sozorockfoundation.org` has been delegated to a Route 53 hosted zone, and the workflow uses the hosted zone ID for the delegated health subdomain.
+
+If the domain is managed by an external DNS provider and the `health` subdomain has not been delegated to Route 53, the CloudFormation stack cannot complete DNS automation. In that case, the authorized domain owner must first delegate only `health.sozorockfoundation.org` to Route 53 without changing `sozorockfoundation.org` or `www.sozorockfoundation.org`.
+
 ## SSL and Certificate Validation Checklist
 
 Record the result before treating the custom domain as active:
