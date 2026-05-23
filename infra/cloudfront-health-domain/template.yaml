@@ -1,0 +1,123 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: CloudFront custom subdomain for the SozoRock Health preview.
+
+Parameters:
+  DomainName:
+    Type: String
+    Default: health.sozorockfoundation.org
+    AllowedPattern: ^health\.sozorockfoundation\.org$
+    ConstraintDescription: Only health.sozorockfoundation.org is allowed.
+    Description: Custom subdomain for the SozoRock Health preview.
+  OriginDomainName:
+    Type: String
+    Default: main.d1bmgq1fk26xqh.amplifyapp.com
+    AllowedPattern: ^main\.d1bmgq1fk26xqh\.amplifyapp\.com$
+    ConstraintDescription: Only the existing Amplify fallback origin is allowed.
+    Description: Existing Amplify preview origin domain without protocol.
+  HostedZoneId:
+    Type: String
+    AllowedPattern: ^Z[A-Z0-9]+$
+    ConstraintDescription: Provide the Route 53 hosted zone ID for sozorockfoundation.org.
+    Description: Route 53 hosted zone ID that contains the health subdomain.
+
+Rules:
+  HealthSubdomainOnly:
+    Assertions:
+      - Assert: !Equals [!Ref DomainName, health.sozorockfoundation.org]
+        AssertDescription: This stack may only manage health.sozorockfoundation.org.
+  AmplifyOriginOnly:
+    Assertions:
+      - Assert: !Equals [!Ref OriginDomainName, main.d1bmgq1fk26xqh.amplifyapp.com]
+        AssertDescription: This stack may only use the approved Amplify fallback origin.
+
+Resources:
+  HealthDomainCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref DomainName
+      ValidationMethod: DNS
+      DomainValidationOptions:
+        - DomainName: !Ref DomainName
+          HostedZoneId: !Ref HostedZoneId
+      Tags:
+        - Key: Project
+          Value: SozoRock Health
+        - Key: Scope
+          Value: health-subdomain-only
+
+  HealthCloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Comment: !Sub SozoRock Health preview for ${DomainName}
+        Enabled: true
+        HttpVersion: http2and3
+        IPV6Enabled: true
+        Aliases:
+          - !Ref DomainName
+        Origins:
+          - Id: AmplifyPreviewOrigin
+            DomainName: !Ref OriginDomainName
+            CustomOriginConfig:
+              HTTPSPort: 443
+              OriginProtocolPolicy: https-only
+              OriginReadTimeout: 30
+              OriginKeepaliveTimeout: 5
+              OriginSSLProtocols:
+                - TLSv1.2
+        DefaultCacheBehavior:
+          TargetOriginId: AmplifyPreviewOrigin
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachedMethods:
+            - GET
+            - HEAD
+          CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+        ViewerCertificate:
+          AcmCertificateArn: !Ref HealthDomainCertificate
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2021
+        PriceClass: PriceClass_100
+
+  HealthDomainAliasRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: !Ref DomainName
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt HealthCloudFrontDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2
+        EvaluateTargetHealth: false
+
+  HealthDomainIpv6AliasRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: !Ref DomainName
+      Type: AAAA
+      AliasTarget:
+        DNSName: !GetAtt HealthCloudFrontDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2
+        EvaluateTargetHealth: false
+
+Outputs:
+  CloudFrontDistributionId:
+    Description: CloudFront distribution ID.
+    Value: !Ref HealthCloudFrontDistribution
+  CloudFrontDomainName:
+    Description: CloudFront distribution domain name.
+    Value: !GetAtt HealthCloudFrontDistribution.DomainName
+  CustomDomainUrl:
+    Description: SozoRock Health custom subdomain URL.
+    Value: !Sub https://${DomainName}/
+  CertificateArn:
+    Description: ACM certificate ARN for the health subdomain.
+    Value: !Ref HealthDomainCertificate
+  OriginDomain:
+    Description: Existing Amplify fallback origin domain.
+    Value: !Ref OriginDomainName
