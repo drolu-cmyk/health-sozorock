@@ -8,9 +8,12 @@ Fallback origin:
 
 `https://main.d1bmgq1fk26xqh.amplifyapp.com/`
 
+Before deploy, choose Option A, B, or C in `docs/sozorock-health/domain-activation-options.md`.
+
 ## Before You Start
 
 - [ ] You are the authorized AWS/GitHub/DNS owner or have explicit approval.
+- [ ] You selected Option A, B, or C before running deploy.
 - [ ] You will not change `sozorockfoundation.org`.
 - [ ] You will not change `www.sozorockfoundation.org`.
 - [ ] You will not use Amplify custom-domain setup.

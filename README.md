@@ -129,6 +129,7 @@ Before manual preview deployment, run the local commands above and complete:
 - [CloudFront domain automation](docs/sozorock-health/cloudfront-domain-automation.md)
 - [Domain automation bootstrap](docs/sozorock-health/domain-automation-bootstrap.md)
 - [Domain activation operator checklist](docs/sozorock-health/domain-activation-operator-checklist.md)
+- [Domain activation options and go/no-go path](docs/sozorock-health/domain-activation-options.md)
 
 ## Brand Assets
 
