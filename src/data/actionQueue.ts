@@ -7,7 +7,7 @@ export const operatingActions = [
     priority: "High",
     dueDate: "2026-06-05",
     reviewState: "Needs Review" satisfies CountyReviewState,
-    evidenceSource: "Synthetic access gap signal",
+    evidenceSource: "Access gap signal",
     actionGate: "Human review required before action.",
   },
   {
@@ -16,7 +16,7 @@ export const operatingActions = [
     priority: "High",
     dueDate: "2026-06-06",
     reviewState: "Draft" satisfies CountyReviewState,
-    evidenceSource: "Mock digital readiness signal",
+    evidenceSource: "Digital readiness signal",
     actionGate: "Planning support, not automated decision-making.",
   },
   {
@@ -25,7 +25,7 @@ export const operatingActions = [
     priority: "Medium",
     dueDate: "2026-06-10",
     reviewState: "Approved" satisfies CountyReviewState,
-    evidenceSource: "Static hub coverage fixture",
+    evidenceSource: "Hub coverage signal",
     actionGate: "No notifications or scheduling are created.",
   },
   {
@@ -34,7 +34,7 @@ export const operatingActions = [
     priority: "Low",
     dueDate: "2026-06-12",
     reviewState: "Deferred" satisfies CountyReviewState,
-    evidenceSource: "Mock provider pathway readiness",
+    evidenceSource: "Provider pathway readiness",
     actionGate: "No unsupported partnership claim may be made.",
   },
 ] as const;

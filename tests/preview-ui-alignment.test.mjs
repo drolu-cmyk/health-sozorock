@@ -27,6 +27,7 @@ const scenarioFixtures = read("src/data/scenarios.ts");
 const countyData = read("src/lib/county-data.ts");
 const geospatialProvider = read("src/lib/geospatial/mock-provider.ts");
 const layout = read("src/app/layout.tsx");
+const aboutModelPage = read("src/app/about-model/page.tsx");
 const productEntry = read("src/components/product/product-entry.tsx");
 const productBoundaries = read("src/lib/productBoundaries.ts");
 const platformDoc = read("docs/sozorock-health/multi-platform-product-architecture.md");
@@ -60,7 +61,7 @@ test("resident page keeps the locked trust boundary visible", () => {
   assert.match(residentSurface, /trustBoundary\.primary/);
 });
 
-test("resident page keeps Voice Access static and non-clinical", () => {
+test("resident page keeps Voice Access safe and non-clinical", () => {
   assert.match(residentSurface, /trustBoundary\.voice/);
   assert.match(residentSurface, /voiceAccessSafetyCopy\.staticMode/);
 });
@@ -70,7 +71,7 @@ test("resident event labels avoid active signup and reminder language", () => {
     `${residentData}\n${residentSurface}`,
     /Register\s*\/\s*RSVP|Request Reminder|registration|notification|Messages|My info/i,
   );
-  assert.match(residentSurface, /No sign-up in prototype/);
+  assert.match(residentSurface, /No sign-up in this step/);
 });
 
 test("resident provider pathway keeps approved platform readiness language", () => {
@@ -83,6 +84,8 @@ test("resident routes are real app screens", () => {
     assert.match(residentSurface, new RegExp(`screen="${screen}"`));
   }
   assert.match(residentSurface, /Resident app navigation/);
+  assert.match(residentSurface, /Voice Access or Tap Access/);
+  assert.match(residentSurface, /Next-step guidance/);
 });
 
 test("county page keeps the locked operating logic visible", () => {
@@ -91,9 +94,23 @@ test("county page keeps the locked operating logic visible", () => {
   }
 });
 
-test("county page uses a dark operating dashboard shell", () => {
+test("county page uses a dark operating console shell", () => {
   assert.match(countySurface, /bg-\[#061521\]/);
   assert.match(countySurface, /County Operating Intelligence Layer/);
+});
+
+test("county console exposes the operating journey", () => {
+  for (const step of [
+    "Operating Picture",
+    "Access Signals",
+    "Recommended Action",
+    "Action Queue",
+    "Assurance Log",
+    "Scenario Planning",
+    "Human Review",
+  ]) {
+    assert.match(countySurface, new RegExp(step));
+  }
 });
 
 test("county desktop has module navigation for operating sections", () => {
@@ -148,6 +165,13 @@ test("product entry exposes app entry actions and trust boundary", () => {
   assert.match(productEntry, /Open County Operating Layer/);
   assert.match(productEntry, /Review Model/);
   assert.match(productEntry, /trustBoundary\.primary/);
+});
+
+test("visible product components avoid mockup framing", () => {
+  assert.doesNotMatch(
+    `${residentComponent}\n${productEntry}\n${countyComponent}\n${aboutModelPage}\n${residentFixtures}\n${countySignalFixtures}\n${actionQueueFixtures}`,
+    /\b(static|mock|prototype|simulation|marketing hero|dashboard feel)\b/i,
+  );
 });
 
 test("platform architecture records native packaging path without implementation", () => {

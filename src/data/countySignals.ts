@@ -45,8 +45,8 @@ export const accessSignals = [
 ] as const;
 
 export const countyMetricCards = [
-  { label: "Hub coverage", value: "64%", detail: "Mock county coverage" },
-  { label: "Travel burden", value: "26 min", detail: "Highest synthetic gap" },
-  { label: "Digital readiness", value: "71%", detail: "Preview readiness index" },
-  { label: "Provider pathways", value: "12", detail: "Readiness partners, mock" },
+  { label: "Hub coverage", value: "64%", detail: "County coverage view" },
+  { label: "Travel burden", value: "26 min", detail: "Highest access gap" },
+  { label: "Digital readiness", value: "71%", detail: "Readiness index" },
+  { label: "Provider pathways", value: "12", detail: "Provider readiness paths" },
 ] as const;

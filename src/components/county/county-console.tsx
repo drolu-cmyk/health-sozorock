@@ -19,6 +19,16 @@ const statusClass: Record<string, string> = {
   Completed: "bg-assurance-100 text-assurance-600",
 };
 
+const consoleJourney = [
+  "Operating Picture",
+  "Access Signals",
+  "Recommended Action",
+  "Action Queue",
+  "Assurance Log",
+  "Scenario Planning",
+  "Human Review",
+] as const;
+
 export function CountyConsole({ section = "overview" }: { section?: CountySection }) {
   const showAll = section === "overview";
 
@@ -32,10 +42,10 @@ export function CountyConsole({ section = "overview" }: { section?: CountySectio
                 County Operating Intelligence Layer
               </h1>
               <p className="text-sm font-semibold text-blue-100">
-                Real-time view of access gaps, hubs, barriers, and activity.
+                Operating view of access gaps, hubs, barriers, and activity.
               </p>
             </div>
-            <div className="flex flex-wrap gap-3 text-xs font-bold uppercase tracking-[0.12em] text-access-100">
+            <div className="flex flex-wrap gap-3 text-xs font-bold tracking-[0.08em] text-access-100">
               {countySummary.operatingModel.split(" → ").map((step, index) => (
                 <span key={step}>{step}{index < 4 ? " →" : ""}</span>
               ))}
@@ -62,6 +72,7 @@ export function CountyConsole({ section = "overview" }: { section?: CountySectio
             </aside>
 
             <main className="grid min-w-0 gap-4 p-4">
+              <ConsoleJourney />
               {(showAll || section === "operating-picture") && <OperatingPicture />}
               {showAll && <DecisionSupport />}
               {(showAll || section === "action-queue") && <ActionQueue />}
@@ -79,6 +90,21 @@ export function CountyConsole({ section = "overview" }: { section?: CountySectio
         </div>
       </section>
     </div>
+  );
+}
+
+function ConsoleJourney() {
+  return (
+    <section className="rounded-lg border border-white/15 bg-[#061521] p-3" aria-label="County console journey">
+      <div className="grid gap-2 text-xs font-bold tracking-[0.06em] text-blue-100 sm:grid-cols-2 lg:grid-cols-7">
+        {consoleJourney.map((item, index) => (
+          <div className="rounded-md border border-white/10 bg-white/5 px-3 py-3" key={item}>
+            <span className="block text-access-100">0{index + 1}</span>
+            {item}
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -108,7 +134,7 @@ function DecisionSupport() {
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-access-100">
             AI Decision Support
           </p>
-          <h2 className="mt-2 text-xl font-bold text-white">Recommended Next Action</h2>
+          <h2 className="mt-2 text-xl font-bold text-white">Recommended Action</h2>
           <p className="mt-4 text-lg font-bold leading-7 text-access-100">
             {nextAction.action}
           </p>
@@ -119,7 +145,7 @@ function DecisionSupport() {
         </div>
         <div className="grid gap-3 md:grid-cols-2">
           <div className="rounded-lg border border-white/10 bg-[#071727] p-4">
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-blue-100">
+            <p className="text-xs font-bold tracking-[0.06em] text-blue-100">
               Review state
             </p>
             <div className="mt-3">
@@ -128,13 +154,13 @@ function DecisionSupport() {
             <p className="mt-3 text-sm text-blue-100">Owner: {nextAction.owner}</p>
           </div>
           <div className="rounded-lg border border-white/10 bg-[#071727] p-4">
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-blue-100">
+            <p className="text-xs font-bold tracking-[0.06em] text-blue-100">
               Evidence source
             </p>
             <p className="mt-3 text-sm font-bold leading-6 text-white">{nextAction.evidenceSource}</p>
           </div>
           <div className="rounded-lg border border-white/10 bg-[#071727] p-4 md:col-span-2">
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-blue-100">
+            <p className="text-xs font-bold tracking-[0.06em] text-blue-100">
               Action gate
             </p>
             <p className="mt-3 text-sm font-bold leading-6 text-access-100">{nextAction.actionGate}</p>
@@ -151,8 +177,8 @@ function OperatingPicture() {
       <Panel id="operating-picture">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-access-100">Geospatial Access Operating Picture</p>
-            <h2 className="mt-2 text-xl font-bold text-white">Map-first view of synthetic access gaps.</h2>
+            <p className="text-xs font-bold tracking-[0.06em] text-access-100">Geospatial Access Operating Picture</p>
+            <h2 className="mt-2 text-xl font-bold text-white">Map-first view of access gaps.</h2>
           </div>
           <div className="flex flex-wrap gap-2 text-xs font-bold">
             {["Access Gaps", "Hub Coverage", "Travel Time", "Digital Readiness", "Provider Pathways"].map((tab) => (
@@ -167,13 +193,13 @@ function OperatingPicture() {
           <div className="absolute bottom-[10%] right-[14%] rounded-lg bg-[#047857] px-3 py-2 text-sm font-bold text-white">Pinecrest</div>
           <div className="absolute bottom-4 left-4 rounded-lg border border-white/15 bg-[#071727]/90 p-3 text-xs text-blue-100">
             <p className="font-bold text-white">Access Gap Index</p>
-            {["Very High", "High", "Moderate", "Low"].map((item) => <p className="mt-2" key={item}>■ {item}</p>)}
+            {["Very High", "High", "Moderate", "Low"].map((item) => <p className="mt-2" key={item}>{item}</p>)}
           </div>
         </div>
       </Panel>
 
       <Panel>
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-access-100">Map Insight</p>
+        <p className="text-xs font-bold uppercase tracking-[0.14em] text-access-100">Access Signals</p>
         <h2 className="mt-2 text-xl font-bold text-white">Eastview has highest access burden.</h2>
         <div className="mt-4 grid gap-3">
           {accessSignals.map((signal) => (
@@ -204,14 +230,14 @@ function ActionQueue() {
   return (
     <Panel id="action-queue">
       <p className="text-xs font-bold uppercase tracking-[0.14em] text-access-100">Action Queue</p>
-      <h2 className="mt-2 text-xl font-bold text-white">Compact operational table with review gates.</h2>
+      <h2 className="mt-2 text-xl font-bold text-white">Operational work with review gates.</h2>
       <div className="mt-4 grid gap-3 md:hidden">
         {operatingActions.map((item, index) => (
           <article className="rounded-lg border border-white/10 bg-[#071727] p-4" key={item.action}>
             <div className="flex items-start justify-between gap-3">
               <p className="text-sm font-bold text-white">0{index + 1} {item.action}</p>
               <div className="text-right">
-                <p className="mb-1 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-blue-100">
+                <p className="mb-1 text-[0.65rem] font-bold tracking-[0.06em] text-blue-100">
                   Review state
                 </p>
                 <Badge state={item.reviewState} />
@@ -225,7 +251,7 @@ function ActionQueue() {
       </div>
       <div className="mt-4 hidden overflow-x-auto rounded-lg border border-white/10 md:block">
         <table className="w-full min-w-[780px] border-collapse text-left text-sm">
-          <thead className="bg-white/8 text-xs uppercase tracking-[0.12em] text-blue-100">
+          <thead className="bg-white/8 text-xs tracking-[0.06em] text-blue-100">
             <tr>
               <th className="px-4 py-3">Action</th>
               <th className="px-4 py-3">Owner</th>
@@ -260,7 +286,7 @@ function AssuranceLog() {
       <h2 className="mt-2 text-xl font-bold text-white">Controls before county action.</h2>
       <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
         {assuranceChecklist.map((item) => (
-          <span className="rounded-lg border border-white/10 bg-white/8 px-3 py-3 text-sm font-bold text-blue-100" key={item}>✓ {item}</span>
+          <span className="rounded-lg border border-white/10 bg-white/8 px-3 py-3 text-sm font-bold text-blue-100" key={item}>{item}</span>
         ))}
       </div>
       <div className="mt-4 grid gap-2">
@@ -321,7 +347,7 @@ function HumanReview() {
       </Panel>
       <Panel id="review-queue">
         <p className="text-xs font-bold uppercase tracking-[0.14em] text-access-100">Review Queue</p>
-        <h2 className="mt-2 text-xl font-bold text-white">Static review examples before action.</h2>
+        <h2 className="mt-2 text-xl font-bold text-white">Review items before action.</h2>
         <div className="mt-4 grid gap-3">
           {humanReviewQueue.map((item) => (
             <article className="rounded-lg border border-white/10 bg-[#071727] p-3" key={item.source}>

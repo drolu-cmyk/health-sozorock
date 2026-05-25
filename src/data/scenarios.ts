@@ -8,7 +8,7 @@ export const scenarioCatalog = [
     digitalReadinessLift: "+15% to +22%",
     reviewState: "Needs Review" satisfies CountyReviewState,
     owner: "Data and Insights" satisfies CountyReviewOwner,
-    evidenceSource: "Synthetic access gap and hub coverage signals",
+    evidenceSource: "Access gap and hub coverage signals",
     actionGate: "Compare scenarios only. No county action is automated.",
   },
   {
@@ -18,7 +18,7 @@ export const scenarioCatalog = [
     digitalReadinessLift: "+20% to +28%",
     reviewState: "Draft" satisfies CountyReviewState,
     owner: "Community Operations" satisfies CountyReviewOwner,
-    evidenceSource: "Mock readiness barriers",
+    evidenceSource: "Readiness barrier signals",
     actionGate: "Human review required before action.",
   },
 ] as const;

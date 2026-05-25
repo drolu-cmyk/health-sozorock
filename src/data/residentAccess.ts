@@ -25,7 +25,7 @@ export const residentNeeds = [
   {
     id: "voice-access",
     title: "Voice Access",
-    description: "Use a static voice-style surface for non-clinical support.",
+    description: "Speak or tap for non-clinical support guidance.",
     nextStep: "Review prewritten support prompts. Nothing is recorded.",
     route: productRoutes.resident.voiceAccess,
   },
@@ -41,8 +41,8 @@ export const healthAccessDayGuidance = [
   "Free community access support.",
   "Talk to a real person.",
   "Get help with your needs.",
-  "No personal details needed for this preview guidance.",
-  "No sign-up in prototype.",
+  "No personal details needed for this guidance.",
+  "No sign-up in this step.",
 ] as const;
 
 export const providerPathwaySteps = [
