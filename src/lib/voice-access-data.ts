@@ -16,7 +16,7 @@ export const voiceAccessSafetyCopy = {
   boundary: "Voice Access provides non-clinical support and does not give medical advice.",
   review: "Human review is required before follow-up or operational action.",
   staticMode:
-    "Static simulation only. No listening, recording, live AI, storage, or external calls.",
+    "No listening, recording, storage, or external calls are active in this step.",
 } as const;
 
 export const voiceAccessSimulationItems: VoiceAccessSimulationItem[] = [
@@ -24,7 +24,7 @@ export const voiceAccessSimulationItems: VoiceAccessSimulationItem[] = [
     prompt: "Find support near me.",
     category: "local support",
     response:
-      "Voice Access can point residents to nearby community access options using synthetic prototype examples.",
+      "Voice Access can point residents to nearby community access options.",
     nextStep: "Review Health Equity Hubs or speak with a Digital Access Guide.",
   },
   {

@@ -11,13 +11,13 @@ export const metadata: Metadata = {
   authors: [{ name: brand.foundationName }],
   creator: brand.foundationName,
   publisher: brand.foundationName,
-  category: "non-clinical health access intelligence prototype",
+  category: "non-clinical health access intelligence",
   keywords: [
     brand.programName,
     brand.foundationName,
     "Care for Every ZIP Code",
     "non-clinical access",
-    "synthetic data prototype",
+    "resident access",
     "human review",
   ],
   openGraph: {
