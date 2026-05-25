@@ -1,0 +1,166 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: GitHub Actions OIDC role for SozoRock Health domain automation.
+
+Metadata:
+  Guardrails:
+    Scope: CloudFront custom subdomain deployment trust only.
+    Excludes:
+      - backend
+      - database
+      - storage
+      - auth
+      - app runtime
+      - OpenAI
+      - Google
+      - PHI workflow
+      - clinical services
+
+Parameters:
+  GitHubRepository:
+    Type: String
+    Default: drolu-cmyk/health-sozorock
+    AllowedPattern: ^drolu-cmyk/health-sozorock$
+    Description: GitHub repository allowed to assume this role.
+  GitHubEnvironment:
+    Type: String
+    Default: health-domain-production
+    AllowedPattern: ^health-domain-production$
+    Description: GitHub environment allowed to assume this role.
+  ExistingGitHubOidcProviderArn:
+    Type: String
+    Default: ""
+    Description: Optional existing IAM OIDC provider ARN for token.actions.githubusercontent.com.
+  Route53HostedZoneId:
+    Type: String
+    AllowedPattern: ^Z[A-Z0-9]+$
+    ConstraintDescription: Provide the Route 53 hosted zone ID used for the health subdomain.
+    Description: Route 53 hosted zone ID for sozorockfoundation.org or delegated health.sozorockfoundation.org.
+
+Conditions:
+  CreateGitHubOidcProvider: !Equals [!Ref ExistingGitHubOidcProviderArn, ""]
+
+Resources:
+  GitHubOidcProvider:
+    Type: AWS::IAM::OIDCProvider
+    Condition: CreateGitHubOidcProvider
+    Properties:
+      Url: https://token.actions.githubusercontent.com
+      ClientIdList:
+        - sts.amazonaws.com
+      ThumbprintList:
+        - 6938fd4d98bab03faadb97b34396831e3780aea1
+        - 1c58a3a8518e8759bf075b76b750d4f2df264fcd
+
+  HealthDomainAutomationRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: sozorock-health-domain-automation
+      Description: GitHub Actions OIDC role for the SozoRock Health health-subdomain CloudFront stack.
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !If
+                - CreateGitHubOidcProvider
+                - !Ref GitHubOidcProvider
+                - !Ref ExistingGitHubOidcProviderArn
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                token.actions.githubusercontent.com:aud: sts.amazonaws.com
+                token.actions.githubusercontent.com:sub: !Sub repo:${GitHubRepository}:environment:${GitHubEnvironment}
+      Policies:
+        - PolicyName: HealthDomainCloudFormationDeploy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: CloudFormationHealthDomainStack
+                Effect: Allow
+                Action:
+                  - cloudformation:CreateChangeSet
+                  - cloudformation:CreateStack
+                  - cloudformation:DeleteChangeSet
+                  - cloudformation:DescribeChangeSet
+                  - cloudformation:DescribeStackEvents
+                  - cloudformation:DescribeStackResource
+                  - cloudformation:DescribeStackResources
+                  - cloudformation:DescribeStacks
+                  - cloudformation:ExecuteChangeSet
+                  - cloudformation:GetTemplate
+                  - cloudformation:GetTemplateSummary
+                  - cloudformation:UpdateStack
+                Resource:
+                  - !Sub arn:${AWS::Partition}:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/sozorock-health-cloudfront-domain/*
+                  - !Sub arn:${AWS::Partition}:cloudformation:${AWS::Region}:${AWS::AccountId}:changeSet/sozorock-health-cloudfront-domain/*
+              - Sid: CloudFormationTemplateValidation
+                Effect: Allow
+                Action:
+                  - cloudformation:GetTemplateSummary
+                  - cloudformation:ValidateTemplate
+                Resource: "*"
+              - Sid: CloudFormationCreateStackNameGuard
+                Effect: Allow
+                Action:
+                  - cloudformation:CreateChangeSet
+                  - cloudformation:CreateStack
+                Resource: "*"
+                Condition:
+                  StringEquals:
+                    cloudformation:StackName: sozorock-health-cloudfront-domain
+              - Sid: CertificateForHealthSubdomain
+                Effect: Allow
+                Action:
+                  - acm:AddTagsToCertificate
+                  - acm:DescribeCertificate
+                  - acm:ListCertificates
+                  - acm:RequestCertificate
+                Resource: "*"
+              - Sid: CloudFrontForHealthSubdomainStack
+                Effect: Allow
+                Action:
+                  - cloudfront:CreateDistribution
+                  - cloudfront:GetDistribution
+                  - cloudfront:GetDistributionConfig
+                  - cloudfront:ListDistributions
+                  - cloudfront:TagResource
+                  - cloudfront:UpdateDistribution
+                Resource: "*"
+              - Sid: Route53HealthSubdomainOnly
+                Effect: Allow
+                Action:
+                  - route53:ChangeResourceRecordSets
+                Resource:
+                  - !Sub arn:${AWS::Partition}:route53:::hostedzone/${Route53HostedZoneId}
+                Condition:
+                  ForAllValues:StringLike:
+                    route53:ChangeResourceRecordSetsNormalizedRecordNames:
+                      - health.sozorockfoundation.org
+                      - "*.health.sozorockfoundation.org"
+                  ForAllValues:StringEquals:
+                    route53:ChangeResourceRecordSetsRecordTypes:
+                      - A
+                      - AAAA
+                      - CNAME
+              - Sid: ReadOnlyRoute53HealthZoneAndChanges
+                Effect: Allow
+                Action:
+                  - route53:GetChange
+                  - route53:GetHostedZone
+                  - route53:ListHostedZones
+                  - route53:ListResourceRecordSets
+                Resource: "*"
+
+Outputs:
+  AwsRoleArn:
+    Description: Set this value as the GitHub environment variable AWS_ROLE_ARN.
+    Value: !GetAtt HealthDomainAutomationRole.Arn
+  RequiredGitHubEnvironmentVariableName:
+    Description: GitHub environment variable name expected by the deployment workflow.
+    Value: AWS_ROLE_ARN
+  RequiredGitHubEnvironment:
+    Description: GitHub environment allowed by the trust policy.
+    Value: !Ref GitHubEnvironment
+  AllowedGitHubRepository:
+    Description: GitHub repository allowed by the trust policy.
+    Value: !Ref GitHubRepository

@@ -52,6 +52,10 @@ CloudFront stack:
 
 `sozorock-health-cloudfront-domain`
 
+OIDC bootstrap stack:
+
+`sozorock-health-github-oidc-role`
+
 AWS region:
 
 `us-east-1`
@@ -67,6 +71,7 @@ Before any domain activation, the deployment owner should confirm:
 - the live Amplify preview is serving the intended latest `main` commit
 - the fallback URL remains available
 - the target subdomain is available for use
+- the one-time OIDC trust bootstrap is complete
 - Route 53 hosted zone access is available to the authorized AWS/domain owner
 - GitHub environment `health-domain-production` exists
 - GitHub environment variable `AWS_ROLE_ARN` is configured
@@ -83,6 +88,14 @@ Full automation works only when one of the following is true:
 - `health.sozorockfoundation.org` has been delegated to a Route 53 hosted zone, and the workflow uses the hosted zone ID for the delegated health subdomain.
 
 If the domain is managed by an external DNS provider and the `health` subdomain has not been delegated to Route 53, the CloudFormation stack cannot complete DNS automation. In that case, the authorized domain owner must first delegate only `health.sozorockfoundation.org` to Route 53 without changing `sozorockfoundation.org` or `www.sozorockfoundation.org`.
+
+Bootstrap and operator references:
+
+- `docs/sozorock-health/domain-automation-bootstrap.md`
+- `docs/sozorock-health/domain-activation-operator-checklist.md`
+- `infra/github-aws-oidc-role/template.yaml`
+- `scripts/check-health-domain-dns-readiness.mjs`
+- `scripts/dispatch-health-domain-workflow.mjs`
 
 ## SSL and Certificate Validation Checklist
 

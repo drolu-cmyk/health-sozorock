@@ -127,6 +127,8 @@ Before manual preview deployment, run the local commands above and complete:
 - [Custom domain readiness plan](docs/sozorock-health/custom-domain-readiness-plan.md)
 - [Custom domain DNS record](docs/sozorock-health/custom-domain-dns-record.md)
 - [CloudFront domain automation](docs/sozorock-health/cloudfront-domain-automation.md)
+- [Domain automation bootstrap](docs/sozorock-health/domain-automation-bootstrap.md)
+- [Domain activation operator checklist](docs/sozorock-health/domain-activation-operator-checklist.md)
 
 ## Brand Assets
 
