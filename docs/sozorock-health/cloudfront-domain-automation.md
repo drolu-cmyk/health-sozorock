@@ -55,6 +55,12 @@ Out of scope:
 
 ## Required GitHub Configuration
 
+Full automation requires a one-time trust bootstrap before the repeatable workflow can run. See:
+
+- `docs/sozorock-health/domain-automation-bootstrap.md`
+- `docs/sozorock-health/domain-activation-operator-checklist.md`
+- `infra/github-aws-oidc-role/template.yaml`
+
 Required environment:
 
 `health-domain-production`
@@ -116,6 +122,20 @@ The workflow requires a typed confirmation input:
 The workflow fails unless the value exactly matches:
 
 `health.sozorockfoundation.org`
+
+The workflow can be dispatched with:
+
+```bash
+node scripts/dispatch-health-domain-workflow.mjs validate
+node scripts/dispatch-health-domain-workflow.mjs deploy --confirm-deploy
+node scripts/dispatch-health-domain-workflow.mjs smoke-test
+```
+
+Run the readiness check before deployment:
+
+```bash
+node scripts/check-health-domain-dns-readiness.mjs
+```
 
 ## Stack Resources
 
