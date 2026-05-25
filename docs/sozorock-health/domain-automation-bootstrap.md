@@ -15,6 +15,8 @@ Fallback origin:
 
 `https://main.d1bmgq1fk26xqh.amplifyapp.com/`
 
+Before deploy, choose Option A, B, or C in `docs/sozorock-health/domain-activation-options.md`.
+
 ## What Is Now Automated
 
 After trust bootstrap is complete, an authorized operator can automate:
