@@ -78,21 +78,24 @@ Resources:
               - Sid: CloudFormationHealthDomainStack
                 Effect: Allow
                 Action:
-                  - cloudformation:CreateChangeSet
                   - cloudformation:CreateStack
-                  - cloudformation:DeleteChangeSet
-                  - cloudformation:DescribeChangeSet
                   - cloudformation:DescribeStackEvents
                   - cloudformation:DescribeStackResource
                   - cloudformation:DescribeStackResources
                   - cloudformation:DescribeStacks
-                  - cloudformation:ExecuteChangeSet
                   - cloudformation:GetTemplate
                   - cloudformation:GetTemplateSummary
                   - cloudformation:UpdateStack
                 Resource:
                   - !Sub arn:${AWS::Partition}:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/sozorock-health-cloudfront-domain/*
-                  - !Sub arn:${AWS::Partition}:cloudformation:${AWS::Region}:${AWS::AccountId}:changeSet/sozorock-health-cloudfront-domain/*
+              - Sid: CloudFormationGeneratedChangeSets
+                Effect: Allow
+                Action:
+                  - cloudformation:DeleteChangeSet
+                  - cloudformation:DescribeChangeSet
+                  - cloudformation:ExecuteChangeSet
+                Resource:
+                  - !Sub arn:${AWS::Partition}:cloudformation:${AWS::Region}:${AWS::AccountId}:changeSet/*
               - Sid: CloudFormationTemplateValidation
                 Effect: Allow
                 Action:

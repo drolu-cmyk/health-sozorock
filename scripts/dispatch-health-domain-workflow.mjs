@@ -5,10 +5,8 @@ const CONFIRMATION_VALUE = "health.sozorockfoundation.org";
 const OPERATIONS = new Set(["validate", "deploy", "smoke-test"]);
 
 const args = process.argv.slice(2);
-const operation = args.find((arg) => OPERATIONS.has(arg)) ?? "validate";
+const { operation, ref } = parseArgs(args);
 const explicitDeploy = args.includes("--confirm-deploy");
-const refIndex = args.indexOf("--ref");
-const ref = refIndex >= 0 ? args[refIndex + 1] : undefined;
 
 if (args.includes("--help") || args.includes("-h")) {
   printHelp();
@@ -55,6 +53,56 @@ const result = spawnSync("gh", workflowArgs, {
 });
 
 process.exit(result.status ?? 1);
+
+function parseArgs(rawArgs) {
+  const positionalArgs = [];
+  let refValue;
+
+  for (let index = 0; index < rawArgs.length; index += 1) {
+    const arg = rawArgs[index];
+
+    if (arg === "--ref") {
+      refValue = rawArgs[index + 1];
+
+      if (!refValue || refValue.startsWith("-")) {
+        console.error("Missing value for --ref.");
+        process.exit(1);
+      }
+
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--confirm-deploy" || arg === "--help" || arg === "-h") {
+      continue;
+    }
+
+    if (arg.startsWith("-")) {
+      console.error(`Unknown option: ${arg}`);
+      process.exit(1);
+    }
+
+    positionalArgs.push(arg);
+  }
+
+  if (positionalArgs.length > 1) {
+    console.error(`Unexpected extra positional argument: ${positionalArgs[1]}`);
+    process.exit(1);
+  }
+
+  const selectedOperation = positionalArgs[0] ?? "validate";
+
+  if (!OPERATIONS.has(selectedOperation)) {
+    console.error(`Unknown operation: ${selectedOperation}`);
+    console.error("Expected one of: validate, deploy, smoke-test.");
+    process.exit(1);
+  }
+
+  return {
+    operation: selectedOperation,
+    ref: refValue,
+  };
+}
 
 function printHelp() {
   console.log(`
