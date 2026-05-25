@@ -47,7 +47,9 @@ async function fetchRouteWithRetries(url) {
 
   for (let attempt = 1; attempt <= CUSTOM_DOMAIN_RETRIES; attempt += 1) {
     try {
-      return await fetchWithRedirects(url);
+      const result = await fetchWithRedirects(url);
+      validateSuccessfulHttpsResponse(result, url);
+      return result;
     } catch (error) {
       lastError = error;
 
@@ -62,7 +64,9 @@ async function fetchRouteWithRetries(url) {
     }
   }
 
-  throw lastError;
+  throw new Error(
+    `Smoke test failed for ${url} after ${CUSTOM_DOMAIN_RETRIES} attempts: ${lastError.message}`,
+  );
 }
 
 async function fetchWithRedirects(initialUrl) {
@@ -117,6 +121,11 @@ function delay(milliseconds) {
 }
 
 function assertSuccessfulResponse(result, expectedUrl) {
+  validateSuccessfulHttpsResponse(result, expectedUrl);
+  console.log(`${expectedUrl} -> ${result.status}`);
+}
+
+function validateSuccessfulHttpsResponse(result, expectedUrl) {
   if (!result.finalUrl.startsWith("https://")) {
     throw new Error(`Final URL is not HTTPS for ${expectedUrl}: ${result.finalUrl}`);
   }
@@ -124,8 +133,6 @@ function assertSuccessfulResponse(result, expectedUrl) {
   if (result.status < 200 || result.status >= 300) {
     throw new Error(`Expected successful response for ${expectedUrl}, received ${result.status}`);
   }
-
-  console.log(`${expectedUrl} -> ${result.status}`);
 }
 
 function assertRequiredPhrases(bodies, phrases) {
