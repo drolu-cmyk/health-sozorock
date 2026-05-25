@@ -76,13 +76,24 @@ Automate everything safe to automate. Require human review where trust, complian
 
 ## Current status
 
-Issue 001 scaffold is underway as a standalone Next.js App Router prototype.
+SozoRock Health is a responsive multi-platform product foundation with web mobile,
+tablet, and desktop routes. iOS and Android packaging are documented as the next
+platform step and are not implemented yet.
 
 Routes:
 
 - `/`
 - `/resident`
+- `/resident/start`
+- `/resident/voice-access`
+- `/resident/access-day`
+- `/resident/hubs`
+- `/resident/provider-pathway`
 - `/county`
+- `/county/operating-picture`
+- `/county/action-queue`
+- `/county/assurance-log`
+- `/county/scenario-planning`
 - `/about-model`
 
 Local commands:
@@ -130,6 +141,7 @@ Before manual preview deployment, run the local commands above and complete:
 - [Domain automation bootstrap](docs/sozorock-health/domain-automation-bootstrap.md)
 - [Domain activation operator checklist](docs/sozorock-health/domain-activation-operator-checklist.md)
 - [Domain activation options and go/no-go path](docs/sozorock-health/domain-activation-options.md)
+- [Multi-platform product architecture](docs/sozorock-health/multi-platform-product-architecture.md)
 
 ## Brand Assets
 

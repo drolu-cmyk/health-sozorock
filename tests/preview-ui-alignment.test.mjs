@@ -5,56 +5,108 @@ import test from "node:test";
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
 const residentPage = read("src/app/resident/page.tsx");
+const residentStartPage = read("src/app/resident/start/page.tsx");
+const residentVoicePage = read("src/app/resident/voice-access/page.tsx");
+const residentAccessDayPage = read("src/app/resident/access-day/page.tsx");
+const residentHubsPage = read("src/app/resident/hubs/page.tsx");
+const residentProviderPage = read("src/app/resident/provider-pathway/page.tsx");
+const residentComponent = read("src/components/resident/resident-access-app.tsx");
+const residentFixtures = read("src/data/residentAccess.ts");
+const hubFixtures = read("src/data/hubs.ts");
 const residentData = read("src/lib/resident-data.ts");
 const countyPage = read("src/app/county/page.tsx");
+const countyOperatingPicturePage = read("src/app/county/operating-picture/page.tsx");
+const countyActionQueuePage = read("src/app/county/action-queue/page.tsx");
+const countyAssuranceLogPage = read("src/app/county/assurance-log/page.tsx");
+const countyScenarioPlanningPage = read("src/app/county/scenario-planning/page.tsx");
+const countyComponent = read("src/components/county/county-console.tsx");
+const countySignalFixtures = read("src/data/countySignals.ts");
+const actionQueueFixtures = read("src/data/actionQueue.ts");
+const assuranceFixtures = read("src/data/assuranceLog.ts");
+const scenarioFixtures = read("src/data/scenarios.ts");
 const countyData = read("src/lib/county-data.ts");
 const geospatialProvider = read("src/lib/geospatial/mock-provider.ts");
 const layout = read("src/app/layout.tsx");
+const productEntry = read("src/components/product/product-entry.tsx");
+const productBoundaries = read("src/lib/productBoundaries.ts");
+const platformDoc = read("docs/sozorock-health/multi-platform-product-architecture.md");
+
+const residentSurface = [
+  residentPage,
+  residentStartPage,
+  residentVoicePage,
+  residentAccessDayPage,
+  residentHubsPage,
+  residentProviderPage,
+  residentComponent,
+  residentFixtures,
+  hubFixtures,
+].join("\n");
+
+const countySurface = [
+  countyPage,
+  countyOperatingPicturePage,
+  countyActionQueuePage,
+  countyAssuranceLogPage,
+  countyScenarioPlanningPage,
+  countyComponent,
+  countySignalFixtures,
+  actionQueueFixtures,
+  assuranceFixtures,
+  scenarioFixtures,
+].join("\n");
 
 test("resident page keeps the locked trust boundary visible", () => {
-  assert.match(residentPage, /brand\.trustBoundary/);
+  assert.match(residentSurface, /trustBoundary\.primary/);
 });
 
 test("resident page keeps Voice Access static and non-clinical", () => {
-  assert.match(residentPage, /voiceAccessSafetyCopy\.boundary/);
-  assert.match(residentPage, /voiceAccessSafetyCopy\.staticMode/);
+  assert.match(residentSurface, /trustBoundary\.voice/);
+  assert.match(residentSurface, /voiceAccessSafetyCopy\.staticMode/);
 });
 
 test("resident event labels avoid active signup and reminder language", () => {
   assert.doesNotMatch(
-    `${residentData}\n${residentPage}`,
+    `${residentData}\n${residentSurface}`,
     /Register\s*\/\s*RSVP|Request Reminder|registration|notification|Messages|My info/i,
   );
-  assert.match(residentData, /No sign-up in prototype/);
+  assert.match(residentSurface, /No sign-up in prototype/);
 });
 
 test("resident provider pathway keeps approved platform readiness language", () => {
-  assert.match(residentPage, /brand\.providerPathway/);
-  assert.match(residentData, /Prepare for a provider platform/);
+  assert.match(residentSurface, /trustBoundary\.provider/);
+  assert.match(residentSurface, /provider platform/);
+});
+
+test("resident routes are real app screens", () => {
+  for (const screen of ["start", "voice-access", "access-day", "hubs", "provider-pathway"]) {
+    assert.match(residentSurface, new RegExp(`screen="${screen}"`));
+  }
+  assert.match(residentSurface, /Resident app navigation/);
 });
 
 test("county page keeps the locked operating logic visible", () => {
   for (const stage of ["Signal", "Decision", "Action", "Assurance", "Impact"]) {
-    assert.match(countyPage, new RegExp(stage));
+    assert.match(countySurface, new RegExp(stage));
   }
 });
 
 test("county page uses a dark operating dashboard shell", () => {
-  assert.match(countyPage, /bg-\[#061521\]/);
-  assert.match(countyPage, /County Operating Intelligence Layer/);
+  assert.match(countySurface, /bg-\[#061521\]/);
+  assert.match(countySurface, /County Operating Intelligence Layer/);
 });
 
 test("county desktop has module navigation for operating sections", () => {
-  assert.match(countyPage, /County module navigation/);
-  assert.match(countyPage, /Operating Picture/);
-  assert.match(countyPage, /Action Queue/);
-  assert.match(countyPage, /Assurance Log/);
+  assert.match(countySurface, /County module navigation/);
+  assert.match(countySurface, /Operating Picture/);
+  assert.match(countySurface, /Action Queue/);
+  assert.match(countySurface, /Assurance Log/);
 });
 
-test("county geospatial detail cards are hidden inside the map on mobile", () => {
-  assert.match(countyPage, /hidden w-44 rounded-lg/);
-  assert.match(countyPage, /md:block/);
-  assert.match(countyPage, /countyOperatingPicture\.accessSignals\.map/);
+test("county geospatial panel keeps marker details readable on mobile", () => {
+  assert.match(countySurface, /map-grid-dark/);
+  assert.match(countySurface, /Access Gap Index/);
+  assert.match(countySurface, /accessSignals\.map/);
 });
 
 test("county geospatial provider remains mock and external requests disabled", () => {
@@ -63,11 +115,11 @@ test("county geospatial provider remains mock and external requests disabled", (
 });
 
 test("county review states, evidence sources, and action gates remain visible", () => {
-  assert.match(countyPage, /Review state/);
-  assert.match(countyPage, /Evidence source/);
-  assert.match(countyPage, /Action gate/);
-  assert.match(countyData, /Needs Review/);
-  assert.match(countyData, /Completed/);
+  assert.match(countySurface, /Review state/);
+  assert.match(countySurface, /Evidence source/);
+  assert.match(countySurface, /Action gate/);
+  assert.match(`${countyData}\n${countySurface}`, /Needs Review/);
+  assert.match(`${countyData}\n${countySurface}`, /Completed/);
 });
 
 test("county assurance checklist remains complete", () => {
@@ -84,8 +136,31 @@ test("county assurance checklist remains complete", () => {
   ];
 
   for (const control of expectedControls) {
-    assert.match(countyData, new RegExp(control.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    assert.match(
+      `${countyData}\n${assuranceFixtures}`,
+      new RegExp(control.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")),
+    );
   }
+});
+
+test("product entry exposes app entry actions and trust boundary", () => {
+  assert.match(productEntry, /Start Resident Access/);
+  assert.match(productEntry, /Open County Operating Layer/);
+  assert.match(productEntry, /Review Model/);
+  assert.match(productEntry, /trustBoundary\.primary/);
+});
+
+test("platform architecture records native packaging path without implementation", () => {
+  assert.match(platformDoc, /Expo \/ React Native/);
+  assert.match(platformDoc, /iOS/);
+  assert.match(platformDoc, /Android/);
+  assert.match(platformDoc, /not implemented in this issue/i);
+});
+
+test("shared product boundary forbids persistence in current shell", () => {
+  assert.match(productBoundaries, /Local\/session-only state/);
+  assert.match(productBoundaries, /No resident data capture/);
+  assert.match(productBoundaries, /No backend/);
 });
 
 test("preview metadata continues to discourage indexing", () => {
