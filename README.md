@@ -130,6 +130,8 @@ Before manual preview deployment, run the local commands above and complete:
 - [Domain automation bootstrap](docs/sozorock-health/domain-automation-bootstrap.md)
 - [Domain activation operator checklist](docs/sozorock-health/domain-activation-operator-checklist.md)
 - [Domain activation options and go/no-go path](docs/sozorock-health/domain-activation-options.md)
+- [Backend architecture decision record](docs/sozorock-health/backend-architecture-decision-record.md)
+- [Backend data boundary](docs/sozorock-health/backend-data-boundary.md)
 
 ## Brand Assets
 
