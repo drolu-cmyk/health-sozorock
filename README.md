@@ -131,6 +131,9 @@ Before manual preview deployment, run the local commands above and complete:
 - [Domain activation operator checklist](docs/sozorock-health/domain-activation-operator-checklist.md)
 - [Domain activation options and go/no-go path](docs/sozorock-health/domain-activation-options.md)
 - [Native app product plan](docs/sozorock-health/native-app-product-plan.md)
+- [Native build readiness](docs/sozorock-health/native-build-readiness.md)
+- [App store privacy readiness](docs/sozorock-health/app-store-privacy-readiness.md)
+- [Mobile release checklist](docs/sozorock-health/mobile-release-checklist.md)
 
 ## Native resident app foundation
 
@@ -147,6 +150,8 @@ npm run mobile:typecheck
 ```
 
 The mobile app foundation is frontend-only in this issue. It does not add live AI, live maps, backend services, resident data capture, protected-health-data workflows, clinical workflows, DNS changes, CloudFront changes, Route 53 changes, ACM changes, OIDC changes, or AWS infrastructure changes.
+
+Native build readiness is documented for future EAS-based iOS and Android builds. No EAS build, EAS submit, App Store submission, Google Play submission, credentials, secrets, live services, or cloud resources are introduced by the readiness docs.
 
 ## Brand Assets
 
