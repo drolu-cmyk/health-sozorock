@@ -7,3 +7,4 @@ export * from "./resident/privacy";
 export * from "./resident/safety";
 export * from "./resident/consent";
 export * from "./resident/types";
+export * as backend from "./backend";
