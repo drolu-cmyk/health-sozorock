@@ -7,6 +7,7 @@ const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf
 const mobileApp = read("apps/mobile/App.tsx");
 const mobilePackage = read("apps/mobile/package.json");
 const mobileConfig = read("apps/mobile/app.json");
+const easConfig = read("apps/mobile/eas.json");
 const mobileMetro = read("apps/mobile/metro.config.js");
 const aiProvider = read("apps/mobile/src/services/aiGuidanceProvider.ts");
 const voiceProvider = read("apps/mobile/src/services/voiceInputProvider.ts");
@@ -218,6 +219,13 @@ test("shared package exports all resident product domains", () => {
 });
 
 test("Expo config does not require developer store credentials", () => {
-  assert.match(mobileConfig, /org\.sozorockfoundation\.health\.resident/);
+  assert.match(mobileConfig, /org\.sozorockfoundation\.health/);
   assert.doesNotMatch(mobileConfig, /appleTeamId|ascAppId|googleServiceFile|apiKey|secret/i);
+});
+
+test("EAS readiness profiles do not commit native store credentials", () => {
+  assert.match(easConfig, /"developmentClient": true/);
+  assert.match(easConfig, /"distribution": "internal"/);
+  assert.match(easConfig, /"distribution": "store"/);
+  assert.doesNotMatch(easConfig, /appleTeamId|ascAppId|googleServiceFile|apiKey|secret|serviceAccount/i);
 });
