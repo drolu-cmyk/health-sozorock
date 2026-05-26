@@ -62,6 +62,46 @@ test("provider-neutral service contracts are present without cloud SDK imports",
 test("no-PHI utility detects restricted field names", async () => {
   const rules = await importNoPhiRules();
 
+  for (const fieldName of [
+    "lab",
+    "labs",
+    "diagnosis",
+    "diagnosisNotes",
+    "insurance",
+    "insurancePlan",
+    "dateOfBirth",
+    "providerMessage",
+    "providerMessageDraft",
+    "memberId",
+    "memberIdentifier",
+    "subscriberId",
+    "subscriberIdentifier",
+    "policyNumber",
+    "rawAudio",
+    "rawAudioFile",
+    "transcript",
+    "transcriptText",
+    "preciseLocation",
+    "preciseLocationAllowed",
+    "locationHistory",
+    "locationHistorySnapshot",
+    "backgroundTracking",
+    "backgroundTrackingEnabled",
+    "dob",
+  ]) {
+    assert.equal(rules.isRestrictedFieldName(fieldName), true);
+  }
+
+  for (const fieldName of [
+    "dateLabel",
+    "lastCheckedLabel",
+    "availabilityLabel",
+    "accessibilityNotes",
+    "privacyNotes",
+  ]) {
+    assert.equal(rules.isRestrictedFieldName(fieldName), false);
+  }
+
   assert.equal(rules.isRestrictedFieldName("diagnosis"), true);
   assert.equal(rules.isRestrictedFieldName("memberId"), true);
   assert.equal(rules.isRestrictedFieldName("preciseLocation"), true);
@@ -77,6 +117,21 @@ test("no-PHI utility detects restricted field names", async () => {
 
   assert.deepEqual(matches, ["nested.0.policyNumber", "safe.rawAudio"]);
   assert.throws(() => rules.assertNoRestrictedFields({ appointment: "blocked" }), /Restricted backend field names/);
+});
+
+test("safe backend mock services do not throw on label field names", async () => {
+  const services = await importMockServices();
+
+  await assert.doesNotReject(() => services.healthAccessDayService.listEvents());
+  await assert.doesNotReject(() => services.configProvider.getServiceAvailability());
+
+  const events = await services.healthAccessDayService.listEvents();
+  assert.equal(events.ok, true);
+  assert.equal(events.data[0].dateLabel, "June 20, 2026");
+
+  const availability = await services.configProvider.getServiceAvailability();
+  assert.equal(availability.ok, true);
+  assert.equal(availability.data[0].lastCheckedLabel, "Issue 037 local foundation");
 });
 
 test("safe model examples do not contain restricted fields", () => {
@@ -166,6 +221,24 @@ test("documentation captures backend foundation scope and stop rules", () => {
 
 async function importNoPhiRules() {
   const source = read("packages/shared/src/backend/noPhiRules.ts");
+  const { outputText } = ts.transpileModule(source, {
+    compilerOptions: {
+      module: ts.ModuleKind.ESNext,
+      target: ts.ScriptTarget.ES2022,
+    },
+  });
+  const encoded = Buffer.from(outputText, "utf8").toString("base64");
+  return import(`data:text/javascript;base64,${encoded}`);
+}
+
+async function importMockServices() {
+  const source = [
+    read("packages/shared/src/backend/noPhiRules.ts"),
+    read("packages/shared/src/backend/mockServices.ts")
+      .replace(/import \{ assertNoRestrictedFields \} from "\.\/noPhiRules";\r?\n/, "")
+      .replace(/import type \{[\s\S]*?\} from "\.\/types";\r?\n/, "")
+      .replace(/import type \{[\s\S]*?\} from "\.\/serviceContracts";\r?\n/, ""),
+  ].join("\n");
   const { outputText } = ts.transpileModule(source, {
     compilerOptions: {
       module: ts.ModuleKind.ESNext,
