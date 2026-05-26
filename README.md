@@ -130,6 +130,23 @@ Before manual preview deployment, run the local commands above and complete:
 - [Domain automation bootstrap](docs/sozorock-health/domain-automation-bootstrap.md)
 - [Domain activation operator checklist](docs/sozorock-health/domain-activation-operator-checklist.md)
 - [Domain activation options and go/no-go path](docs/sozorock-health/domain-activation-options.md)
+- [Native app product plan](docs/sozorock-health/native-app-product-plan.md)
+
+## Native resident app foundation
+
+The resident app foundation lives in `apps/mobile` and shared resident product definitions live in `packages/shared`.
+
+Mobile commands:
+
+```bash
+npm run mobile:start
+npm run mobile:web
+npm run mobile:ios
+npm run mobile:android
+npm run mobile:typecheck
+```
+
+The mobile app foundation is frontend-only in this issue. It does not add live AI, live maps, backend services, resident data capture, protected-health-data workflows, clinical workflows, DNS changes, CloudFront changes, Route 53 changes, ACM changes, OIDC changes, or AWS infrastructure changes.
 
 ## Brand Assets
 
