@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "SozoRock Health",
+    "slug": "sozorock-health-resident",
+    "scheme": "sozorockhealth",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "org.sozorockfoundation.health.resident",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Voice Access is optional and supports non-clinical access guidance. You can type instead.",
+        "NSLocationWhenInUseUsageDescription": "Location is optional and helps show nearby hubs and events. ZIP code, city, and county search are available instead."
+      }
+    },
+    "android": {
+      "package": "org.sozorockfoundation.health.resident"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "../../public/brand/app-icon.svg"
+    },
+    "extra": {
+      "liveServicesEnabled": false,
+      "trustBoundary": "No PHI. Consent-based. Non-clinical."
+    }
+  }
+}

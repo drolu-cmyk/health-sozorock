@@ -2,6 +2,10 @@
   "name": "health-sozorock",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "apps/mobile",
+    "packages/shared"
+  ],
   "scripts": {
     "dev": "next dev",
     "lint": "eslint . --max-warnings=0",
@@ -9,7 +13,12 @@
     "typecheck": "next typegen && tsc --noEmit",
     "build": "next build",
     "guardrails": "node scripts/guardrail-scan.mjs",
-    "verify": "npm run lint && npm run typecheck && npm run build && npm run guardrails && npm audit --audit-level=moderate"
+    "verify": "npm run lint && npm run typecheck && npm run build && npm run guardrails && npm audit --audit-level=moderate",
+    "mobile:start": "npm run start -w @sozorock-health/mobile",
+    "mobile:web": "npm run web -w @sozorock-health/mobile",
+    "mobile:ios": "npm run ios -w @sozorock-health/mobile",
+    "mobile:android": "npm run android -w @sozorock-health/mobile",
+    "mobile:typecheck": "npm run typecheck -w @sozorock-health/mobile"
   },
   "dependencies": {
     "next": "16.2.6",
@@ -17,7 +26,16 @@
     "react-dom": "19.2.6"
   },
   "overrides": {
-    "postcss": "8.5.14"
+    "postcss": "8.5.14",
+    "uuid": "11.1.1",
+    "xcode": {
+      "uuid": "11.1.1"
+    },
+    "@expo/config-plugins": {
+      "xcode": {
+        "uuid": "11.1.1"
+      }
+    }
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.0",

@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { AssuranceBadge } from "@/components/assurance-badge";
 import { BrandIdentity } from "@/components/brand-identity";
+import { SiteNav } from "@/components/site-nav";
 
 const navItems = [
   { href: "/", label: "Overview" },
@@ -15,17 +15,7 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
         <BrandIdentity />
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
-          <nav className="flex flex-wrap gap-2" aria-label="Primary navigation">
-            {navItems.map((item) => (
-              <Link
-                className="rounded-lg px-3 py-2 text-sm font-semibold text-foundation-700 hover:bg-surface hover:text-foundation-950"
-                href={item.href}
-                key={item.href}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
+          <SiteNav navItems={navItems} />
           <AssuranceBadge />
         </div>
       </div>
