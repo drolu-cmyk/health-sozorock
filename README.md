@@ -136,6 +136,8 @@ Before manual preview deployment, run the local commands above and complete:
 - [Mobile release checklist](docs/sozorock-health/mobile-release-checklist.md)
 - [Non-clinical backend foundation](docs/sozorock-health/non-clinical-backend-foundation.md)
 - [Backend data boundaries](docs/sozorock-health/backend-data-boundaries.md)
+- [Consent-gated adapter shells](docs/sozorock-health/consent-gated-adapter-shells.md)
+- [Service adapter readiness](docs/sozorock-health/service-adapter-readiness.md)
 
 ## Native resident app foundation
 
@@ -156,6 +158,8 @@ The mobile app foundation is frontend-only in this issue. It does not add live A
 Native build readiness is documented for future EAS-based iOS and Android builds. No EAS build, EAS submit, App Store submission, Google Play submission, credentials, secrets, live services, or cloud resources are introduced by the readiness docs.
 
 The non-clinical backend foundation is limited to shared types, provider-neutral contracts, local mock/no-op services, no-PHI validation utilities, and documentation. It does not activate backend runtime services, cloud resources, live AI, live maps, resident data capture, PHI workflows, or clinical workflows.
+
+Consent-gated adapter shells prepare unavailable/fallback states for future voice, AI, maps, hubs, and geospatial services. They do not add SDK imports, network calls, secrets, API keys, backend runtime, live services, resident data capture, PHI workflows, or clinical workflows.
 
 ## Brand Assets
 
