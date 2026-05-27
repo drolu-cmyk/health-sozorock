@@ -40,6 +40,7 @@ import {
   residentTrustLine,
   type ResidentNeed,
   type ResidentScreenId,
+  backend,
 } from "@sozorock-health/shared";
 import { guidanceProvider } from "./src/services/aiGuidanceProvider";
 import { eventDiscoveryProvider } from "./src/services/eventDiscoveryProvider";
@@ -49,6 +50,37 @@ import { mapProvider } from "./src/services/mapProvider";
 import { voiceInputProvider } from "./src/services/voiceInputProvider";
 
 type PermissionState = "notAsked" | "granted" | "denied";
+
+const adapterFallbackStates = {
+  voiceAccess: backend.createUnavailableAdapterResponse(
+    "voiceAccess",
+    backend.defaultConsentGates.voiceAccess,
+    backend.defaultAdapterReadiness.voiceAccess,
+  ),
+  aiGuidance: backend.createUnavailableAdapterResponse(
+    "aiGuidance",
+    backend.defaultConsentGates.aiGuidance,
+    backend.defaultAdapterReadiness.aiGuidance,
+  ),
+  mapDiscovery: backend.createUnavailableAdapterResponse(
+    "mapDiscovery",
+    backend.defaultConsentGates.mapDiscovery,
+    backend.defaultAdapterReadiness.mapDiscovery,
+  ),
+  hubDirectory: backend.createUnavailableAdapterResponse(
+    "hubDirectory",
+    backend.defaultConsentGates.hubDirectory,
+    backend.defaultAdapterReadiness.hubDirectory,
+  ),
+  geospatialPlanning: backend.createUnavailableAdapterResponse(
+    "geospatialPlanning",
+    backend.defaultConsentGates.geospatialPlanning,
+    backend.defaultAdapterReadiness.geospatialPlanning,
+  ),
+} as const;
+
+const residentPlanningFallback =
+  "Planning tools are not active in the resident app. Resident support remains limited to non-clinical access guidance.";
 
 export default function App() {
   const [activeScreen, setActiveScreen] = useState<ResidentScreenId>("home");
@@ -226,6 +258,7 @@ function StartScreen({
           <ActionButton label="Use Voice Access" onPress={() => navigate("voice")} variant="secondary" />
         </View>
       </View>
+      <AdapterFallbackCard title="AI guidance status" fallback={adapterFallbackStates.aiGuidance} />
       <SafetyStrip />
     </ScreenFrame>
   );
@@ -254,18 +287,23 @@ function VoiceScreen({
         bullets={microphoneConsent.bullets}
         primaryLabel={microphoneConsent.acceptLabel}
         secondaryLabel={microphoneConsent.declineLabel}
-        onPrimary={() => setMicrophonePermission("granted")}
+        onPrimary={() => setMicrophonePermission("denied")}
         onSecondary={() => setMicrophonePermission("denied")}
       />
 
+      <AdapterFallbackCard title="Voice Access status" fallback={adapterFallbackStates.voiceAccess} />
+      <StateCard title="No microphone capture" body={voiceInputProvider.boundary} />
+      <StateCard title="No audio storage" body="Raw audio is not stored in this version." />
+      <StateCard title="No transcript storage" body="Transcripts are not stored in this version." />
+
       <View style={styles.voiceCircle}>
-        <Text style={styles.voiceCircleText}>{microphonePermission === "granted" ? "Ready" : "Voice"}</Text>
+        <Text style={styles.voiceCircleText}>Text</Text>
       </View>
 
       <View style={styles.rowWrap}>
         <ActionButton
           label="Speak"
-          onPress={() => setMicrophonePermission("granted")}
+          onPress={() => setMicrophonePermission("denied")}
           variant="primary"
         />
         <ActionButton label="Type instead" onPress={() => setMicrophonePermission("denied")} variant="secondary" />
@@ -350,9 +388,11 @@ function HubsScreen({
         bullets={locationConsent.bullets}
         primaryLabel={locationConsent.acceptLabel}
         secondaryLabel={locationConsent.declineLabel}
-        onPrimary={() => setLocationPermission("granted")}
+        onPrimary={() => setLocationPermission("denied")}
         onSecondary={() => setLocationPermission("denied")}
       />
+      <AdapterFallbackCard title="Hub directory status" fallback={adapterFallbackStates.hubDirectory} />
+      <AdapterFallbackCard title="Map discovery status" fallback={adapterFallbackStates.mapDiscovery} />
       <TextInput
         accessibilityLabel="Search by ZIP code, city, or county"
         onChangeText={setQuery}
@@ -374,8 +414,10 @@ function HubsScreen({
       <View style={styles.mapPlaceholder}>
         <Text style={styles.mapTitle}>{mapProvider.label}</Text>
         <Text style={styles.mapText}>{mapProvider.boundary}</Text>
+        <Text style={styles.mapText}>{adapterFallbackStates.mapDiscovery.residentSafeExplanation}</Text>
       </View>
       <StateCard title="Location fallback" body={locationProvider.fallbackOptions.join(" ")} />
+      <StateCard title="Planning tools inactive" body={residentPlanningFallback} />
       <View style={styles.cardStack}>
         {hubs.map((hub) => (
           <View key={hub.id} style={styles.tapCard}>
@@ -563,6 +605,29 @@ function InfoSection({ items, title }: { items: readonly string[]; title: string
       {items.map((item) => (
         <Text key={item} style={styles.bulletText}>- {item}</Text>
       ))}
+    </View>
+  );
+}
+
+function AdapterFallbackCard({
+  fallback,
+  title,
+}: {
+  fallback: ReturnType<typeof backend.createUnavailableAdapterResponse>;
+  title: string;
+}) {
+  return (
+    <View style={styles.stateCard}>
+      <Text style={styles.stateTitle}>{title}</Text>
+      <Text style={styles.stateText}>{fallback.residentSafeExplanation}</Text>
+      <Text style={styles.stateText}>Fallback: {fallback.fallbackPath}</Text>
+      <Text style={styles.smallMuted}>Status: {fallback.readiness.status}.</Text>
+      <Text style={styles.smallMuted}>
+        {fallback.consentGate.required ? "Consent required before future use." : "Static browsing remains available."}
+      </Text>
+      <Text style={styles.smallMuted}>Server-side adapter required before future use.</Text>
+      <Text style={styles.smallMuted}>Credentials not configured. Live runtime disabled.</Text>
+      <Text style={styles.smallMuted}>{fallback.noPhiBoundary}</Text>
     </View>
   );
 }
