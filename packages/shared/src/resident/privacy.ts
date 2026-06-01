@@ -11,13 +11,13 @@ export const privacyBoundaryText = [
 
 export const privacyExplanations = {
   microphone:
-    "Microphone access is optional. You can type instead. Raw audio should not be stored by default.",
+    "Microphone access is not active in this version. You can use guided text instead. Raw audio and transcripts are not stored.",
   location:
     "Location is optional. ZIP code, city, and county search are available. No background tracking or location history is used.",
   typing:
-    "Typing lets you use Voice Access-style guidance without speaking.",
+    "Typing lets you use Voice Access-style guidance without live speech.",
   zip:
-    "ZIP code search can help find nearby hubs or events without current-location permission.",
+    "ZIP code search can help find nearby hubs or events without location sharing.",
   notRequired:
     "Name, phone, email, address, symptoms, diagnosis, insurance, appointment details, and provider relationship are not required for basic app use.",
 } as const;
@@ -62,14 +62,14 @@ export const dataClassification: DataClassification[] = [
     required: "No",
     stored: "No in V0",
     retention: "Session only if enabled later",
-    consent: "Explicit location permission required",
+    consent: "Future explicit location permission required",
     deletion: "No location history is kept in V0",
     risk: "Medium",
-    residentExplanation: "Location is optional and only used to find nearby access options.",
+    residentExplanation: "Location is not active in this version; ZIP code, city, and county search remain available.",
   },
   {
     category: "ZIP code search",
-    purpose: "Find nearby hubs or events without current location",
+    purpose: "Find nearby hubs or events without location sharing",
     required: "No",
     stored: "No persistent storage in V0",
     retention: "Current session only",
@@ -82,12 +82,12 @@ export const dataClassification: DataClassification[] = [
     category: "Voice input",
     purpose: "Future microphone-based Voice Access",
     required: "No",
-    stored: "No raw audio storage by default",
+    stored: "No raw audio or transcript storage in V0",
     retention: "Temporary processing only in a future approved model",
     consent: "Explicit microphone consent required",
     deletion: "Future transcript policy required before live launch",
     risk: "Medium",
-    residentExplanation: "Voice is optional. You can type instead.",
+    residentExplanation: "Voice Access is not active in this version. You can use guided text instead.",
   },
   {
     category: "AI transcript",
@@ -95,7 +95,7 @@ export const dataClassification: DataClassification[] = [
     required: "No",
     stored: "Not in V0",
     retention: "Future consent and retention model required",
-    consent: "Explicit AI-assisted guidance consent required",
+    consent: "Explicit AI guidance consent required",
     deletion: "Future deletion path required before launch",
     risk: "Medium",
     residentExplanation: "AI guidance is not medical advice and is not live in V0.",

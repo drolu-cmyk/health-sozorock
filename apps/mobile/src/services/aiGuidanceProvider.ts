@@ -14,7 +14,7 @@ export const guidanceProvider = {
         id: "topic-hubs",
         label: "Find nearby hubs",
         prompt: "Find trusted access points.",
-        response: "Use ZIP code, city, county, or location permission to find listed access points.",
+        response: "Use ZIP code, city, or county to find listed access points. Location is not active in this version.",
       },
       {
         id: "topic-day",

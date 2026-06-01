@@ -25,7 +25,7 @@ export const healthAccessDayEvents: HealthAccessDayEvent[] = [
     whoItIsFor: "Residents who want help understanding access options and next steps.",
     accessibilityNotes: "Accessible entrance, seating, and quiet help area planned.",
     registrationStatus: "Browsing does not require registration.",
-    contactOrNextStep: "Review what to expect or use Voice Access for preparation.",
+    contactOrNextStep: "Review what to expect or use guided text for preparation.",
     eventStatus: "Example event",
     lastUpdated: "2026-06-01",
     latitude: 32.776,

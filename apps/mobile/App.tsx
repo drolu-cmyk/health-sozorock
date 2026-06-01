@@ -177,7 +177,12 @@ function MenuDrawer({ navigate }: { navigate: (screen: ResidentScreenId) => void
   return (
     <View accessibilityLabel="Resident menu drawer" style={styles.drawer}>
       {residentMenuItems.map((item) => (
-        <Pressable key={item.id} onPress={() => navigate(item.id)} style={styles.drawerItem}>
+        <Pressable
+          accessibilityLabel={`Open ${item.label}: ${item.description}`}
+          key={item.id}
+          onPress={() => navigate(item.id)}
+          style={styles.drawerItem}
+        >
           <Text style={styles.drawerTitle}>{item.label}</Text>
           <Text style={styles.drawerDescription}>{item.description}</Text>
         </Pressable>
@@ -200,7 +205,7 @@ function HomeScreen({ navigate }: { navigate: (screen: ResidentScreenId) => void
       <View style={styles.cardStack}>
         {actions.map((action) => (
           <Pressable
-            accessibilityLabel={action.label}
+            accessibilityLabel={`${action.label}: ${action.description}`}
             key={action.label}
             onPress={() => navigate(action.screen)}
             style={styles.tapCard}
@@ -251,11 +256,17 @@ function StartScreen({
         </Text>
         <View style={styles.rowWrap}>
           <ActionButton
+            accessibilityLabel="Continue to the selected resident support option"
             label="Continue"
             onPress={() => navigate(selectedNeed?.nextScreen ?? "voice")}
             variant="primary"
           />
-          <ActionButton label="Use Voice Access" onPress={() => navigate("voice")} variant="secondary" />
+          <ActionButton
+            accessibilityLabel="Open Voice Access guided text support"
+            label="Use Voice Access"
+            onPress={() => navigate("voice")}
+            variant="secondary"
+          />
         </View>
       </View>
       <AdapterFallbackCard title="AI guidance" fallback={adapterFallbackStates.aiGuidance} />
@@ -283,10 +294,10 @@ function VoiceScreen({
       description={residentRequiredCopy.voiceBoundary}
     >
       <ConsentPanel
-        title="Voice Access preview"
+        title={microphoneConsent.title}
         bullets={microphoneConsent.bullets}
-        primaryLabel="Use guided text"
-        secondaryLabel="Choose topic"
+        primaryLabel={microphoneConsent.acceptLabel}
+        secondaryLabel={microphoneConsent.declineLabel}
         onPrimary={() => setMicrophonePermission("unavailable")}
         onSecondary={() => setMicrophonePermission("unavailable")}
       />
@@ -302,12 +313,23 @@ function VoiceScreen({
 
       <View style={styles.rowWrap}>
         <ActionButton
+          accessibilityLabel="Use guided text support. Voice Access is inactive."
           label="Use guided text"
           onPress={() => setMicrophonePermission("unavailable")}
           variant="primary"
         />
-        <ActionButton label="Type instead" onPress={() => setMicrophonePermission("unavailable")} variant="secondary" />
-        <ActionButton label="Choose topic" onPress={() => undefined} variant="secondary" />
+        <ActionButton
+          accessibilityLabel="Type instead of using Voice Access"
+          label="Type instead"
+          onPress={() => setMicrophonePermission("unavailable")}
+          variant="secondary"
+        />
+        <ActionButton
+          accessibilityLabel="Choose a static Voice Access topic"
+          label="Choose topic"
+          onPress={() => undefined}
+          variant="secondary"
+        />
       </View>
 
       {microphonePermission === "unavailable" ? (
@@ -331,7 +353,12 @@ function VoiceScreen({
 
       <View style={styles.cardStack}>
         {voiceTopics.map((topic) => (
-          <Pressable key={topic.id} onPress={() => navigate(topic.id.includes("hub") ? "hubs" : "day")} style={styles.tapCard}>
+          <Pressable
+            accessibilityLabel={`Open static guidance topic: ${topic.label}`}
+            key={topic.id}
+            onPress={() => navigate(topic.id.includes("hub") ? "hubs" : "day")}
+            style={styles.tapCard}
+          >
             <Text style={styles.tapCardTitle}>{topic.label}</Text>
             <Text style={styles.tapCardText}>{topic.response}</Text>
           </Pressable>
@@ -522,7 +549,7 @@ function AccessibilityScreen() {
     <ScreenFrame eyebrow="Accessibility" title="Use the app in the way that works for you." description="Voice and tap are both supported by design.">
       <InfoSection title="Accessibility support" items={accessibilitySupportText} />
       <StateCard title="Low-bandwidth support" body="Static fallback guidance remains available when live services are unavailable." />
-      <StateCard title="Location alternative" body="Use ZIP code, city, or county search instead of current location." />
+      <StateCard title="Location alternative" body="Use ZIP code, city, or county search instead of location sharing." />
     </ScreenFrame>
   );
 }
@@ -671,17 +698,19 @@ function StateCard({ body, title }: { body: string; title: string }) {
 }
 
 function ActionButton({
+  accessibilityLabel,
   label,
   onPress,
   variant,
 }: {
+  accessibilityLabel?: string;
   label: string;
   onPress: () => void;
   variant: "primary" | "secondary";
 }) {
   return (
     <Pressable
-      accessibilityLabel={label}
+      accessibilityLabel={accessibilityLabel ?? label}
       onPress={onPress}
       style={[styles.actionButton, variant === "primary" ? styles.actionButtonPrimary : styles.actionButtonSecondary]}
     >

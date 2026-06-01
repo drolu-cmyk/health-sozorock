@@ -4,7 +4,7 @@ export const hubSearchOptions = [
   "Search by ZIP code",
   "Search by city",
   "Search by county",
-  "Use current location with permission",
+  "Location inactive in this version",
 ] as const;
 
 export const hubCards: HubCard[] = [
