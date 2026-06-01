@@ -143,6 +143,8 @@ Before manual preview deployment, run the local commands above and complete:
 - [Resident content accessibility audit](docs/sozorock-health/resident-content-accessibility-audit.md)
 - [Static preview deployment readiness](docs/sozorock-health/static-preview-deployment-readiness.md)
 - [Manual preview QA checklist](docs/sozorock-health/manual-preview-qa-checklist.md)
+- [Static resident preview deployment release](docs/sozorock-health/static-preview-deployment-release.md)
+- [Post-deployment verification checklist](docs/sozorock-health/post-deployment-verification-checklist.md)
 
 ## Native resident app foundation
 
@@ -173,6 +175,8 @@ Resident fallback preview quality keeps those fallback states readable for inter
 Resident content accessibility audit reviews static resident copy, accessibility labels, navigation clarity, and inactive-service wording without activating live services or backend runtime.
 
 Static preview deployment readiness documents the final pre-preview checklist and manual QA posture without deploying, changing infrastructure, activating live services, or adding backend runtime.
+
+Static resident preview deployment release documents the existing-pipeline release boundary and post-deployment verification checklist without executing deployment, creating infrastructure, enabling live services, or adding backend runtime.
 
 ## Brand Assets
 
