@@ -1,0 +1,18 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm install
+    build:
+      commands:
+        - npm run mobile:export:web
+  artifacts:
+    baseDirectory: apps/mobile/dist
+    files:
+      - "**/*"
+  cache:
+    paths:
+      - node_modules/**/*
+      - apps/mobile/node_modules/**/*
+      - packages/shared/node_modules/**/*

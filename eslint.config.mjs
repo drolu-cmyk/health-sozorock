@@ -7,6 +7,7 @@ const config = [
   {
     ignores: [
       ".next/**",
+      "apps/mobile/dist/**",
       "node_modules/**",
       "out/**",
       "coverage/**",

@@ -13,6 +13,7 @@ const exportDocPath = "docs/sozorock-health/static-resident-web-export.md";
 const checklistPath = "docs/sozorock-health/static-export-artifact-checklist.md";
 const exportDoc = read(exportDocPath);
 const checklistDoc = read(checklistPath);
+const eslintConfig = read("eslint.config.mjs");
 const readme = read("README.md");
 const docs = `${exportDoc}\n${checklistDoc}`;
 
@@ -106,4 +107,8 @@ test("README links to static resident web export docs", () => {
   assert.match(readme, /Static export artifact checklist/);
   assert.match(readme, /static-export-artifact-checklist\.md/);
   assert.match(readme, /npm run mobile:export:web/);
+});
+
+test("generated static export artifact is ignored by lint", () => {
+  assert.match(eslintConfig, /apps\/mobile\/dist\/\*\*/);
 });

@@ -147,6 +147,8 @@ Before manual preview deployment, run the local commands above and complete:
 - [Post-deployment verification checklist](docs/sozorock-health/post-deployment-verification-checklist.md)
 - [Static resident web export](docs/sozorock-health/static-resident-web-export.md)
 - [Static export artifact checklist](docs/sozorock-health/static-export-artifact-checklist.md)
+- [AWS Amplify static preview deployment](docs/sozorock-health/aws-amplify-static-preview-deployment.md)
+- [Amplify live preview verification checklist](docs/sozorock-health/amplify-live-preview-verification-checklist.md)
 
 ## Native resident app foundation
 
@@ -182,6 +184,8 @@ Static preview deployment readiness documents the final pre-preview checklist an
 Static resident preview deployment release documents the existing-pipeline release boundary and post-deployment verification checklist without executing deployment, creating infrastructure, enabling live services, or adding backend runtime.
 
 Static resident web export adds a local Expo web export command that produces `apps/mobile/dist` without deploying, changing infrastructure, enabling live services, adding backend runtime, or collecting resident data.
+
+AWS Amplify static preview deployment configures Amplify Hosting to run `npm run mobile:export:web` and publish `apps/mobile/dist` without adding backend runtime, secrets, API keys, live services, or infrastructure-as-code.
 
 ## Brand Assets
 
