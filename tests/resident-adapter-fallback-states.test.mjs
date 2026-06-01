@@ -33,10 +33,10 @@ test("resident app references shared fallback and unavailable adapter states", (
   assert.match(mobileApp, /adapterFallbackStates/);
   assert.match(mobileApp, /createUnavailableAdapterResponse/);
   assert.match(mobileApp, /AdapterFallbackCard/);
-  assert.match(mobileApp, /Voice Access status/);
-  assert.match(mobileApp, /AI guidance status/);
-  assert.match(mobileApp, /Map discovery status/);
-  assert.match(mobileApp, /Hub directory status/);
+  assert.match(mobileApp, /title="Voice Access"/);
+  assert.match(mobileApp, /title="AI guidance"/);
+  assert.match(mobileApp, /title="Map discovery"/);
+  assert.match(mobileApp, /title="Hub directory"/);
 });
 
 test("Voice Access screen shows unavailable fallback without microphone activation", () => {
@@ -46,6 +46,8 @@ test("Voice Access screen shows unavailable fallback without microphone activati
   assert.match(mobileApp, /No audio storage/);
   assert.match(mobileApp, /No transcript storage/);
   assert.doesNotMatch(mobileApp, /setMicrophonePermission\("granted"\)/);
+  assert.doesNotMatch(mobileApp, /label="Speak"/);
+  assert.match(mobileApp, /setMicrophonePermission\("unavailable"\)/);
   assert.doesNotMatch(mobileSources, /MediaRecorder|getUserMedia|navigator\.mediaDevices|audioBlob/i);
   assert.match(voiceProvider, /microphoneEnabled: false/);
   assert.match(voiceProvider, /rawAudioStored: false/);
@@ -64,6 +66,7 @@ test("map and location fallbacks are visible without maps or geolocation activat
   assert.match(fallbackSources, /ZIP code, city, county, or use listed hub information/);
   assert.match(mobileApp, /Planning tools are not active in the resident app/);
   assert.doesNotMatch(mobileApp, /setLocationPermission\("granted"\)/);
+  assert.doesNotMatch(mobileApp, /setLocationPermission\("denied"\)/);
   assert.match(mobileApp, /type PermissionState = "notAsked" \| "granted" \| "denied" \| "unavailable"/);
   assert.match(mobileApp, /showLocationUnavailable/);
   assert.match(mobileApp, /setLocationPermission\("unavailable"\)/);
@@ -94,8 +97,8 @@ test("credential readiness copy follows requiresCredentials", () => {
 test("Hub directory fallback does not display inaccurate credential-required copy", () => {
   assert.match(adapterReadiness, /hubDirectory: createDocumentationOnlyReadiness/);
   assert.match(adapterReadiness, /requiresCredentials: false/);
-  assert.match(mobileApp, /Hub directory status/);
-  assert.doesNotMatch(mobileApp, /Hub directory status[\s\S]{0,240}Credentials not configured/);
+  assert.match(mobileApp, /title="Hub directory"/);
+  assert.doesNotMatch(mobileApp, /title="Hub directory"[\s\S]{0,320}Credentials not configured/);
 });
 
 test("hub directory fallback stays local and does not call backend or network services", () => {

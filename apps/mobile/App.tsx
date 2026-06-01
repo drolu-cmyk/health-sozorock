@@ -189,7 +189,7 @@ function MenuDrawer({ navigate }: { navigate: (screen: ResidentScreenId) => void
 function HomeScreen({ navigate }: { navigate: (screen: ResidentScreenId) => void }) {
   const actions: Array<{ label: string; description: string; screen: ResidentScreenId }> = [
     { label: "Start Resident Access", description: "Choose what you need today.", screen: "start" },
-    { label: "Use Voice Access", description: "Speak or type for non-clinical guidance.", screen: "voice" },
+    { label: "Use Voice Access", description: "Use guided text for non-clinical guidance.", screen: "voice" },
     { label: "Find Health Access Day", description: "See event guidance and what to bring.", screen: "day" },
     { label: "Find Hubs", description: "Browse trusted access points near you.", screen: "hubs" },
   ];
@@ -258,7 +258,7 @@ function StartScreen({
           <ActionButton label="Use Voice Access" onPress={() => navigate("voice")} variant="secondary" />
         </View>
       </View>
-      <AdapterFallbackCard title="AI guidance status" fallback={adapterFallbackStates.aiGuidance} />
+      <AdapterFallbackCard title="AI guidance" fallback={adapterFallbackStates.aiGuidance} />
       <SafetyStrip />
     </ScreenFrame>
   );
@@ -279,19 +279,19 @@ function VoiceScreen({
   return (
     <ScreenFrame
       eyebrow="Voice Access"
-      title="Speak or tap to find local support."
+      title="Use guided text support."
       description={residentRequiredCopy.voiceBoundary}
     >
       <ConsentPanel
-        title={microphoneConsent.title}
+        title="Voice Access preview"
         bullets={microphoneConsent.bullets}
-        primaryLabel={microphoneConsent.acceptLabel}
-        secondaryLabel={microphoneConsent.declineLabel}
-        onPrimary={() => setMicrophonePermission("denied")}
-        onSecondary={() => setMicrophonePermission("denied")}
+        primaryLabel="Use guided text"
+        secondaryLabel="Choose topic"
+        onPrimary={() => setMicrophonePermission("unavailable")}
+        onSecondary={() => setMicrophonePermission("unavailable")}
       />
 
-      <AdapterFallbackCard title="Voice Access status" fallback={adapterFallbackStates.voiceAccess} />
+      <AdapterFallbackCard title="Voice Access" fallback={adapterFallbackStates.voiceAccess} />
       <StateCard title="No microphone capture" body={voiceInputProvider.boundary} />
       <StateCard title="No audio storage" body="Raw audio is not stored in this version." />
       <StateCard title="No transcript storage" body="Transcripts are not stored in this version." />
@@ -302,13 +302,20 @@ function VoiceScreen({
 
       <View style={styles.rowWrap}>
         <ActionButton
-          label="Speak"
-          onPress={() => setMicrophonePermission("denied")}
+          label="Use guided text"
+          onPress={() => setMicrophonePermission("unavailable")}
           variant="primary"
         />
-        <ActionButton label="Type instead" onPress={() => setMicrophonePermission("denied")} variant="secondary" />
+        <ActionButton label="Type instead" onPress={() => setMicrophonePermission("unavailable")} variant="secondary" />
         <ActionButton label="Choose topic" onPress={() => undefined} variant="secondary" />
       </View>
+
+      {microphonePermission === "unavailable" ? (
+        <StateCard
+          title="Voice Access inactive"
+          body="Voice Access is not active in this version. You can continue with guided text support."
+        />
+      ) : null}
 
       {microphonePermission === "denied" ? (
         <StateCard title="Permission denied fallback" body={residentScreenStates.permissionDenied} />
@@ -390,10 +397,10 @@ function HubsScreen({
         primaryLabel={locationConsent.acceptLabel}
         secondaryLabel={locationConsent.declineLabel}
         onPrimary={showLocationUnavailable}
-        onSecondary={() => setLocationPermission("denied")}
+        onSecondary={showLocationUnavailable}
       />
-      <AdapterFallbackCard title="Hub directory status" fallback={adapterFallbackStates.hubDirectory} />
-      <AdapterFallbackCard title="Map discovery status" fallback={adapterFallbackStates.mapDiscovery} />
+      <AdapterFallbackCard title="Hub directory" fallback={adapterFallbackStates.hubDirectory} />
+      <AdapterFallbackCard title="Map discovery" fallback={adapterFallbackStates.mapDiscovery} />
       <TextInput
         accessibilityLabel="Search by ZIP code, city, or county"
         onChangeText={setQuery}
@@ -626,19 +633,30 @@ function AdapterFallbackCard({
   const credentialStatusCopy = fallback.readiness.requiresCredentials
     ? "Credentials not configured. Live runtime disabled."
     : "No credentials required for this fallback state. Live runtime disabled.";
+  const consentStatusCopy = fallback.consentGate.required
+    ? "Consent required before future use."
+    : "Static browsing remains available.";
 
   return (
-    <View style={styles.stateCard}>
-      <Text style={styles.stateTitle}>{title}</Text>
-      <Text style={styles.stateText}>{fallback.residentSafeExplanation}</Text>
-      <Text style={styles.stateText}>Fallback: {fallback.fallbackPath}</Text>
-      <Text style={styles.smallMuted}>Status: {fallback.readiness.status}.</Text>
-      <Text style={styles.smallMuted}>
-        {fallback.consentGate.required ? "Consent required before future use." : "Static browsing remains available."}
-      </Text>
-      <Text style={styles.smallMuted}>Server-side adapter required before future use.</Text>
-      <Text style={styles.smallMuted}>{credentialStatusCopy}</Text>
-      <Text style={styles.smallMuted}>{fallback.noPhiBoundary}</Text>
+    <View style={styles.fallbackCard}>
+      <View style={styles.fallbackHeader}>
+        <Text style={styles.previewBadge}>Fallback preview</Text>
+        <Text style={styles.runtimeBadge}>Live services disabled</Text>
+      </View>
+      <Text style={styles.fallbackTitle}>{title}</Text>
+      <Text style={styles.fallbackStatus}>{fallback.residentSafeExplanation}</Text>
+      <View style={styles.fallbackActionBlock}>
+        <Text style={styles.fallbackLabel}>What you can do now</Text>
+        <Text style={styles.fallbackActionText}>{fallback.fallbackPath}</Text>
+      </View>
+      <Text style={styles.privacyLine}>{fallback.noPhiBoundary}</Text>
+      <View style={styles.previewDetails}>
+        <Text style={styles.previewDetailsTitle}>Preview details</Text>
+        <Text style={styles.previewDetailsText}>Status: {fallback.readiness.status}.</Text>
+        <Text style={styles.previewDetailsText}>{consentStatusCopy}</Text>
+        <Text style={styles.previewDetailsText}>Server-side adapter required before future use.</Text>
+        <Text style={styles.previewDetailsText}>{credentialStatusCopy}</Text>
+      </View>
     </View>
   );
 }
@@ -954,6 +972,100 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     marginTop: 5,
+  },
+  fallbackCard: {
+    backgroundColor: "#ffffff",
+    borderColor: colors.line,
+    borderRadius: 16,
+    borderWidth: 1,
+    marginTop: 14,
+    padding: 16,
+    shadowColor: "#071727",
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+  },
+  fallbackHeader: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    marginBottom: 10,
+  },
+  previewBadge: {
+    backgroundColor: colors.greenSoft,
+    borderRadius: 999,
+    color: colors.green,
+    fontSize: 12,
+    fontWeight: "900",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  runtimeBadge: {
+    backgroundColor: colors.surface,
+    borderColor: colors.line,
+    borderRadius: 999,
+    borderWidth: 1,
+    color: colors.navySoft,
+    fontSize: 12,
+    fontWeight: "900",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  fallbackTitle: {
+    color: colors.navy,
+    fontSize: 17,
+    fontWeight: "900",
+  },
+  fallbackStatus: {
+    color: colors.navySoft,
+    fontSize: 15,
+    lineHeight: 23,
+    marginTop: 8,
+  },
+  fallbackActionBlock: {
+    backgroundColor: colors.greenSoft,
+    borderColor: "#86efac",
+    borderRadius: 12,
+    borderWidth: 1,
+    marginTop: 12,
+    padding: 12,
+  },
+  fallbackLabel: {
+    color: colors.green,
+    fontSize: 12,
+    fontWeight: "900",
+    textTransform: "uppercase",
+  },
+  fallbackActionText: {
+    color: colors.navy,
+    fontSize: 14,
+    fontWeight: "800",
+    lineHeight: 21,
+    marginTop: 5,
+  },
+  privacyLine: {
+    color: colors.green,
+    fontSize: 13,
+    fontWeight: "900",
+    lineHeight: 20,
+    marginTop: 10,
+  },
+  previewDetails: {
+    borderTopColor: colors.line,
+    borderTopWidth: 1,
+    marginTop: 12,
+    paddingTop: 10,
+  },
+  previewDetailsTitle: {
+    color: colors.navy,
+    fontSize: 12,
+    fontWeight: "900",
+    textTransform: "uppercase",
+  },
+  previewDetailsText: {
+    color: colors.muted,
+    fontSize: 12,
+    lineHeight: 18,
+    marginTop: 4,
   },
   safetyStrip: {
     backgroundColor: colors.warning,
