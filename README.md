@@ -139,6 +139,7 @@ Before manual preview deployment, run the local commands above and complete:
 - [Consent-gated adapter shells](docs/sozorock-health/consent-gated-adapter-shells.md)
 - [Service adapter readiness](docs/sozorock-health/service-adapter-readiness.md)
 - [Resident adapter fallback states](docs/sozorock-health/resident-adapter-fallback-states.md)
+- [Resident fallback preview quality](docs/sozorock-health/resident-fallback-preview-quality.md)
 
 ## Native resident app foundation
 
@@ -163,6 +164,8 @@ The non-clinical backend foundation is limited to shared types, provider-neutral
 Consent-gated adapter shells prepare unavailable/fallback states for future voice, AI, maps, hubs, and geospatial services. They do not add SDK imports, network calls, secrets, API keys, backend runtime, live services, resident data capture, PHI workflows, or clinical workflows.
 
 Resident adapter fallback states connect those unavailable/fallback states to the resident app UI without activating live services, SDKs, network calls, backend runtime, resident data capture, PHI workflows, or clinical workflows.
+
+Resident fallback preview quality keeps those fallback states readable for internal review while preserving disabled live services, no resident data capture, and the No PHI. Consent-based. Non-clinical. boundary.
 
 ## Brand Assets
 
