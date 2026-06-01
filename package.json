@@ -16,6 +16,7 @@
     "verify": "npm run lint && npm run typecheck && npm run build && npm run guardrails && npm audit --audit-level=moderate",
     "mobile:start": "npm run start -w @sozorock-health/mobile",
     "mobile:web": "npm run web -w @sozorock-health/mobile",
+    "mobile:export:web": "npm run export:web -w @sozorock-health/mobile",
     "mobile:ios": "npm run ios -w @sozorock-health/mobile",
     "mobile:android": "npm run android -w @sozorock-health/mobile",
     "mobile:typecheck": "npm run typecheck -w @sozorock-health/mobile"

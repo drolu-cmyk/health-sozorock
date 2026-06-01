@@ -145,6 +145,8 @@ Before manual preview deployment, run the local commands above and complete:
 - [Manual preview QA checklist](docs/sozorock-health/manual-preview-qa-checklist.md)
 - [Static resident preview deployment release](docs/sozorock-health/static-preview-deployment-release.md)
 - [Post-deployment verification checklist](docs/sozorock-health/post-deployment-verification-checklist.md)
+- [Static resident web export](docs/sozorock-health/static-resident-web-export.md)
+- [Static export artifact checklist](docs/sozorock-health/static-export-artifact-checklist.md)
 
 ## Native resident app foundation
 
@@ -155,6 +157,7 @@ Mobile commands:
 ```bash
 npm run mobile:start
 npm run mobile:web
+npm run mobile:export:web
 npm run mobile:ios
 npm run mobile:android
 npm run mobile:typecheck
@@ -177,6 +180,8 @@ Resident content accessibility audit reviews static resident copy, accessibility
 Static preview deployment readiness documents the final pre-preview checklist and manual QA posture without deploying, changing infrastructure, activating live services, or adding backend runtime.
 
 Static resident preview deployment release documents the existing-pipeline release boundary and post-deployment verification checklist without executing deployment, creating infrastructure, enabling live services, or adding backend runtime.
+
+Static resident web export adds a local Expo web export command that produces `apps/mobile/dist` without deploying, changing infrastructure, enabling live services, adding backend runtime, or collecting resident data.
 
 ## Brand Assets
 
