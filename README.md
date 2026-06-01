@@ -185,7 +185,7 @@ Static resident preview deployment release documents the existing-pipeline relea
 
 Static resident web export adds a local Expo web export command that produces `apps/mobile/dist` without deploying, changing infrastructure, enabling live services, adding backend runtime, or collecting resident data.
 
-AWS Amplify static preview deployment configures Amplify Hosting to run `npm run mobile:export:web` and publish `apps/mobile/dist` without adding backend runtime, secrets, API keys, live services, or infrastructure-as-code.
+AWS Amplify static preview deployment configures Amplify Hosting to build the existing preview routes, publish the static `out` artifact, generate `apps/mobile/dist`, and preserve `/resident`, `/county`, and `/about-model` without adding backend runtime, secrets, API keys, live services, or infrastructure-as-code.
 
 ## Brand Assets
 
