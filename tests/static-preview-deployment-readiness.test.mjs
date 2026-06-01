@@ -94,7 +94,7 @@ test("static preview readiness document includes required checklist sections", (
     "Rollback And Checkpoint Notes",
     "Stakeholder Preview Notes",
     "Stop Rules",
-    "Issue 043 - Static preview stakeholder review packet",
+    "Issue 043 - Static resident preview deployment release",
   ]) {
     assert.match(readinessDoc, new RegExp(escapeRegExp(phrase)));
   }

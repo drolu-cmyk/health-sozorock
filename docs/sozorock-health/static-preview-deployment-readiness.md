@@ -300,4 +300,4 @@ Stop preview preparation if any step requires:
 
 ## Recommended Next Issue
 
-Issue 043 - Static preview stakeholder review packet
+Issue 043 - Static resident preview deployment release
