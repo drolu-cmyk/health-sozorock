@@ -64,9 +64,38 @@ test("map and location fallbacks are visible without maps or geolocation activat
   assert.match(fallbackSources, /ZIP code, city, county, or use listed hub information/);
   assert.match(mobileApp, /Planning tools are not active in the resident app/);
   assert.doesNotMatch(mobileApp, /setLocationPermission\("granted"\)/);
+  assert.match(mobileApp, /type PermissionState = "notAsked" \| "granted" \| "denied" \| "unavailable"/);
+  assert.match(mobileApp, /showLocationUnavailable/);
+  assert.match(mobileApp, /setLocationPermission\("unavailable"\)/);
+  assert.match(mobileApp, /onPrimary=\{showLocationUnavailable\}/);
+  assert.match(mobileApp, /Location is not active in this version\. You can search by ZIP code, city, or county\./);
   assert.doesNotMatch(mobileSources, /navigator\.geolocation|getCurrentPosition|watchPosition|react-native-maps/i);
   assert.match(locationProvider, /backgroundTracking: false/);
   assert.match(locationProvider, /locationHistory: false/);
+});
+
+test("location unavailable state is neutral and does not imply resident denial", () => {
+  const unavailableStateStart = mobileApp.indexOf('title="Location unavailable state"');
+  const unavailableStateEnd = mobileApp.indexOf(") : null}", unavailableStateStart);
+  const unavailableState = mobileApp.slice(unavailableStateStart, unavailableStateEnd);
+
+  assert.match(unavailableState, /Location is not active in this version/);
+  assert.match(unavailableState, /ZIP code, city, or county/);
+  assert.doesNotMatch(unavailableState, /Permission was not granted|denied/i);
+});
+
+test("credential readiness copy follows requiresCredentials", () => {
+  assert.match(mobileApp, /fallback\.readiness\.requiresCredentials/);
+  assert.match(mobileApp, /Credentials not configured\. Live runtime disabled\./);
+  assert.match(mobileApp, /No credentials required for this fallback state\. Live runtime disabled\./);
+  assert.match(mobileApp, /credentialStatusCopy/);
+});
+
+test("Hub directory fallback does not display inaccurate credential-required copy", () => {
+  assert.match(adapterReadiness, /hubDirectory: createDocumentationOnlyReadiness/);
+  assert.match(adapterReadiness, /requiresCredentials: false/);
+  assert.match(mobileApp, /Hub directory status/);
+  assert.doesNotMatch(mobileApp, /Hub directory status[\s\S]{0,240}Credentials not configured/);
 });
 
 test("hub directory fallback stays local and does not call backend or network services", () => {

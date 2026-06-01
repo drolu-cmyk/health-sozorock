@@ -49,7 +49,7 @@ import { locationProvider } from "./src/services/locationProvider";
 import { mapProvider } from "./src/services/mapProvider";
 import { voiceInputProvider } from "./src/services/voiceInputProvider";
 
-type PermissionState = "notAsked" | "granted" | "denied";
+type PermissionState = "notAsked" | "granted" | "denied" | "unavailable";
 
 const adapterFallbackStates = {
   voiceAccess: backend.createUnavailableAdapterResponse(
@@ -376,6 +376,7 @@ function HubsScreen({
   setQuery: (value: string) => void;
 }) {
   const hubs = hubDiscoveryProvider.search(query);
+  const showLocationUnavailable = () => setLocationPermission("unavailable");
 
   return (
     <ScreenFrame
@@ -388,7 +389,7 @@ function HubsScreen({
         bullets={locationConsent.bullets}
         primaryLabel={locationConsent.acceptLabel}
         secondaryLabel={locationConsent.declineLabel}
-        onPrimary={() => setLocationPermission("denied")}
+        onPrimary={showLocationUnavailable}
         onSecondary={() => setLocationPermission("denied")}
       />
       <AdapterFallbackCard title="Hub directory status" fallback={adapterFallbackStates.hubDirectory} />
@@ -410,6 +411,12 @@ function HubsScreen({
       </View>
       {locationPermission === "denied" ? (
         <StateCard title="Permission denied state" body={residentScreenStates.permissionDenied} />
+      ) : null}
+      {locationPermission === "unavailable" ? (
+        <StateCard
+          title="Location unavailable state"
+          body="Location is not active in this version. You can search by ZIP code, city, or county."
+        />
       ) : null}
       <View style={styles.mapPlaceholder}>
         <Text style={styles.mapTitle}>{mapProvider.label}</Text>
@@ -616,6 +623,10 @@ function AdapterFallbackCard({
   fallback: ReturnType<typeof backend.createUnavailableAdapterResponse>;
   title: string;
 }) {
+  const credentialStatusCopy = fallback.readiness.requiresCredentials
+    ? "Credentials not configured. Live runtime disabled."
+    : "No credentials required for this fallback state. Live runtime disabled.";
+
   return (
     <View style={styles.stateCard}>
       <Text style={styles.stateTitle}>{title}</Text>
@@ -626,7 +637,7 @@ function AdapterFallbackCard({
         {fallback.consentGate.required ? "Consent required before future use." : "Static browsing remains available."}
       </Text>
       <Text style={styles.smallMuted}>Server-side adapter required before future use.</Text>
-      <Text style={styles.smallMuted}>Credentials not configured. Live runtime disabled.</Text>
+      <Text style={styles.smallMuted}>{credentialStatusCopy}</Text>
       <Text style={styles.smallMuted}>{fallback.noPhiBoundary}</Text>
     </View>
   );
