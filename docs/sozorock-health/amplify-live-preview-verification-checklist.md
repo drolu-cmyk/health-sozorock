@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Use this checklist after AWS Amplify Hosting publishes the static resident app preview artifact from `apps/mobile/dist`.
+Use this checklist after AWS Amplify Hosting publishes the existing static preview from `out` while generating the resident Expo web export artifact at `apps/mobile/dist`.
 
 This checklist verifies the live static preview only. It does not authorize backend runtime, Amplify backend categories, secrets, API keys, SDK imports, infrastructure changes, live services, or resident data capture.
 
@@ -28,8 +28,12 @@ Confirm the Amplify Hosting build:
 
 - uses the repository root
 - runs `npm install`
+- runs `npm run build`
 - runs `npm run mobile:export:web`
-- publishes `apps/mobile/dist`
+- publishes `out`
+- generates `apps/mobile/dist` for resident export verification
+- does not publish `.next`
+- does not publish `apps/mobile/dist` as the existing site root artifact
 - does not run backend phases
 - does not configure Amplify backend categories
 - does not require secrets
@@ -42,6 +46,9 @@ Confirm the Amplify Hosting build:
 Confirm:
 
 - Amplify live URL loads
+- `/resident` loads
+- `/county` loads
+- `/about-model` loads
 - page returns a successful response
 - preview reflects the expected release checkpoint
 - no unexpected redirect appears
@@ -70,6 +77,7 @@ Confirm:
 - bottom navigation works
 - fallback preview cards render
 - no broken navigation appears
+- existing preview routes remain available
 - no county console is visible in resident navigation
 - no backend, infrastructure, model, action queue, assurance log, synthetic signals, or administrative labels appear in resident navigation
 
@@ -134,8 +142,11 @@ Confirm mobile and desktop viewports:
 
 Stop verification and report if:
 
-- Amplify build does not publish `apps/mobile/dist`
+- Amplify build does not generate `apps/mobile/dist`
+- Amplify build replaces the existing preview routes with only the resident export
+- Amplify build publishes `.next` instead of `out`
 - live URL does not load
+- `/resident`, `/county`, or `/about-model` no longer loads
 - required boundary language is missing
 - Voice Access appears live
 - AI guidance appears live

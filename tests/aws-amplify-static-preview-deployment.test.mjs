@@ -11,6 +11,7 @@ const deploymentDocPath = "docs/sozorock-health/aws-amplify-static-preview-deplo
 const verificationDocPath = "docs/sozorock-health/amplify-live-preview-verification-checklist.md";
 
 const amplifyConfig = read(amplifyPath);
+const nextConfig = read("next.config.ts");
 const deploymentDoc = read(deploymentDocPath);
 const verificationDoc = read(verificationDocPath);
 const readme = read("README.md");
@@ -20,12 +21,18 @@ test("Amplify static hosting build spec exists", () => {
   assert.equal(exists(amplifyPath), true);
 });
 
-test("Amplify build spec runs static resident web export and publishes apps/mobile/dist", () => {
+test("Next preview build is configured for static export", () => {
+  assert.match(nextConfig, /output:\s*"export"/);
+});
+
+test("Amplify build spec preserves existing preview routes while generating resident web export", () => {
   assert.match(amplifyConfig, /^version: 1$/m);
   assert.match(amplifyConfig, /^frontend:$/m);
   assert.match(amplifyConfig, /preBuild:\s*\r?\n\s+commands:\s*\r?\n\s+- npm install/);
-  assert.match(amplifyConfig, /build:\s*\r?\n\s+commands:\s*\r?\n\s+- npm run mobile:export:web/);
-  assert.match(amplifyConfig, /baseDirectory: apps\/mobile\/dist/);
+  assert.match(amplifyConfig, /build:\s*\r?\n\s+commands:\s*\r?\n\s+- npm run build\s*\r?\n\s+- npm run mobile:export:web/);
+  assert.match(amplifyConfig, /baseDirectory: out/);
+  assert.doesNotMatch(amplifyConfig, /baseDirectory: \.next/);
+  assert.doesNotMatch(amplifyConfig, /baseDirectory: apps\/mobile\/dist/);
   assert.match(amplifyConfig, /files:\s*\r?\n\s+- "\*\*\/\*"/);
 });
 
@@ -44,6 +51,16 @@ test("Amplify build spec has no backend phases, secrets, API keys, or runtime pr
   assert.doesNotMatch(amplifyConfig, /amplifyPush|amplify push|amplify env|amplify add|amplify pull/i);
   assert.doesNotMatch(amplifyConfig, /API_KEY|SECRET|TOKEN|DATABASE_URL|BACKEND_URL|GOOGLE_MAPS|VERTEX|GEMINI|OPENAI|AWS_ACCESS_KEY_ID/i);
   assert.doesNotMatch(amplifyConfig, /firebase|googleapis|openai|vertex|gemini|lambda|dynamodb|cognito|appsync/i);
+});
+
+test("Amplify docs block incorrect deployment artifacts", () => {
+  for (const phrase of [
+    "does not publish `.next`",
+    "does not publish `apps/mobile/dist` as the existing site root artifact",
+    "publishing `.next` instead of `out`",
+  ]) {
+    assert.match(docs, new RegExp(escapeRegExp(phrase), "i"));
+  }
 });
 
 test("Amplify deployment docs exist", () => {
@@ -77,11 +94,27 @@ test("Voice Access is named correctly without assistant shorthand", () => {
 test("Amplify docs document static hosting target, build command, and artifact directory", () => {
   for (const phrase of [
     "AWS Amplify Hosting",
+    "npm run build",
     "npm run mobile:export:web",
+    "out",
     "apps/mobile/dist",
     "amplify.yml",
     "frontend build configuration",
-    "static artifact publication",
+    "static preview artifact publication",
+  ]) {
+    assert.match(docs, new RegExp(escapeRegExp(phrase)));
+  }
+});
+
+test("Amplify docs preserve existing preview routes and avoid replacing them with only the resident export", () => {
+  for (const phrase of [
+    "/resident",
+    "/county",
+    "/about-model",
+    "Publishing only `apps/mobile/dist` at the site root would replace those routes.",
+    "Publishing `.next` would violate the static-only boundary",
+    "publishes `out`",
+    "existing preview routes stay available",
   ]) {
     assert.match(docs, new RegExp(escapeRegExp(phrase)));
   }
@@ -115,6 +148,9 @@ test("Amplify docs block backend categories and cloud/runtime expansion", () => 
 test("Amplify verification checklist covers live resident preview checks", () => {
   for (const phrase of [
     "Amplify live URL loads",
+    "/resident",
+    "/county",
+    "/about-model",
     "Home",
     "Start",
     "Voice Access",
@@ -138,6 +174,7 @@ test("Amplify verification checklist covers live resident preview checks", () =>
     "no PHI workflow",
     "no clinical workflow",
     "no county console exposure",
+    "existing preview routes remain available",
   ]) {
     assert.match(verificationDoc, new RegExp(escapeRegExp(phrase), "i"));
   }
@@ -170,4 +207,5 @@ test("README links Amplify static deployment docs", () => {
   assert.match(readme, /aws-amplify-static-preview-deployment\.md/);
   assert.match(readme, /Amplify live preview verification checklist/);
   assert.match(readme, /amplify-live-preview-verification-checklist\.md/);
+  assert.match(readme, /preserve `\/resident`, `\/county`, and `\/about-model`/);
 });
