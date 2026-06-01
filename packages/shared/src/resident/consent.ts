@@ -2,44 +2,46 @@ import type { ConsentCapability } from "./types";
 
 export const microphoneConsent = {
   capability: "microphone" satisfies ConsentCapability,
-  title: "Before using microphone",
+  title: "Voice Access readiness",
   bullets: [
-    "Voice Access is optional.",
-    "You can type instead.",
+    "Voice Access is not active in this version.",
+    "You can use guided text instead.",
     "Voice Access is non-clinical.",
     "The app does not provide medical advice.",
-    "Raw audio should not be stored by default.",
-    "Do not share private health information unless a future consent model clearly allows it.",
+    "No microphone capture is active.",
+    "Raw audio is not stored.",
+    "Transcripts are not stored.",
   ],
-  acceptLabel: "I understand",
-  declineLabel: "Type instead",
+  acceptLabel: "Use guided text",
+  declineLabel: "Choose topic",
 } as const;
 
 export const locationConsent = {
   capability: "location" satisfies ConsentCapability,
-  title: "Before using location",
+  title: "Location readiness",
   bullets: [
-    "Location is optional.",
+    "Location is not active in this version.",
     "ZIP code search is available.",
     "City or county search is available.",
-    "Location is used to show nearby hubs or events.",
+    "No location permission prompt starts here.",
     "No background tracking.",
     "No location history.",
     "No resident movement tracking.",
   ],
-  acceptLabel: "Use location once",
-  declineLabel: "Search instead",
+  acceptLabel: "Search by ZIP, city, or county",
+  declineLabel: "Use listed hubs",
 } as const;
 
 export const aiGuidanceConsent = {
   capability: "aiGuidance" satisfies ConsentCapability,
-  title: "Before AI-assisted guidance",
+  title: "AI guidance readiness",
   bullets: [
+    "AI guidance is not active in this version.",
     "AI guidance is non-clinical.",
-    "It can explain options and next steps.",
+    "Static access guidance remains available.",
     "It does not replace licensed care.",
-    "It should not receive private health information in this foundation.",
+    "Do not enter private health information.",
   ],
-  acceptLabel: "Use guidance",
+  acceptLabel: "Read static guidance",
   declineLabel: "Read static guidance",
 } as const;

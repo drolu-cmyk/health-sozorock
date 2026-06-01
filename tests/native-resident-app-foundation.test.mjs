@@ -89,10 +89,10 @@ test("required resident trust and emergency copy is shared and rendered", () => 
   for (const phrase of [
     "Care for Every ZIP Code.",
     "No PHI. Consent-based. Non-clinical.",
-    "Nothing is submitted or stored unless you choose to continue.",
+    "Nothing is submitted or stored in this version.",
     "Voice Access provides non-clinical support and does not give medical advice.",
     "Providers keep their platforms. We help you get ready.",
-    "Location is used only with your permission.",
+    "Location is not active in this version. Search by ZIP code, city, or county.",
     "If this is an emergency, call 911.",
     "If you may harm yourself or someone else, call or text 988 in the U.S.",
   ]) {
@@ -101,8 +101,8 @@ test("required resident trust and emergency copy is shared and rendered", () => 
 });
 
 test("Voice Access has consent, type fallback, topic fallback, and no raw audio storage", () => {
-  assert.match(consent, /Voice Access is optional/);
-  assert.match(consent, /You can type instead/);
+  assert.match(consent, /Voice Access is not active in this version/);
+  assert.match(consent, /You can use guided text instead/);
   assert.match(mobileApp, /Type instead/);
   assert.match(mobileApp, /Choose topic/);
   assert.match(voiceProvider, /rawAudioStored: false/);

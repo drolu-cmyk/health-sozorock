@@ -8,10 +8,10 @@ export const residentProductDefinition =
   "SozoRock Health is a resident-facing health access companion. It helps residents understand what kind of support they need, find trusted access points, discover Health Access Day events, use voice-guided support, prepare for provider-led care, and receive non-clinical next-step guidance.";
 
 export const residentRequiredCopy = {
-  noStorage: "Nothing is submitted or stored unless you choose to continue.",
+  noStorage: "Nothing is submitted or stored in this version.",
   voiceBoundary: "Voice Access provides non-clinical support and does not give medical advice.",
   providerPathway: "Providers keep their platforms. We help you get ready.",
-  locationBoundary: "Location is used only with your permission.",
+  locationBoundary: "Location is not active in this version. Search by ZIP code, city, or county.",
   emergency: "If this is an emergency, call 911.",
   crisis: "If you may harm yourself or someone else, call or text 988 in the U.S.",
 } as const;
@@ -41,8 +41,8 @@ export const residentNeeds: ResidentNeed[] = [
   {
     id: "voiceAccess",
     title: "Voice Access",
-    description: "Speak or type for non-clinical access guidance.",
-    guidance: "Voice Access can explain app options and next steps. Typing is always available.",
+    description: "Use guided text for non-clinical access guidance.",
+    guidance: "Voice Access is not active in this version. Guided text support remains available.",
     nextScreen: "voice",
   },
   {
@@ -57,7 +57,7 @@ export const residentNeeds: ResidentNeed[] = [
 export const howItWorksSteps = [
   "Choose a need.",
   "Get non-clinical next-step guidance.",
-  "Use Voice Access, Health Access Day, Hubs, or Provider-Led Pathway.",
+  "Use guided text, Health Access Day, Hubs, or Provider-Led Pathway.",
   "Share only what is needed and only when you choose.",
 ] as const;
 
@@ -67,7 +67,7 @@ export const residentScreenStates: Record<ScreenStateName, string> = {
   loading: "Checking available guidance.",
   error: "Something did not load. Static guidance remains available.",
   offline: "You appear to be offline. Saved guidance and example cards remain available.",
-  permissionDenied: "Permission was not granted. You can use ZIP code, city, county, or typing instead.",
+  permissionDenied: "Permission-based tools are not active here. You can use ZIP code, city, county, or typing instead.",
   serviceUnavailable: "Live service is unavailable. Static fallback guidance remains available.",
   safetyBoundary: "SozoRock Health does not provide medical advice, diagnosis, treatment, or prescriptions.",
 };
@@ -75,8 +75,8 @@ export const residentScreenStates: Record<ScreenStateName, string> = {
 export const accessibilitySupportText = [
   "Large tap targets",
   "Simple language",
-  "Type instead of speaking",
-  "ZIP code search instead of location permission",
+  "Guided text instead of live speech",
+  "ZIP code, city, or county search instead of location sharing",
   "Screen reader friendly labels",
   "Low-bandwidth fallback guidance",
   "Spanish-ready content structure for later translation",

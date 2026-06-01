@@ -12,6 +12,7 @@ const mapProvider = read("apps/mobile/src/services/mapProvider.ts");
 const hubProvider = read("apps/mobile/src/services/hubDiscoveryProvider.ts");
 const eventProvider = read("apps/mobile/src/services/eventDiscoveryProvider.ts");
 const unavailableAdapters = read("packages/shared/src/backend/unavailableAdapters.ts");
+const residentConsent = read("packages/shared/src/resident/consent.ts");
 const previewQualityDocs = read("docs/sozorock-health/resident-fallback-preview-quality.md");
 const readme = read("README.md");
 
@@ -40,7 +41,7 @@ test("fallback preview cards put resident guidance before internal preview detai
 });
 
 test("Voice Access preview uses guided text and keeps capture inactive", () => {
-  assert.match(mobileApp, /Voice Access preview/);
+  assert.match(residentConsent, /Voice Access readiness/);
   assert.match(mobileApp, /Use guided text/);
   assert.match(mobileApp, /Voice Access inactive/);
   assert.match(mobileApp, /guided text support/);

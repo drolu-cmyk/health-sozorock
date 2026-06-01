@@ -140,6 +140,7 @@ Before manual preview deployment, run the local commands above and complete:
 - [Service adapter readiness](docs/sozorock-health/service-adapter-readiness.md)
 - [Resident adapter fallback states](docs/sozorock-health/resident-adapter-fallback-states.md)
 - [Resident fallback preview quality](docs/sozorock-health/resident-fallback-preview-quality.md)
+- [Resident content accessibility audit](docs/sozorock-health/resident-content-accessibility-audit.md)
 
 ## Native resident app foundation
 
@@ -166,6 +167,8 @@ Consent-gated adapter shells prepare unavailable/fallback states for future voic
 Resident adapter fallback states connect those unavailable/fallback states to the resident app UI without activating live services, SDKs, network calls, backend runtime, resident data capture, PHI workflows, or clinical workflows.
 
 Resident fallback preview quality keeps those fallback states readable for internal review while preserving disabled live services, no resident data capture, and the No PHI. Consent-based. Non-clinical. boundary.
+
+Resident content accessibility audit reviews static resident copy, accessibility labels, navigation clarity, and inactive-service wording without activating live services or backend runtime.
 
 ## Brand Assets
 
