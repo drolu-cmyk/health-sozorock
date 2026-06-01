@@ -135,7 +135,7 @@ test("resident fallback preview quality documentation records scope and next iss
     "No PHI. Consent-based. Non-clinical.",
     "Care for Every ZIP Code.",
     "Providers keep their platforms. We help you get ready.",
-    "Signal -> Decision -> Action -> Assurance -> Impact.",
+    "Signal → Decision → Action → Assurance → Impact",
     "What Remains Inactive",
     "Issue 041 - Static resident content readiness and accessibility audit",
   ]) {

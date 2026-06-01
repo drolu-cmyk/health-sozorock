@@ -20,7 +20,7 @@ Provider boundary:
 
 Operating logic:
 
-**Signal -> Decision -> Action -> Assurance -> Impact.**
+**Signal → Decision → Action → Assurance → Impact**
 
 ## Relation To Issue 039 And PR #54
 
