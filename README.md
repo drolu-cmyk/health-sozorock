@@ -141,6 +141,8 @@ Before manual preview deployment, run the local commands above and complete:
 - [Resident adapter fallback states](docs/sozorock-health/resident-adapter-fallback-states.md)
 - [Resident fallback preview quality](docs/sozorock-health/resident-fallback-preview-quality.md)
 - [Resident content accessibility audit](docs/sozorock-health/resident-content-accessibility-audit.md)
+- [Static preview deployment readiness](docs/sozorock-health/static-preview-deployment-readiness.md)
+- [Manual preview QA checklist](docs/sozorock-health/manual-preview-qa-checklist.md)
 
 ## Native resident app foundation
 
@@ -169,6 +171,8 @@ Resident adapter fallback states connect those unavailable/fallback states to th
 Resident fallback preview quality keeps those fallback states readable for internal review while preserving disabled live services, no resident data capture, and the No PHI. Consent-based. Non-clinical. boundary.
 
 Resident content accessibility audit reviews static resident copy, accessibility labels, navigation clarity, and inactive-service wording without activating live services or backend runtime.
+
+Static preview deployment readiness documents the final pre-preview checklist and manual QA posture without deploying, changing infrastructure, activating live services, or adding backend runtime.
 
 ## Brand Assets
 
