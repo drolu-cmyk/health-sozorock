@@ -95,7 +95,7 @@ export const humanReviewQueue: HumanReviewQueueItem[] = [
     reviewNeed: "Check source label and avoid unsupported site or partner claims.",
     status: "Evidence recorded",
     reviewer: "Access Workforce",
-    evidence: "Mock hub coverage pattern",
+    evidence: "Reviewed hub coverage pattern",
     planningOutput: "Hub coverage update for review",
   },
   {
@@ -104,7 +104,7 @@ export const humanReviewQueue: HumanReviewQueueItem[] = [
     reviewNeed: "Confirm report controls before county-facing output is prepared.",
     status: "Human review",
     reviewer: "Reporting and Evidence Support",
-    evidence: "Mock action queue",
+    evidence: "Reviewed action queue",
     planningOutput: "County access report draft",
   },
 ] as const;
