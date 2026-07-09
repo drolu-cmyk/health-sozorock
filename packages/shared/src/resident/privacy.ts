@@ -2,9 +2,7 @@ import type { DataClassification } from "./types";
 
 export const privacyBoundaryText = [
   "No PHI. Consent-based. Non-clinical.",
-  "We do not diagnose.",
-  "We do not treat.",
-  "We do not prescribe.",
+  "We do not give medical advice.",
   "We do not replace licensed care.",
   "You control what you choose to share.",
 ] as const;
@@ -19,7 +17,7 @@ export const privacyExplanations = {
   zip:
     "ZIP code search can help find nearby hubs or events without location sharing.",
   notRequired:
-    "Name, phone, email, address, symptoms, diagnosis, insurance, appointment details, and provider relationship are not required for basic app use.",
+    "Name, phone, email, address, symptoms, insurance, visit details, and provider relationship are not required for basic app use.",
 } as const;
 
 export const dataClassification: DataClassification[] = [

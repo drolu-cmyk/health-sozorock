@@ -10,7 +10,7 @@ export function Footer() {
         <div>
           <BrandIdentity showPromise={false} />
           <p className="text-sm font-semibold text-foundation-950">
-            {brand.programName} is a program of {brand.foundationName}.
+            {brand.programName} is a program of {brand.foundationName}
           </p>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-foundation-700">
             {brand.providerPathway}

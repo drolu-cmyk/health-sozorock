@@ -12,7 +12,20 @@ npm run dev
 npm run verify
 ```
 
-Open `http://localhost:3000` and use `/resident` for the resident app journey.
+Open `http://localhost:3000` to use the resident app journey.
+
+Production-style local QA:
+
+```bash
+npm run build
+npx next start -p 3031
+node scripts/qa-resident-app.mjs
+```
+
+The QA harness signs up as `Olu`, logs in, searches by ZIP/city/county, checks
+Voice Access consent gates, prepares the support flow, signs out, checks mobile
+width, scans public copy, and verifies client bundles do not expose provider
+keys.
 
 SozoRock Health is a non-clinical health access intelligence and activation program of The SozoRock Foundation, Inc.
 
@@ -57,7 +70,7 @@ Institutional modules:
 
 **No PHI. Consent-based. Non-clinical.**
 
-SozoRock Health does not provide diagnosis, treatment, clinical triage, prescriptions, medical advice, or provider-patient services.
+SozoRock Health does not give medical advice or replace licensed care.
 
 ## Provider pathway language
 
@@ -121,6 +134,7 @@ Controlled public web launch uses the Next.js dynamic runtime.
 Active runtime paths:
 
 - `src/app/api/access/search/route.ts`
+- `src/app/api/account/session/route.ts`
 - `src/app/api/ai/guidance/route.ts`
 - `src/app/api/support/route.ts`
 - `src/app/api/voice/session/route.ts`
@@ -138,6 +152,25 @@ Deployment posture:
 - Provider keys and privileged credentials stay server-side.
 - Voice Access is visible but gated by permission, readiness, support, rate-limit, cost, logging, and provider controls.
 - ZIP, city, and county search remains available without microphone or location access.
+
+## QA media
+
+Production QA screenshots are written to `artifacts/qa/` by:
+
+```bash
+node scripts/qa-resident-app.mjs
+```
+
+Create a short X-ready MP4 from those screenshots:
+
+```bash
+FFMPEG_PATH=/path/to/ffmpeg node scripts/create-x-video.mjs
+```
+
+Output: `artifacts/video/sozorock-health-x-demo.mp4`.
+
+Recommended X posting format: MP4/H.264, HD landscape, around 15-30 seconds,
+with visible on-screen text because timeline autoplay is often muted.
 
 Controlled public launch remains valid only when these boundaries stay true:
 
