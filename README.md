@@ -1,5 +1,19 @@
 # SozoRock Health
 
+## TL;DR
+
+SozoRock Health is a dynamic, AI-native, non-clinical health access app for helping residents move from uncertainty to a clear next step. It supports access search, guided text, Voice Access readiness, provider-readiness preparation, Health Access Day and Health Equity Hub discovery, and support/contact pathways while keeping privileged provider credentials server-side.
+
+Quick start:
+
+```bash
+npm install
+npm run dev
+npm run verify
+```
+
+Open `http://localhost:3000` and use `/resident` for the resident app journey.
+
 SozoRock Health is a non-clinical health access intelligence and activation program of The SozoRock Foundation, Inc.
 
 It helps underserved communities turn hidden access barriers into visible action through trusted access points, Voice Access, Health Access Day, Health Equity Hubs, provider-led pathways, workforce capacity, and county operating intelligence.
