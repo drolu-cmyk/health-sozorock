@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Footer } from "@/components/footer";
-import { SiteHeader } from "@/components/site-header";
 import { brand } from "@/lib/brand";
 
 export const metadata: Metadata = {
@@ -45,11 +43,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
-      <body>
-        <SiteHeader />
-        <main>{children}</main>
-        <Footer />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

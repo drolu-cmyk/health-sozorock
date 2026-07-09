@@ -42,11 +42,11 @@ Confirm:
 
 - Amplify live URL loads
 - `/resident` loads
-- `/county` loads
-- `/about-model` loads
+- `/county` loads by direct URL
+- `/about-model` redirects to `/resident`
 - page returns a successful response
 - deployed commit matches the expected release checkpoint
-- no unexpected redirect appears
+- no unexpected redirect appears outside the intended `/about-model` to `/resident` redirect
 - no hosting or infrastructure details appear in resident-facing copy
 
 ## Resident App Checks
@@ -117,7 +117,9 @@ Stop verification and report if:
 
 - Amplify build publishes `out` instead of `.next`
 - live URL does not load
-- `/resident`, `/county`, or `/about-model` no longer loads
+- `/resident` no longer loads
+- `/county` direct operator route no longer loads
+- `/about-model` stops redirecting to `/resident`
 - required boundary language is missing
 - Voice Access returns a provider session without consent and readiness
 - AI guidance provides diagnosis, treatment, prescribing, triage, medication advice, clinical planning, or emergency response

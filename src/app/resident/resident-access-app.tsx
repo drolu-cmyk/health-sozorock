@@ -5,8 +5,6 @@ import type { AccessRecord } from "@/lib/access-directory";
 import { brand } from "@/lib/brand";
 import {
   healthAccessDayEvents,
-  healthAccessDayInfoActions,
-  providerPathwayActions,
   residentHubExamples,
 } from "@/lib/resident-data";
 import { voiceAccessSafetyCopy } from "@/lib/voice-access-data";
@@ -18,7 +16,15 @@ type NeedKey =
   | "voice-access"
   | "provider-readiness";
 
-type AppScreen = "start" | "find" | "voice" | "prepare" | "hubs" | "support";
+type AppScreen =
+  | "start"
+  | "find"
+  | "voice"
+  | "prepare"
+  | "hubs"
+  | "support"
+  | "saved"
+  | "settings";
 type AuthMode = "signup" | "login";
 type StepStatus = AccessRecord["status"];
 
@@ -74,6 +80,8 @@ const profileStorageKey = "sozorock-health-resident-profiles";
 const savedStepStorageKey = "sozorock-health-next-step";
 const publicBoundary =
   "SozoRock Health does not give medical advice or replace licensed care.";
+const accessFallback =
+  "The app works without microphone or location access.";
 
 const appScreens: Array<{
   description: string;
@@ -109,6 +117,16 @@ const appScreens: Array<{
     description: "Request support when the app cannot help.",
     key: "support",
     label: "Support",
+  },
+  {
+    description: "Review the step you saved.",
+    key: "saved",
+    label: "Saved",
+  },
+  {
+    description: "Review privacy, consent, and sign out.",
+    key: "settings",
+    label: "Settings",
   },
 ];
 
@@ -194,6 +212,110 @@ const statusClass: Record<StepStatus, string> = {
   ready: "border-access-600/40 bg-access-100 text-access-700",
 };
 
+const appIcons: Record<AppScreen, string> = {
+  find: "search",
+  hubs: "hub",
+  prepare: "check",
+  saved: "saved",
+  settings: "settings",
+  start: "home",
+  support: "heart",
+  voice: "voice",
+};
+
+const needIcons: Record<NeedKey, string> = {
+  "digital-readiness": "check",
+  "health-access-day": "calendar",
+  "local-support": "pin",
+  "provider-readiness": "saved",
+  "voice-access": "voice",
+};
+
+function AppIcon({
+  name,
+  className = "",
+}: {
+  className?: string;
+  name: string;
+}) {
+  const common = {
+    className,
+    fill: "none",
+    stroke: "currentColor",
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    strokeWidth: 2,
+    viewBox: "0 0 24 24",
+  };
+
+  const paths: Record<string, React.ReactNode> = {
+    calendar: (
+      <>
+        <path d="M7 3v4" />
+        <path d="M17 3v4" />
+        <path d="M4 9h16" />
+        <rect height="17" rx="4" width="16" x="4" y="5" />
+      </>
+    ),
+    check: (
+      <>
+        <path d="M9 12l2 2 4-5" />
+        <rect height="18" rx="5" width="16" x="4" y="3" />
+      </>
+    ),
+    heart: (
+      <path d="M20 8.5c0 5-8 9.5-8 9.5s-8-4.5-8-9.5A4.5 4.5 0 0 1 12 5a4.5 4.5 0 0 1 8 3.5Z" />
+    ),
+    home: (
+      <>
+        <path d="M4 11.5 12 5l8 6.5" />
+        <path d="M6.5 10.5V19h11v-8.5" />
+        <path d="M10 19v-5h4v5" />
+      </>
+    ),
+    hub: (
+      <>
+        <path d="M4 20h16" />
+        <path d="M7 20V8l5-3 5 3v12" />
+        <path d="M10 11h4" />
+        <path d="M10 15h4" />
+      </>
+    ),
+    pin: (
+      <>
+        <path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11Z" />
+        <circle cx="12" cy="10" r="2.5" />
+      </>
+    ),
+    saved: (
+      <path d="M7 4h10a1 1 0 0 1 1 1v16l-6-3-6 3V5a1 1 0 0 1 1-1Z" />
+    ),
+    search: (
+      <>
+        <circle cx="10.5" cy="10.5" r="5.5" />
+        <path d="m15 15 5 5" />
+      </>
+    ),
+    settings: (
+      <>
+        <circle cx="12" cy="12" r="3" />
+        <path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.4 1a7 7 0 0 0-1.7-1L14.5 3h-5l-.3 3.1a7 7 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.5a7 7 0 0 0 0 2l-2 1.5 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.3 3.1h5l.3-3.1a7 7 0 0 0 1.7-1l2.4 1 2-3.4-2-1.5a7 7 0 0 0 .1-1Z" />
+      </>
+    ),
+    voice: (
+      <>
+        <path d="M4 12v0" />
+        <path d="M8 8v8" />
+        <path d="M12 5v14" />
+        <path d="M16 8v8" />
+        <path d="M20 12v0" />
+      </>
+    ),
+  };
+
+  return <svg {...common}>{paths[name] ?? paths.home}</svg>;
+}
+
 function escapeRegExp(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
@@ -256,7 +378,7 @@ export function ResidentAccessApp() {
   const hasSpeechRecognition =
     typeof window !== "undefined" &&
     Boolean(window.SpeechRecognition ?? window.webkitSpeechRecognition);
-  const firstName = session?.name.split(" ")[0] || "Resident";
+  const firstName = session?.name.split(" ")[0] || "Olu";
 
   useEffect(() => {
     window.__sozorockHealthReady = true;
@@ -599,45 +721,59 @@ export function ResidentAccessApp() {
 
   if (!session) {
     return (
-      <main className="min-h-screen bg-surface text-foundation-950">
-        <section className="mx-auto grid min-h-screen max-w-7xl gap-6 px-5 py-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-          <div className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-7">
-            <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
-              SozoRock Health
-            </p>
-            <h1 className="mt-4 text-4xl font-bold tracking-normal sm:text-6xl">
-              {brand.promise}
-            </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-foundation-700">
-              SozoRock Health helps residents understand what support they may
-              need, find trusted access points, prepare for provider-led care,
-              and move from uncertainty to a clear next step.
-            </p>
-            <p className="mt-5 rounded-lg border border-line bg-surface p-4 text-sm font-bold leading-6 text-foundation-900">
-              {brand.trustBoundary} {publicBoundary}
-            </p>
-            <div className="mt-6 grid gap-3 sm:grid-cols-3">
-              {["Start", "Find access", "Talk or type"].map((item) => (
-                <span
-                  className="rounded-lg border border-line bg-surface px-4 py-3 text-sm font-bold text-foundation-900"
-                  key={item}
-                >
-                  {item}
-                </span>
-              ))}
+      <main className="min-h-screen bg-white text-foundation-950">
+        <section className="mx-auto grid min-h-screen max-w-6xl gap-6 px-5 py-6 lg:grid-cols-[0.9fr_1fr] lg:items-center">
+          <div className="relative overflow-hidden rounded-[2rem] bg-foundation-950 p-8 text-white shadow-2xl shadow-foundation-950/20 sm:p-10">
+            <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-access-600/25 to-transparent" />
+            <div className="relative">
+              <p className="text-base font-bold tracking-normal">
+                SozoRock Health
+              </p>
+              <h1 className="mt-10 max-w-xl text-4xl font-bold leading-tight tracking-normal sm:text-6xl">
+                {brand.promise}
+              </h1>
+              <p className="mt-5 max-w-lg text-lg leading-8 text-blue-100">
+                Find a clear next step for care access, readiness, and support.
+              </p>
+              <div className="mt-10 rounded-2xl border border-white/15 bg-white/8 p-5 backdrop-blur">
+                <p className="text-lg font-bold">
+                  Not a clinic. Not a provider.
+                </p>
+                <p className="mt-1 text-lg font-bold">
+                  No medical decisions or care plans.
+                </p>
+                <p className="mt-4 text-sm leading-6 text-blue-100">
+                  Search by ZIP code, city, or county. Type instead of using the
+                  microphone. Ask support for help when the app cannot find the
+                  right path.
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-7">
+          <div className="rounded-[2rem] border border-line bg-white p-5 shadow-2xl shadow-foundation-950/10 sm:p-8">
+            <div className="mb-8 flex items-center justify-between gap-4">
+              <div>
+                <p className="text-sm font-bold text-access-700">
+                  Resident app
+                </p>
+                <h2 className="mt-1 text-3xl font-bold">
+                  {authMode === "signup" ? "Create account" : "Welcome back"}
+                </h2>
+              </div>
+              <span className="rounded-full border border-line px-4 py-2 text-sm font-bold text-foundation-700">
+                English
+              </span>
+            </div>
             <div
               aria-label="Choose account action"
-              className="grid rounded-lg border border-line bg-surface p-1 sm:grid-cols-2"
+              className="grid rounded-2xl border border-line bg-surface p-1 sm:grid-cols-2"
               role="tablist"
             >
               {(["signup", "login"] as const).map((mode) => (
                 <button
                   aria-selected={authMode === mode}
-                  className={`min-h-11 rounded-lg px-4 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2 ${
+                  className={`min-h-12 rounded-xl px-4 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2 ${
                     authMode === mode
                       ? "bg-foundation-950 text-white"
                       : "text-foundation-800 hover:bg-white"
@@ -667,7 +803,7 @@ export function ResidentAccessApp() {
                   Name or initials
                   <input
                     autoComplete="name"
-                    className="min-h-12 rounded-lg border border-line px-4 text-base font-normal outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
+                    className="min-h-14 rounded-2xl border border-line px-4 text-base font-normal outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
                     data-testid="auth-name"
                     name="name"
                     onChange={(event) => setAuthName(event.target.value)}
@@ -680,7 +816,7 @@ export function ResidentAccessApp() {
                 Email
                 <input
                   autoComplete="email"
-                  className="min-h-12 rounded-lg border border-line px-4 text-base font-normal outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
+                  className="min-h-14 rounded-2xl border border-line px-4 text-base font-normal outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
                   data-testid="auth-email"
                   name="email"
                   onChange={(event) => setAuthEmail(event.target.value)}
@@ -695,7 +831,7 @@ export function ResidentAccessApp() {
                   autoComplete={
                     authMode === "signup" ? "new-password" : "current-password"
                   }
-                  className="min-h-12 rounded-lg border border-line px-4 text-base font-normal outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
+                  className="min-h-14 rounded-2xl border border-line px-4 text-base font-normal outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
                   data-testid="auth-passcode"
                   minLength={6}
                   name="passcode"
@@ -709,7 +845,7 @@ export function ResidentAccessApp() {
                 ZIP code, city, or county
                 <input
                   autoComplete="postal-code"
-                  className="min-h-12 rounded-lg border border-line px-4 text-base font-normal outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
+                  className="min-h-14 rounded-2xl border border-line px-4 text-base font-normal outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
                   data-testid="auth-zip"
                   name="zip"
                   onChange={(event) => setAuthZip(event.target.value)}
@@ -718,7 +854,7 @@ export function ResidentAccessApp() {
                 />
               </label>
               <button
-                className="min-h-12 rounded-lg bg-foundation-950 px-5 text-sm font-bold text-white hover:bg-foundation-800 focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2 disabled:opacity-60"
+                className="min-h-14 rounded-2xl bg-foundation-950 px-5 text-base font-bold text-white shadow-lg shadow-foundation-950/15 hover:bg-foundation-800 focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2 disabled:opacity-60"
                 data-testid="auth-submit"
                 disabled={authBusy || !isHydrated}
                 type="submit"
@@ -733,7 +869,7 @@ export function ResidentAccessApp() {
               </button>
               {authMessage ? (
                 <p
-                  className="rounded-lg border border-line bg-surface p-3 text-sm font-semibold text-foundation-800"
+                  className="rounded-2xl border border-line bg-surface p-3 text-sm font-semibold text-foundation-800"
                   role="status"
                 >
                   {authMessage}
@@ -741,14 +877,9 @@ export function ResidentAccessApp() {
               ) : null}
             </form>
 
-            <div className="mt-6 grid gap-3 rounded-lg border border-line bg-access-100 p-4 text-sm leading-6 text-access-700">
-              <p className="font-bold">What happens next?</p>
-              <p>
-                You enter a private resident workspace, choose your need, search
-                by ZIP code, city, or county, use guided text, request support,
-                and sign out when finished.
-              </p>
-            </div>
+            <p className="mt-6 text-center text-sm leading-6 text-foundation-700">
+              {publicBoundary} {accessFallback}
+            </p>
           </div>
         </section>
       </main>
@@ -756,87 +887,151 @@ export function ResidentAccessApp() {
   }
 
   return (
-    <main className="min-h-screen bg-surface text-foundation-950">
-      <header className="sticky top-0 z-20 border-b border-line bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
+    <main className="min-h-screen bg-white text-foundation-950">
+      <div className="mx-auto grid min-h-screen max-w-[1440px] lg:grid-cols-[280px_1fr]">
+        <aside className="hidden bg-foundation-950 p-6 text-white lg:flex lg:flex-col">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
-              SozoRock Health
+            <p className="text-2xl font-bold leading-tight">
+              SozoRock
+              <br />
+              Health
             </p>
-            <h1 className="text-2xl font-bold">Welcome, {firstName}</h1>
+            <p className="mt-2 text-sm font-semibold text-blue-100">
+              {brand.promise}
+            </p>
           </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-lg border border-line bg-surface px-3 py-2 text-xs font-bold text-foundation-800">
-              {brand.trustBoundary}
-            </span>
-            <button
-              className="min-h-11 rounded-lg border border-foundation-800 px-4 text-sm font-bold text-foundation-950 hover:bg-surface focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
-              onClick={signOut}
-              type="button"
-            >
-              Sign out
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div className="mx-auto grid max-w-7xl gap-5 px-5 py-5 lg:grid-cols-[280px_1fr]">
-        <aside className="h-fit rounded-lg border border-line bg-white p-3 shadow-sm lg:sticky lg:top-24">
           <nav
             aria-label="Resident app screens"
-            className="grid grid-cols-3 gap-2 lg:grid-cols-1"
+            className="mt-10 grid gap-2"
           >
             {appScreens.map((screen) => (
               <button
                 aria-label={`Open ${screen.label}`}
-                className={`rounded-lg px-4 py-3 text-left text-sm font-bold focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2 ${
+                className={`flex min-h-14 items-center gap-3 rounded-2xl px-4 text-left text-base font-bold focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2 ${
                   activeScreen === screen.key
-                    ? "bg-foundation-950 text-white"
-                    : "text-foundation-800 hover:bg-surface"
+                    ? "bg-white/12 text-white shadow-lg shadow-black/15"
+                    : "text-blue-100 hover:bg-white/8 hover:text-white"
                 }`}
                 key={screen.key}
                 onClick={() => setActiveScreen(screen.key)}
                 type="button"
               >
-                <span className="block">{screen.label}</span>
-                <span
-                  className={`mt-1 hidden text-xs font-semibold sm:block ${
-                    activeScreen === screen.key
-                      ? "text-access-100"
-                      : "text-foundation-700"
-                  }`}
-                >
-                  {screen.description}
+                <span className="grid size-9 place-items-center rounded-xl border border-white/15 bg-white/8">
+                  <AppIcon className="size-5" name={appIcons[screen.key]} />
                 </span>
+                <span>{screen.label}</span>
               </button>
             ))}
           </nav>
+
+          <div className="mt-auto rounded-3xl border border-white/15 bg-white/8 p-5">
+            <p className="text-base font-bold">Not a clinic.</p>
+            <p className="text-base font-bold">Not a provider.</p>
+            <p className="mt-2 text-sm leading-6 text-blue-100">
+              {brand.trustBoundary} Your information is private and secure.
+            </p>
+          </div>
         </aside>
 
-        <section className="grid gap-5">
-          <article className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
-            <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-              <div>
-                <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
-                  Your access journey
-                </p>
-                <h2 className="mt-2 text-3xl font-bold">{brand.promise}</h2>
-                <p className="mt-3 max-w-3xl leading-7 text-foundation-700">
-                  Choose what you need today. The app shows what you can use now,
-                  what needs permission, and what to do next. The app works without microphone or location access.
-                </p>
-              </div>
+        <section className="grid gap-5 px-5 py-5 sm:px-8 lg:px-10">
+          <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm font-bold text-access-700">
+                SozoRock Health
+              </p>
+              <h1 className="mt-1 text-3xl font-bold tracking-normal sm:text-4xl">
+                Welcome, {firstName}
+              </h1>
+            </div>
+            <div className="flex items-center gap-3">
               <button
-                className="min-h-11 rounded-lg bg-foundation-950 px-4 text-sm font-bold text-white hover:bg-foundation-800 focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
-                onClick={saveNextStep}
+                className="hidden min-h-11 rounded-full border border-line px-4 text-sm font-bold text-foundation-800 hover:bg-surface focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2 sm:inline-flex sm:items-center"
+                onClick={() => setActiveScreen("support")}
                 type="button"
               >
-                Save my next step
+                Request support
               </button>
+              <button
+                className="min-h-11 rounded-full border border-line px-4 text-sm font-bold text-foundation-800 hover:bg-surface focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
+                onClick={signOut}
+                type="button"
+              >
+                Sign out
+              </button>
+            </div>
+          </header>
+
+          <nav
+            aria-label="Resident app screens"
+            className="grid grid-cols-3 gap-2 lg:hidden"
+          >
+            {appScreens.map((screen) => (
+              <button
+                className={`min-h-12 rounded-2xl px-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2 ${
+                  activeScreen === screen.key
+                    ? "bg-foundation-950 text-white"
+                    : "border border-line bg-white text-foundation-800"
+                }`}
+                key={screen.key}
+                onClick={() => setActiveScreen(screen.key)}
+                type="button"
+              >
+                {screen.label}
+              </button>
+            ))}
+          </nav>
+
+          <article className="relative overflow-hidden rounded-[2rem] border border-line bg-gradient-to-br from-white via-white to-access-100/50 p-5 shadow-xl shadow-foundation-950/5 sm:p-8">
+            <div className="relative grid gap-6 xl:grid-cols-[1fr_320px] xl:items-end">
+              <div>
+                <h2 className="text-3xl font-bold tracking-normal sm:text-4xl">
+                  What do you need today?
+                </h2>
+                <p className="mt-3 max-w-2xl text-base leading-7 text-foundation-700">
+                  Search by ZIP code, city, or county. We will show the clearest
+                  next step we can find.
+                </p>
+                <label className="mt-6 grid gap-2 text-sm font-bold text-foundation-950">
+                  Search by ZIP code, city, or county
+                  <div className="flex flex-col gap-3 sm:flex-row">
+                    <input
+                      className="min-h-14 flex-1 rounded-2xl border border-line bg-white px-4 text-base font-normal outline-none shadow-sm focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
+                      onChange={(event) => setQuery(event.target.value)}
+                      type="search"
+                      value={query}
+                    />
+                    <button
+                      className="min-h-14 rounded-2xl bg-access-700 px-7 text-base font-bold text-white shadow-lg shadow-access-700/20 hover:bg-access-600 focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
+                      onClick={() => setActiveScreen("find")}
+                      type="button"
+                    >
+                      Search
+                    </button>
+                  </div>
+                </label>
+              </div>
+              <div className="rounded-3xl border border-access-600/20 bg-white/80 p-5 shadow-sm backdrop-blur">
+                <p className="text-sm font-bold text-access-700">
+                  Guided next step
+                </p>
+                  <p className="mt-2 text-base font-bold text-foundation-950">
+                  {results[0]?.label ?? "Search first, then choose a next step."}
+                </p>
+                <p className="mt-2 text-sm leading-6 text-foundation-700">
+                  {isGuidanceLoading ? "Preparing guidance..." : guidance}
+                </p>
+                <button
+                  className="mt-4 min-h-11 w-full rounded-2xl bg-foundation-950 px-4 text-sm font-bold text-white hover:bg-foundation-800 focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
+                  onClick={saveNextStep}
+                  type="button"
+                >
+                  Save my next step
+                </button>
+              </div>
             </div>
             {savedStep ? (
               <p
-                className="mt-4 rounded-lg border border-access-600/30 bg-access-100 p-3 text-sm font-bold text-access-700"
+                className="mt-5 rounded-2xl border border-access-600/30 bg-access-100 p-3 text-sm font-bold text-access-700"
                 role="status"
               >
                 Saved: {savedStep}
@@ -845,201 +1040,281 @@ export function ResidentAccessApp() {
           </article>
 
           {activeScreen === "start" ? (
-            <article className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
-              <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
-                Start
-              </p>
-              <h2 className="mt-3 text-2xl font-bold">
-                What do you need today?
-              </h2>
-              <div className="mt-5 grid gap-3 md:grid-cols-2">
+            <article className="grid gap-5 xl:grid-cols-[1fr_0.9fr]">
+              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+                <h2 className="text-2xl font-bold">Choose one path</h2>
+                <p className="mt-2 text-sm leading-6 text-foundation-700">
+                  Start with the thing you need now. You can switch anytime.
+                </p>
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 {needs.map((need) => (
                   <button
-                    className={`rounded-lg border p-4 text-left focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2 ${
+                    className={`min-h-32 rounded-3xl border p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2 ${
                       selectedNeed === need.key
-                        ? "border-access-600 bg-access-100"
-                        : "border-line bg-surface hover:bg-white"
+                        ? "border-access-600 bg-access-100 shadow-sm"
+                        : "border-line bg-white hover:-translate-y-0.5 hover:shadow-md"
                     }`}
                     key={need.key}
                     onClick={() => chooseNeed(need.key)}
                     type="button"
                   >
+                    <span className="mb-4 grid size-10 place-items-center rounded-2xl bg-foundation-950 text-white">
+                      <AppIcon className="size-5" name={needIcons[need.key]} />
+                    </span>
                     <span className="block text-base font-bold text-foundation-950">
                       {need.label}
-                    </span>
-                    <span className="mt-2 block text-sm leading-6 text-foundation-700">
-                      {need.description}
                     </span>
                     <span className="mt-3 block text-sm font-bold text-access-700">
                       {need.nextStep}
                     </span>
                   </button>
                 ))}
+                </div>
               </div>
-              <div className="mt-5 rounded-lg border border-line bg-surface p-4">
-                <p className="text-sm font-bold text-foundation-950">
-                  Guided next step
-                </p>
-                <p className="mt-2 text-sm leading-6 text-foundation-700">
-                  {isGuidanceLoading ? "Preparing guidance..." : guidance}
-                </p>
+
+              <div className="grid gap-5">
+                <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+                  <div className="flex items-center justify-between gap-4">
+                    <h2 className="text-2xl font-bold">Voice Access</h2>
+                    <span className="rounded-full border border-signal-600/25 bg-signal-100 px-3 py-1 text-xs font-bold text-signal-600">
+                      Requires permission
+                    </span>
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-foundation-700">
+                    Voice is optional. The app works with guided text.
+                  </p>
+                  <div className="mt-4 grid gap-3">
+                    <button
+                      className="min-h-12 rounded-2xl bg-foundation-950 px-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
+                      onClick={() => setActiveScreen("voice")}
+                      type="button"
+                    >
+                      Start talking
+                    </button>
+                    <button
+                      className="min-h-12 rounded-2xl border border-line px-4 text-sm font-bold text-foundation-950 focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
+                      onClick={() => setActiveScreen("voice")}
+                      type="button"
+                    >
+                      Type instead
+                    </button>
+                  </div>
+                </div>
+
+                <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+                  <h2 className="text-2xl font-bold">Support</h2>
+                  <p className="mt-3 text-sm leading-6 text-foundation-700">
+                    If the app cannot help, ask a person to review your request.
+                  </p>
+                  <button
+                    className="mt-4 min-h-12 w-full rounded-2xl bg-access-700 px-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
+                    onClick={() => setActiveScreen("support")}
+                    type="button"
+                  >
+                    Request support
+                  </button>
+                </div>
               </div>
             </article>
           ) : null}
 
           {activeScreen === "find" ? (
-            <article className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
-              <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
-                Search by ZIP code
-              </p>
-              <h2 className="mt-3 text-2xl font-bold">
-                Find access by ZIP code, city, or county.
-              </h2>
-              <label className="mt-5 grid gap-2 text-sm font-bold text-foundation-950">
-                Search
-                <input
-                  className="min-h-12 rounded-lg border border-line bg-white px-4 text-base font-normal outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
-                  onChange={(event) => setQuery(event.target.value)}
-                  type="search"
-                  value={query}
-                />
-              </label>
-              <p className="mt-3 text-sm font-semibold text-foundation-700">
-                {isSearching
-                  ? "Searching..."
-                  : results.length > 0
-                    ? `${results.length} access option${
-                        results.length === 1 ? "" : "s"
-                      } found.`
-                    : "We could not find a nearby access point yet."}
-              </p>
-              <div className="mt-5 grid gap-3">
-                {results.map((result) => (
-                  <div
-                    className="rounded-lg border border-line bg-surface p-4"
-                    key={result.id}
-                  >
-                    <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                      <div>
-                        <p className="text-base font-bold text-foundation-950">
-                          {result.label}
-                        </p>
-                        <p className="mt-1 text-sm text-foundation-700">
-                          {result.city}, {result.county} {result.zip}
-                        </p>
-                      </div>
-                      <span
-                        className={`w-fit rounded-lg border px-3 py-1 text-xs font-bold ${statusClass[result.status]}`}
-                      >
-                        {statusLabel[result.status]}
-                      </span>
-                    </div>
-                    <p className="mt-3 text-sm leading-6 text-foundation-700">
-                      {result.message}
+            <article className="grid gap-5 xl:grid-cols-[1fr_360px]">
+              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+                <div className="flex items-end justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-bold text-access-700">
+                      Search
                     </p>
-                    <p className="mt-3 text-sm font-semibold text-foundation-900">
-                      {result.hours}
-                    </p>
-                    <p className="mt-2 text-sm text-foundation-700">
-                      {result.support}
-                    </p>
+                    <h2 className="mt-2 text-2xl font-bold">
+                      Access near {query || "you"}
+                    </h2>
                   </div>
-                ))}
+                  <p className="text-sm font-bold text-foundation-700">
+                    {isSearching
+                      ? "Searching..."
+                      : results.length > 0
+                        ? `${results.length} found`
+                        : "No match yet"}
+                  </p>
+                </div>
+                <div className="mt-5 grid gap-3">
+                  {results.length > 0 ? (
+                    results.map((result) => (
+                      <button
+                        className="rounded-3xl border border-line bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
+                        key={result.id}
+                        onClick={() => {
+                          setSelectedNeed("local-support");
+                          setGuidance(result.message);
+                        }}
+                        type="button"
+                      >
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                          <div>
+                            <p className="text-base font-bold text-foundation-950">
+                              {result.label}
+                            </p>
+                            <p className="mt-1 text-sm text-foundation-700">
+                              {result.city}, {result.county} {result.zip}
+                            </p>
+                          </div>
+                          <span
+                            className={`w-fit rounded-full border px-3 py-1 text-xs font-bold ${statusClass[result.status]}`}
+                          >
+                            {statusLabel[result.status]}
+                          </span>
+                        </div>
+                        <p className="mt-3 text-sm leading-6 text-foundation-700">
+                          {result.message}
+                        </p>
+                        <p className="mt-3 text-sm font-bold text-access-700">
+                          {result.hours}
+                        </p>
+                      </button>
+                    ))
+                  ) : (
+                    <div className="rounded-3xl border border-line bg-surface p-6">
+                      <p className="text-base font-bold">
+                        We could not find a nearby access point yet.
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-foundation-700">
+                        You can still search by ZIP code, city, or county, or
+                        request support.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="rounded-[2rem] border border-access-600/20 bg-access-100 p-5 shadow-sm sm:p-6">
+                <h2 className="text-2xl font-bold">Your next step</h2>
+                <p className="mt-3 text-sm leading-6 text-foundation-800">
+                  {results[0]
+                    ? `Visit ${results[0].label}. ${results[0].support}`
+                    : "Search first. If nothing appears, request support."}
+                </p>
+                <button
+                  className="mt-5 min-h-12 w-full rounded-2xl bg-foundation-950 px-4 text-sm font-bold text-white"
+                  onClick={saveNextStep}
+                  type="button"
+                >
+                  Save my next step
+                </button>
               </div>
             </article>
           ) : null}
 
           {activeScreen === "voice" ? (
-            <article className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
-              <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
-                SozoRock Health Voice Access
-              </p>
-              <h2 className="mt-3 text-2xl font-bold">
-                Talk to Voice Access, or type instead.
-              </h2>
-              <p className="mt-4 leading-7 text-foundation-700">
-                {voiceAccessSafetyCopy.boundary} Guided text stays available if
-                voice is not available in your area yet.
-              </p>
-              <div className="mt-5 grid gap-4 rounded-lg border border-line bg-surface p-4">
-                <label className="flex min-h-12 items-start gap-3 text-sm font-bold text-foundation-900">
-                  <input
-                    checked={voiceConsent}
-                    className="mt-1 size-4 accent-access-700"
-                    onChange={(event) => setVoiceConsent(event.target.checked)}
-                    type="checkbox"
-                  />
-                  This option needs your permission before it can be used.
-                </label>
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <button
-                    className="min-h-11 rounded-lg bg-foundation-950 px-4 text-sm font-bold text-white hover:bg-foundation-800 focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
-                    onClick={startTalking}
-                    type="button"
-                  >
-                    {isListening ? "Listening..." : "Start talking"}
-                  </button>
-                  {isListening ? (
+            <article className="grid gap-5 xl:grid-cols-[1fr_360px]">
+              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <p className="text-sm font-bold text-signal-600">
+                      SozoRock Health Voice Access
+                    </p>
+                    <h2 className="mt-2 text-2xl font-bold">
+                      Talk, or type instead.
+                    </h2>
+                  </div>
+                  <span className="w-fit rounded-full border border-signal-600/25 bg-signal-100 px-3 py-1 text-xs font-bold text-signal-600">
+                    Requires permission
+                  </span>
+                </div>
+                <p className="mt-4 leading-7 text-foundation-700">
+                  {voiceAccessSafetyCopy.boundary} Guided text stays available
+                  if voice is not available in your area yet.
+                </p>
+                <div className="mt-5 grid gap-4">
+                  <label className="flex min-h-12 items-start gap-3 rounded-2xl border border-line bg-surface px-4 py-3 text-sm font-bold text-foundation-900">
+                    <input
+                      checked={voiceConsent}
+                      className="mt-1 size-4 accent-access-700"
+                      onChange={(event) => setVoiceConsent(event.target.checked)}
+                      type="checkbox"
+                    />
+                    This option needs your permission before it can be used.
+                  </label>
+                  <div className="grid gap-3 sm:grid-cols-3">
                     <button
-                      className="min-h-11 rounded-lg border border-foundation-800 px-4 text-sm font-bold text-foundation-950 hover:bg-white focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
-                      onClick={stopTalking}
+                      className="min-h-12 rounded-2xl bg-foundation-950 px-4 text-sm font-bold text-white hover:bg-foundation-800 focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
+                      onClick={startTalking}
                       type="button"
                     >
-                      Stop
+                      {isListening ? "Listening..." : "Start talking"}
                     </button>
+                    {isListening ? (
+                      <button
+                        className="min-h-12 rounded-2xl border border-foundation-800 px-4 text-sm font-bold text-foundation-950 hover:bg-white focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
+                        onClick={stopTalking}
+                        type="button"
+                      >
+                        Stop
+                      </button>
+                    ) : null}
+                    <button
+                      className="min-h-12 rounded-2xl border border-line px-4 text-sm font-bold text-foundation-950 hover:bg-surface focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
+                      onClick={requestVoiceAccess}
+                      type="button"
+                    >
+                      Check availability
+                    </button>
+                  </div>
+                  <label className="grid gap-2 text-sm font-bold text-foundation-950">
+                    Type instead
+                    <textarea
+                      className="min-h-36 rounded-3xl border border-line bg-white px-4 py-3 text-base font-normal leading-7 outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
+                      onChange={(event) => setTypedVoiceText(event.target.value)}
+                      value={typedVoiceText}
+                    />
+                  </label>
+                  {spokenText ? (
+                    <p className="text-sm font-semibold text-access-700">
+                      Speech captured: {spokenText}
+                    </p>
                   ) : null}
-                  <button
-                    className="min-h-11 rounded-lg border border-foundation-800 px-4 text-sm font-bold text-foundation-950 hover:bg-white focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
-                    onClick={requestVoiceAccess}
-                    type="button"
+                  <p
+                    className="rounded-2xl border border-line bg-surface p-3 text-sm font-semibold text-foundation-800"
+                    role="status"
                   >
-                    Check availability
-                  </button>
+                    {voiceMessage} The app works without microphone or location
+                    access.
+                  </p>
+                  {!hasSpeechRecognition ? (
+                    <p className="text-sm font-semibold text-foundation-700">
+                      You can continue with guided text.
+                    </p>
+                  ) : null}
                 </div>
-                <label className="grid gap-2 text-sm font-bold text-foundation-950">
-                  Type instead
-                  <textarea
-                    className="min-h-28 rounded-lg border border-line bg-white px-4 py-3 text-base font-normal leading-7 outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
-                    onChange={(event) => setTypedVoiceText(event.target.value)}
-                    value={typedVoiceText}
-                  />
-                </label>
-                {spokenText ? (
-                  <p className="text-sm font-semibold text-access-700">
-                    Speech captured: {spokenText}
-                  </p>
-                ) : null}
-                <p
-                  className="rounded-lg border border-line bg-white p-3 text-sm font-semibold text-foundation-800"
-                  role="status"
-                >
-                  {voiceMessage} The app works without microphone or location
-                  access.
+              </div>
+
+              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+                <h2 className="text-2xl font-bold">What voice can do</h2>
+                <ul className="mt-4 grid gap-3 text-sm leading-6 text-foundation-700">
+                  <li>Explain what you need in plain words.</li>
+                  <li>Help you prepare for provider-led care.</li>
+                  <li>Help you keep searching by ZIP code, city, or county.</li>
+                </ul>
+                <p className="mt-5 rounded-2xl border border-line bg-surface p-4 text-sm font-bold leading-6 text-foundation-900">
+                  SozoRock Health does not give medical advice or replace
+                  licensed care. {accessFallback}
                 </p>
-                {!hasSpeechRecognition ? (
-                  <p className="text-sm font-semibold text-foundation-700">
-                    You can continue with guided text.
-                  </p>
-                ) : null}
               </div>
             </article>
           ) : null}
 
           {activeScreen === "prepare" ? (
-            <article className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
-              <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
-                Visit checklist
+            <article className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+              <p className="text-sm font-bold text-access-700">
+                Prepare for your visit
               </p>
-              <h2 className="mt-3 text-2xl font-bold">
+              <h2 className="mt-2 text-2xl font-bold">
                 {brand.providerPathway}
               </h2>
-              <p className="mt-4 leading-7 text-foundation-700">
-                Providers keep their platforms. We help you get ready.
-              </p>
-              <div className="mt-5 grid gap-3">
+              <div className="mt-6 grid gap-3">
                 {readinessChecklist.map((item) => (
                   <label
-                    className="flex min-h-12 items-start gap-3 rounded-lg border border-line bg-surface px-4 py-3 text-sm font-bold text-foundation-900"
+                    className="flex min-h-12 items-start gap-3 rounded-2xl border border-line bg-white px-4 py-3 text-sm font-bold text-foundation-900 shadow-sm"
                     key={item}
                   >
                     <input
@@ -1052,115 +1327,82 @@ export function ResidentAccessApp() {
                   </label>
                 ))}
               </div>
-              <p className="mt-5 rounded-lg border border-line bg-access-100 p-4 text-sm font-semibold leading-6 text-access-700">
-                {completedItems.length} of {readinessChecklist.length} readiness
-                steps selected.
+              <p className="mt-5 rounded-2xl border border-access-600/30 bg-access-100 p-4 text-sm font-bold leading-6 text-access-700">
+                {completedItems.length} of {readinessChecklist.length} steps
+                selected.
               </p>
-              <div className="mt-5 grid gap-3 md:grid-cols-3">
-                {providerPathwayActions.map((action) => (
-                  <span
-                    className="rounded-lg border border-line bg-white px-4 py-3 text-sm font-bold text-foundation-900"
-                    key={action}
-                  >
-                    {action}
-                  </span>
-                ))}
-              </div>
             </article>
           ) : null}
 
           {activeScreen === "hubs" ? (
-            <article className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
-              <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
-                Health Access Days and Health Equity Hubs
-              </p>
-              <h2 className="mt-3 text-2xl font-bold">
-                See reviewed information and access points.
-              </h2>
-              <div className="mt-5 grid gap-4 lg:grid-cols-2">
-                <div className="rounded-lg border border-line bg-surface p-4">
-                  <p className="text-sm font-bold text-foundation-950">
-                    Health Access Day information
-                  </p>
-                  <div className="mt-4 grid gap-3">
-                    {healthAccessDayEvents.map((event) => (
-                      <div
-                        className="rounded-lg border border-line bg-white p-4"
-                        key={`${event.title}-${event.date}`}
-                      >
-                        <p className="font-bold">{event.title}</p>
-                        <p className="mt-1 text-sm text-foundation-700">
-                          {event.date}, {event.time}
-                        </p>
-                        <p className="mt-1 text-sm text-foundation-700">
-                          {event.location}
-                        </p>
-                        <p className="mt-2 text-sm leading-6 text-foundation-700">
-                          {event.support}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-4 grid gap-2">
-                    {healthAccessDayInfoActions.map((action) => (
-                      <span
-                        className="rounded-lg border border-line bg-white px-4 py-3 text-sm font-bold"
-                        key={action}
-                      >
-                        {action}
-                      </span>
-                    ))}
-                  </div>
+            <article className="grid gap-5 xl:grid-cols-2">
+              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+                <h2 className="text-2xl font-bold">
+                  Health Access Day information
+                </h2>
+                <div className="mt-5 grid gap-3">
+                  {healthAccessDayEvents.map((event) => (
+                    <div
+                      className="rounded-3xl border border-line bg-white p-4 shadow-sm"
+                      key={`${event.title}-${event.date}`}
+                    >
+                      <p className="font-bold">{event.title}</p>
+                      <p className="mt-1 text-sm text-foundation-700">
+                        {event.date}, {event.time}
+                      </p>
+                      <p className="mt-1 text-sm text-foundation-700">
+                        {event.location}
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-foundation-700">
+                        {event.support}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-                <div className="rounded-lg border border-line bg-surface p-4">
-                  <p className="text-sm font-bold text-foundation-950">
-                    Health Equity Hubs
-                  </p>
-                  <div className="mt-4 grid gap-3">
-                    {residentHubExamples.map((hub) => (
-                      <div
-                        className="rounded-lg border border-line bg-white p-4"
-                        key={hub.name}
-                      >
-                        <p className="font-bold">{hub.name}</p>
-                        <p className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-access-700">
-                          {hub.type}
-                        </p>
-                        <p className="mt-2 text-sm font-semibold">
-                          {hub.distance}
-                        </p>
-                        <p className="mt-2 text-sm text-foundation-700">
-                          {hub.hours}
-                        </p>
-                        <p className="mt-2 text-sm leading-6 text-foundation-700">
-                          {hub.support}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
+              </div>
+              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+                <h2 className="text-2xl font-bold">Health Equity Hubs</h2>
+                <div className="mt-5 grid gap-3">
+                  {residentHubExamples.map((hub) => (
+                    <div
+                      className="rounded-3xl border border-line bg-white p-4 shadow-sm"
+                      key={hub.name}
+                    >
+                      <p className="font-bold">{hub.name}</p>
+                      <p className="mt-1 text-sm font-bold text-access-700">
+                        {hub.type}
+                      </p>
+                      <p className="mt-2 text-sm text-foundation-700">
+                        {hub.distance} - {hub.hours}
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-foundation-700">
+                        {hub.support}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </article>
           ) : null}
 
           {activeScreen === "support" ? (
-            <article className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
-              <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
+            <article className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+              <p className="text-sm font-bold text-access-700">
                 Request support
               </p>
-              <h2 className="mt-3 text-2xl font-bold">
-                Ask for help when the app cannot find the right access point.
+              <h2 className="mt-2 text-2xl font-bold">
+                Ask for help when the app cannot find the right path.
               </h2>
               <form className="mt-5 grid gap-4" onSubmit={submitSupport}>
                 <label className="grid gap-2 text-sm font-bold text-foundation-950">
                   What should support understand?
                   <textarea
-                    className="min-h-28 rounded-lg border border-line bg-white px-4 py-3 text-base font-normal leading-7 outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
+                    className="min-h-36 rounded-3xl border border-line bg-white px-4 py-3 text-base font-normal leading-7 outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
                     onChange={(event) => setSupportMessage(event.target.value)}
                     value={supportMessage}
                   />
                 </label>
-                <label className="flex min-h-12 items-start gap-3 rounded-lg border border-line bg-surface px-4 py-3 text-sm font-bold text-foundation-900">
+                <label className="flex min-h-12 items-start gap-3 rounded-2xl border border-line bg-surface px-4 py-3 text-sm font-bold text-foundation-900">
                   <input
                     checked={supportConsent}
                     className="mt-1 size-4 accent-access-700"
@@ -1172,13 +1414,13 @@ export function ResidentAccessApp() {
                 </label>
                 <div className="flex flex-col gap-3 sm:flex-row">
                   <button
-                    className="min-h-11 rounded-lg bg-foundation-950 px-4 text-sm font-bold text-white hover:bg-foundation-800 focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
+                    className="min-h-12 rounded-2xl bg-foundation-950 px-4 text-sm font-bold text-white hover:bg-foundation-800 focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
                     type="submit"
                   >
                     Prepare support request
                   </button>
                   <a
-                    className="inline-flex min-h-11 items-center justify-center rounded-lg border border-foundation-800 px-4 text-sm font-bold text-foundation-950 hover:bg-white focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
+                    className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-line px-4 text-sm font-bold text-foundation-950 hover:bg-surface focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
                     href={`mailto:support@sozorockfoundation.org?subject=SozoRock%20Health%20support%20request&body=${encodeURIComponent(
                       supportMessage || "I need help with an access next step.",
                     )}`}
@@ -1198,12 +1440,103 @@ export function ResidentAccessApp() {
             </article>
           ) : null}
 
-          <article className="rounded-lg border border-line bg-white p-4 shadow-sm">
-            <p className="text-sm font-semibold leading-6 text-foundation-700">
-              You can continue with guided text. Search by ZIP code, city, or
-              county is always available.
-            </p>
-          </article>
+          {activeScreen === "saved" ? (
+            <article className="grid gap-5 xl:grid-cols-[1fr_360px]">
+              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+                <p className="text-sm font-bold text-access-700">
+                  Saved step
+                </p>
+                <h2 className="mt-2 text-2xl font-bold">
+                  Keep your next step easy to find.
+                </h2>
+                <div className="mt-6 rounded-3xl border border-access-600/25 bg-access-100 p-5">
+                  <p className="text-sm font-bold text-access-700">
+                    Current saved step
+                  </p>
+                  <p className="mt-2 text-lg font-bold text-foundation-950">
+                    {savedStep || `${selectedNeedConfig.label}: ${nextStep}`}
+                  </p>
+                </div>
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                  <button
+                    className="min-h-12 rounded-2xl bg-foundation-950 px-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
+                    onClick={saveNextStep}
+                    type="button"
+                  >
+                    Save my next step
+                  </button>
+                  <button
+                    className="min-h-12 rounded-2xl border border-line px-4 text-sm font-bold text-foundation-950 focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
+                    onClick={() => setActiveScreen("find")}
+                    type="button"
+                  >
+                    Search again
+                  </button>
+                </div>
+              </div>
+              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+                <h2 className="text-2xl font-bold">What to do next</h2>
+                <p className="mt-3 text-sm leading-6 text-foundation-700">
+                  Bring this step with you, ask support to review it, or update
+                  it after a new search.
+                </p>
+                <button
+                  className="mt-5 min-h-12 w-full rounded-2xl bg-access-700 px-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
+                  onClick={() => setActiveScreen("support")}
+                  type="button"
+                >
+                  Ask support
+                </button>
+              </div>
+            </article>
+          ) : null}
+
+          {activeScreen === "settings" ? (
+            <article className="grid gap-5 xl:grid-cols-[1fr_360px]">
+              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+                <p className="text-sm font-bold text-access-700">
+                  Settings and privacy
+                </p>
+                <h2 className="mt-2 text-2xl font-bold">
+                  You control how the app works.
+                </h2>
+                <div className="mt-6 grid gap-3">
+                  {[
+                    "The app works without microphone access.",
+                    "The app works without location access.",
+                    "Search by ZIP code, city, or county is always available.",
+                    "We do not sell your data.",
+                  ].map((item) => (
+                    <div
+                      className="rounded-2xl border border-line bg-surface p-4 text-sm font-bold text-foundation-900"
+                      key={item}
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+                <h2 className="text-2xl font-bold">Account</h2>
+                <p className="mt-3 text-sm leading-6 text-foundation-700">
+                  Signed in as {session.email}. Sign out when you are finished.
+                </p>
+                <button
+                  className="mt-5 min-h-12 w-full rounded-2xl bg-foundation-950 px-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
+                  onClick={signOut}
+                  type="button"
+                >
+                  Sign out
+                </button>
+              </div>
+            </article>
+          ) : null}
+
+          <footer className="flex flex-col gap-3 border-t border-line py-5 text-sm font-semibold text-foundation-700 sm:flex-row sm:items-center sm:justify-between">
+            <span>Your information is private and secure.</span>
+            <span>Search and guided text always stay available.</span>
+            <span>We do not sell your data.</span>
+          </footer>
         </section>
       </div>
     </main>

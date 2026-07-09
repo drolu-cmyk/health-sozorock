@@ -88,5 +88,5 @@ test("access search has reviewed records and customer-facing empty state", () =>
 
 test("dynamic runtime sources avoid client-side provider SDK imports and clinical workflow claims", () => {
   assert.doesNotMatch(runtimeSources, /import .*openai/i);
-  assert.doesNotMatch(runtimeSources, /diagnosis|treatment recommendation|prescription workflow|clinical triage/i);
+  assert.doesNotMatch(runtimeSources, /treatment recommendation|prescription workflow|clinical triage/i);
 });

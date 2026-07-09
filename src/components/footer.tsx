@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { AssuranceBadge } from "@/components/assurance-badge";
 import { BrandIdentity } from "@/components/brand-identity";
 import { brand } from "@/lib/brand";
@@ -18,12 +17,6 @@ export function Footer() {
         </div>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <AssuranceBadge />
-          <Link
-            className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-foundation-700 hover:bg-surface hover:text-foundation-950 focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
-            href="/about-model"
-          >
-            About the model
-          </Link>
         </div>
       </div>
     </footer>

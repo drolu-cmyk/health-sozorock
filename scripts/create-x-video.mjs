@@ -10,7 +10,11 @@ const screenshotNames = [
   "05-prepare.png",
   "06-hubs.png",
   "07-support.png",
-  "08-mobile-390.png",
+  "08-saved.png",
+  "09-settings.png",
+  "10-mobile-390.png",
+  "11-ios-mobile.png",
+  "12-android-mobile.png",
 ];
 
 const screenshotDir = resolve("artifacts/qa");

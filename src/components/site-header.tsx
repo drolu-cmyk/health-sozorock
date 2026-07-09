@@ -3,10 +3,8 @@ import { BrandIdentity } from "@/components/brand-identity";
 import { SiteNav } from "@/components/site-nav";
 
 const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/resident", label: "Resident app" },
-  { href: "/county", label: "County view" },
-  { href: "/about-model", label: "How it works" },
+  { href: "/", label: "Start" },
+  { href: "/resident", label: "Open app" },
 ];
 
 export function SiteHeader() {
