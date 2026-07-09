@@ -4,7 +4,7 @@ export const hubSearchOptions = [
   "Search by ZIP code",
   "Search by city",
   "Search by county",
-  "Location inactive in this version",
+  "Location requires your permission",
 ] as const;
 
 export const hubCards: HubCard[] = [
@@ -21,7 +21,7 @@ export const hubCards: HubCard[] = [
     accessSupport: ["Digital help", "Health Access Day information", "Provider platform readiness"],
     accessibilityNotes: "Accessible entrance and public computers available.",
     phoneOrWebsite: "Website available when live directory is enabled",
-    directionsLabel: "Directions will open after map provider setup.",
+    directionsLabel: "Directions are available soon.",
     verificationStatus: "Resource listing",
     lastUpdated: "2026-06-01",
     privacyNote: "No private health information is needed to browse this listing.",
@@ -42,7 +42,7 @@ export const hubCards: HubCard[] = [
     accessSupport: ["Community support", "Event information", "Digital readiness help"],
     accessibilityNotes: "Ground-level entrance and seating available.",
     phoneOrWebsite: "Contact details can be added after verification.",
-    directionsLabel: "Directions will open after map provider setup.",
+    directionsLabel: "Directions are available soon.",
     verificationStatus: "Resource listing",
     lastUpdated: "2026-06-01",
     privacyNote: "Browsing this listing does not create a profile.",
@@ -63,7 +63,7 @@ export const hubCards: HubCard[] = [
     accessSupport: ["Provider pathway preparation", "Digital help", "Community resource awareness"],
     accessibilityNotes: "Call ahead may be useful for accessibility details.",
     phoneOrWebsite: "Contact details can be added after verification.",
-    directionsLabel: "Directions will open after map provider setup.",
+    directionsLabel: "Directions are available soon.",
     verificationStatus: "Needs human review before public use",
     lastUpdated: "2026-06-01",
     privacyNote: "No diagnosis, treatment, or insurance information is requested.",

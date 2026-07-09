@@ -20,21 +20,21 @@ export type ConsentGate = {
 };
 
 const defaultFallbacks: Record<AdapterCapability, string> = {
-  voiceAccess: "Voice Access is not active in this version. You can continue with guided text support.",
-  aiGuidance: "AI guidance is not active in this version. You can continue with static access guidance.",
+  voiceAccess: "Voice Access is limited access. You can continue with guided text support.",
+  aiGuidance: "AI guidance is limited access. You can continue with guided text.",
   mapDiscovery:
-    "Map discovery is not active in this version. You can search by ZIP code, city, county, or use listed hub information when available.",
-  hubDirectory: "Live hub directory services are not active. You can use static hub information when available.",
-  geospatialPlanning: "Geospatial planning is not active. County planning remains static and review-only.",
+    "Map discovery requires your permission before it can be used. You can search by ZIP code, city, county, or use listed hub information when available.",
+  hubDirectory: "Expanded hub directory services are limited access. You can use reviewed hub information when available.",
+  geospatialPlanning: "Geospatial planning is limited access. County planning remains review-only.",
 };
 
 const defaultExplanations: Record<AdapterCapability, string> = {
   voiceAccess:
-    "Voice Access requires a future microphone consent review. The current shell does not capture audio.",
+    "Voice Access requires microphone consent review. The current shell does not capture audio.",
   aiGuidance:
-    "AI guidance requires future consent, safety review, and server-side adapter approval. Static guidance remains available.",
+    "AI guidance requires consent, safety review, and server-side adapter approval. Guided text remains available.",
   mapDiscovery:
-    "Map discovery requires future location consent and server-side adapter approval. ZIP, city, and county alternatives remain available.",
+    "Map discovery requires location consent and server-side adapter approval. ZIP, city, and county alternatives remain available.",
   hubDirectory:
     "Hub directory service access must remain non-clinical and must not imply formal partnership without review.",
   geospatialPlanning:
@@ -57,7 +57,7 @@ export function createConsentGate(input: {
     residentFacingExplanation: input.residentFacingExplanation ?? defaultExplanations[input.capability],
     fallback: input.fallback ?? defaultFallbacks[input.capability],
     storageMode: input.storageMode ?? "none",
-    lastUpdatedLabel: input.lastUpdatedLabel ?? "Issue 038 adapter shell",
+    lastUpdatedLabel: input.lastUpdatedLabel ?? "Controlled public launch adapter shell",
   };
 }
 

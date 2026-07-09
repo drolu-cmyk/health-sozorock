@@ -17,7 +17,7 @@ test("resident page keeps the locked trust boundary visible", () => {
 
 test("resident page keeps Voice Access static and non-clinical", () => {
   assert.match(residentPage, /voiceAccessSafetyCopy\.boundary/);
-  assert.match(residentPage, /voiceAccessSafetyCopy\.staticMode/);
+  assert.match(residentPage, /voiceAccessSafetyCopy\.serviceState/);
 });
 
 test("resident event labels avoid active signup and reminder language", () => {
@@ -25,7 +25,7 @@ test("resident event labels avoid active signup and reminder language", () => {
     `${residentData}\n${residentPage}`,
     /Register\s*\/\s*RSVP|Request Reminder|registration|notification|Messages|My info/i,
   );
-  assert.match(residentData, /No sign-up in prototype/);
+  assert.match(residentData, /No sign-up required to read/);
 });
 
 test("resident provider pathway keeps approved platform readiness language", () => {

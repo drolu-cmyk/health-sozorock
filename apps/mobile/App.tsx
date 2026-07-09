@@ -80,7 +80,7 @@ const adapterFallbackStates = {
 } as const;
 
 const residentPlanningFallback =
-  "Planning tools are not active in the resident app. Resident support remains limited to non-clinical access guidance.";
+  "Planning tools are limited access for approved operators. Resident support remains non-clinical access guidance.";
 
 export default function App() {
   const [activeScreen, setActiveScreen] = useState<ResidentScreenId>("home");
@@ -304,8 +304,8 @@ function VoiceScreen({
 
       <AdapterFallbackCard title="Voice Access" fallback={adapterFallbackStates.voiceAccess} />
       <StateCard title="No microphone capture" body={voiceInputProvider.boundary} />
-      <StateCard title="No audio storage" body="Raw audio is not stored in this version." />
-      <StateCard title="No transcript storage" body="Transcripts are not stored in this version." />
+      <StateCard title="No audio storage" body="Raw audio is not stored." />
+      <StateCard title="No transcript storage" body="Transcripts are not stored." />
 
       <View style={styles.voiceCircle}>
         <Text style={styles.voiceCircleText}>Text</Text>
@@ -313,7 +313,7 @@ function VoiceScreen({
 
       <View style={styles.rowWrap}>
         <ActionButton
-          accessibilityLabel="Use guided text support. Voice Access is inactive."
+          accessibilityLabel="Use guided text support while Voice Access is limited access."
           label="Use guided text"
           onPress={() => setMicrophonePermission("unavailable")}
           variant="primary"
@@ -325,7 +325,7 @@ function VoiceScreen({
           variant="secondary"
         />
         <ActionButton
-          accessibilityLabel="Choose a static Voice Access topic"
+          accessibilityLabel="Choose a Voice Access guided text topic"
           label="Choose topic"
           onPress={() => undefined}
           variant="secondary"
@@ -334,8 +334,8 @@ function VoiceScreen({
 
       {microphonePermission === "unavailable" ? (
         <StateCard
-          title="Voice Access inactive"
-          body="Voice Access is not active in this version. You can continue with guided text support."
+          title="Voice Access limited access"
+          body="Voice Access is limited access. You can continue with guided text support."
         />
       ) : null}
 
@@ -354,7 +354,7 @@ function VoiceScreen({
       <View style={styles.cardStack}>
         {voiceTopics.map((topic) => (
           <Pressable
-            accessibilityLabel={`Open static guidance topic: ${topic.label}`}
+            accessibilityLabel={`Open guided text topic: ${topic.label}`}
             key={topic.id}
             onPress={() => navigate(topic.id.includes("hub") ? "hubs" : "day")}
             style={styles.tapCard}
@@ -448,8 +448,8 @@ function HubsScreen({
       ) : null}
       {locationPermission === "unavailable" ? (
         <StateCard
-          title="Location unavailable state"
-          body="Location is not active in this version. You can search by ZIP code, city, or county."
+          title="Location requires permission"
+          body="This option needs your permission before it can be used. You can search by ZIP code, city, or county."
         />
       ) : null}
       <View style={styles.mapPlaceholder}>
@@ -458,7 +458,7 @@ function HubsScreen({
         <Text style={styles.mapText}>{adapterFallbackStates.mapDiscovery.residentSafeExplanation}</Text>
       </View>
       <StateCard title="Location fallback" body={locationProvider.fallbackOptions.join(" ")} />
-      <StateCard title="Planning tools inactive" body={residentPlanningFallback} />
+      <StateCard title="Planning tools limited access" body={residentPlanningFallback} />
       <View style={styles.cardStack}>
         {hubs.map((hub) => (
           <View key={hub.id} style={styles.tapCard}>
@@ -548,7 +548,7 @@ function AccessibilityScreen() {
   return (
     <ScreenFrame eyebrow="Accessibility" title="Use the app in the way that works for you." description="Voice and tap are both supported by design.">
       <InfoSection title="Accessibility support" items={accessibilitySupportText} />
-      <StateCard title="Low-bandwidth support" body="Static fallback guidance remains available when live services are unavailable." />
+      <StateCard title="Low-bandwidth support" body="Guided text remains available when a service option is temporarily unavailable." />
       <StateCard title="Location alternative" body="Use ZIP code, city, or county search instead of location sharing." />
     </ScreenFrame>
   );
@@ -658,17 +658,17 @@ function AdapterFallbackCard({
   title: string;
 }) {
   const credentialStatusCopy = fallback.readiness.requiresCredentials
-    ? "Credentials not configured. Live runtime disabled."
-    : "No credentials required for this fallback state. Live runtime disabled.";
+    ? "Request access before this option can be enabled."
+    : "No extra permission is needed for this service state.";
   const consentStatusCopy = fallback.consentGate.required
-    ? "Consent required before future use."
-    : "Static browsing remains available.";
+    ? "This option needs your permission before it can be used."
+    : "You can continue now.";
 
   return (
     <View style={styles.fallbackCard}>
       <View style={styles.fallbackHeader}>
-        <Text style={styles.previewBadge}>Fallback preview</Text>
-        <Text style={styles.runtimeBadge}>Live services disabled</Text>
+        <Text style={styles.serviceBadge}>Limited access</Text>
+        <Text style={styles.runtimeBadge}>Guided text available</Text>
       </View>
       <Text style={styles.fallbackTitle}>{title}</Text>
       <Text style={styles.fallbackStatus}>{fallback.residentSafeExplanation}</Text>
@@ -677,12 +677,12 @@ function AdapterFallbackCard({
         <Text style={styles.fallbackActionText}>{fallback.fallbackPath}</Text>
       </View>
       <Text style={styles.privacyLine}>{fallback.noPhiBoundary}</Text>
-      <View style={styles.previewDetails}>
-        <Text style={styles.previewDetailsTitle}>Preview details</Text>
-        <Text style={styles.previewDetailsText}>Status: {fallback.readiness.status}.</Text>
-        <Text style={styles.previewDetailsText}>{consentStatusCopy}</Text>
-        <Text style={styles.previewDetailsText}>Server-side adapter required before future use.</Text>
-        <Text style={styles.previewDetailsText}>{credentialStatusCopy}</Text>
+      <View style={styles.serviceDetails}>
+        <Text style={styles.serviceDetailsTitle}>Service state</Text>
+        <Text style={styles.serviceDetailsText}>Status: {fallback.readiness.status}.</Text>
+        <Text style={styles.serviceDetailsText}>{consentStatusCopy}</Text>
+        <Text style={styles.serviceDetailsText}>This option stays behind approved server-side controls.</Text>
+        <Text style={styles.serviceDetailsText}>{credentialStatusCopy}</Text>
       </View>
     </View>
   );
@@ -1019,7 +1019,7 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 10,
   },
-  previewBadge: {
+  serviceBadge: {
     backgroundColor: colors.greenSoft,
     borderRadius: 999,
     color: colors.green,
@@ -1078,19 +1078,19 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     marginTop: 10,
   },
-  previewDetails: {
+  serviceDetails: {
     borderTopColor: colors.line,
     borderTopWidth: 1,
     marginTop: 12,
     paddingTop: 10,
   },
-  previewDetailsTitle: {
+  serviceDetailsTitle: {
     color: colors.navy,
     fontSize: 12,
     fontWeight: "900",
     textTransform: "uppercase",
   },
-  previewDetailsText: {
+  serviceDetailsText: {
     color: colors.muted,
     fontSize: 12,
     lineHeight: 18,

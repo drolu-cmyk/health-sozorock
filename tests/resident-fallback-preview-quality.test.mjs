@@ -27,23 +27,23 @@ const mobileSources = [
 ].join("\n");
 const fallbackSources = [mobileApp, unavailableAdapters].join("\n");
 
-test("fallback preview cards put resident guidance before internal preview details", () => {
+test("limited access cards put resident guidance before service state details", () => {
   const actionIndex = mobileApp.indexOf("What you can do now");
-  const detailsIndex = mobileApp.indexOf("Preview details");
+  const detailsIndex = mobileApp.indexOf("Service state");
 
-  assert.match(mobileApp, /Fallback preview/);
-  assert.match(mobileApp, /Live services disabled/);
+  assert.match(mobileApp, /Limited access/);
+  assert.match(mobileApp, /Guided text available/);
   assert.match(mobileApp, /fallback\.noPhiBoundary/);
   assert.match(unavailableAdapters, /No PHI\. Consent-based\. Non-clinical\./);
   assert.ok(actionIndex > -1, "resident action label should be present");
-  assert.ok(detailsIndex > -1, "preview details label should be present");
-  assert.ok(actionIndex < detailsIndex, "resident action copy should come before internal preview details");
+  assert.ok(detailsIndex > -1, "service state label should be present");
+  assert.ok(actionIndex < detailsIndex, "resident action copy should come before service state details");
 });
 
-test("Voice Access preview uses guided text and keeps capture inactive", () => {
+test("Voice Access uses guided text and keeps capture gated", () => {
   assert.match(residentConsent, /Voice Access readiness/);
   assert.match(mobileApp, /Use guided text/);
-  assert.match(mobileApp, /Voice Access inactive/);
+  assert.match(mobileApp, /Voice Access limited access/);
   assert.match(mobileApp, /guided text support/);
   assert.match(mobileApp, /No microphone capture/);
   assert.match(mobileApp, /No audio storage/);
@@ -55,16 +55,16 @@ test("Voice Access preview uses guided text and keeps capture inactive", () => {
   assert.match(voiceProvider, /transcriptStored: false/);
 });
 
-test("AI, map, and hub fallbacks stay static and inactive for preview", () => {
+test("AI, map, and hub fallbacks stay gated for launch", () => {
   assert.match(mobileApp, /title="AI guidance"/);
   assert.match(mobileApp, /title="Map discovery"/);
   assert.match(mobileApp, /title="Hub directory"/);
-  assert.match(fallbackSources, /static access guidance/);
+  assert.match(fallbackSources, /guided text/);
   assert.match(fallbackSources, /ZIP code, city, county/);
-  assert.match(fallbackSources, /Live hub directory services are not active/);
+  assert.match(fallbackSources, /Expanded hub directory services are limited access/);
   assert.match(aiProvider, /staticFallback/);
-  assert.match(mapProvider, /status: "mapReadyPlaceholder"/);
-  assert.match(mapProvider, /inactive until a reviewed map provider is configured/);
+  assert.match(mapProvider, /status: "requiresPermission"/);
+  assert.match(mapProvider, /You can still use list-first access cards/);
   assert.match(hubProvider, /staticFallback/);
 });
 
@@ -72,7 +72,7 @@ test("location fallback is neutral unavailable copy and not permission denial", 
   assert.match(mobileApp, /showLocationUnavailable/);
   assert.match(mobileApp, /onPrimary=\{showLocationUnavailable\}/);
   assert.match(mobileApp, /onSecondary=\{showLocationUnavailable\}/);
-  assert.match(mobileApp, /Location is not active in this version\. You can search by ZIP code, city, or county\./);
+  assert.match(mobileApp, /This option needs your permission before it can be used\. You can search by ZIP code, city, or county\./);
   assert.doesNotMatch(mobileApp, /setLocationPermission\("granted"\)/);
   assert.doesNotMatch(mobileApp, /setLocationPermission\("denied"\)/);
   assert.doesNotMatch(mobileSources, /navigator\.geolocation|getCurrentPosition|watchPosition|react-native-maps/i);

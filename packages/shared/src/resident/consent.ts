@@ -4,7 +4,7 @@ export const microphoneConsent = {
   capability: "microphone" satisfies ConsentCapability,
   title: "Voice Access readiness",
   bullets: [
-    "Voice Access is not active in this version.",
+    "Voice Access is limited access.",
     "You can use guided text instead.",
     "Voice Access is non-clinical.",
     "The app does not provide medical advice.",
@@ -20,7 +20,7 @@ export const locationConsent = {
   capability: "location" satisfies ConsentCapability,
   title: "Location readiness",
   bullets: [
-    "Location is not active in this version.",
+    "Location needs your permission before it can be used.",
     "ZIP code search is available.",
     "City or county search is available.",
     "No location permission prompt starts here.",
@@ -36,12 +36,12 @@ export const aiGuidanceConsent = {
   capability: "aiGuidance" satisfies ConsentCapability,
   title: "AI guidance readiness",
   bullets: [
-    "AI guidance is not active in this version.",
+    "AI guidance is limited access.",
     "AI guidance is non-clinical.",
-    "Static access guidance remains available.",
+    "Guided text remains available.",
     "It does not replace licensed care.",
     "Do not enter private health information.",
   ],
-  acceptLabel: "Read static guidance",
-  declineLabel: "Read static guidance",
+  acceptLabel: "Read guided text",
+  declineLabel: "Read guided text",
 } as const;

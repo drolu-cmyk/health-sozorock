@@ -21,10 +21,10 @@ import type {
   VoiceProvider,
 } from "./serviceContracts";
 
-const lastCheckedLabel = "Issue 037 local foundation";
+const lastCheckedLabel = "Controlled public launch foundation";
 
 export const serviceUnavailableFallback =
-  "Static resident guidance remains available. Live services are not active in this foundation.";
+  "Guided text remains available. This service option is temporarily unavailable.";
 
 export const mockContentConfigs: ContentConfig[] = [
   {
@@ -85,11 +85,11 @@ export const mockHealthAccessDayEvents: HealthAccessDayEvent[] = [
 ];
 
 export const mockServiceAvailability: ServiceAvailability[] = [
-  makeAvailability("content-config", "available", "Static content configuration is available locally."),
-  makeAvailability("hub-directory", "available", "Static hub examples are available locally."),
-  makeAvailability("health-access-day", "available", "Static event examples are available locally."),
-  makeAvailability("audit-event", "planned", "Audit event persistence is not active."),
-  makeAvailability("consent-state", "planned", "Consent state is planning-only in Issue 037."),
+  makeAvailability("content-config", "available", "Reviewed content configuration is available."),
+  makeAvailability("hub-directory", "available", "Reviewed hub examples are available."),
+  makeAvailability("health-access-day", "available", "Reviewed event examples are available."),
+  makeAvailability("audit-event", "planned", "Audit event persistence is available soon."),
+  makeAvailability("consent-state", "planned", "Consent state persistence is available soon."),
   makeAvailability("voice", "unavailable", serviceUnavailableFallback),
   makeAvailability("guidance", "unavailable", serviceUnavailableFallback),
   makeAvailability("map", "unavailable", serviceUnavailableFallback),
@@ -144,7 +144,7 @@ export const consentStateService: ConsentStateService = {
       status: "planned-only",
       lastUpdated: "May 26, 2026",
       storageMode: "none",
-      residentFacingExplanation: "This capability is not active. The app remains usable with static guidance.",
+      residentFacingExplanation: "This capability is limited access. The app remains usable with guided text.",
     };
 
     return ok(state, "consent-state");
@@ -156,7 +156,7 @@ export const voiceProvider: VoiceProvider = {
     return makeAvailability("voice", "unavailable", serviceUnavailableFallback);
   },
   async requestVoiceAccess() {
-    return unavailable("voice", "Voice Access capture is not active in Issue 037.");
+    return unavailable("voice", "Voice Access capture is limited access for controlled public launch.");
   },
 };
 
@@ -165,7 +165,7 @@ export const guidanceProvider: GuidanceProvider = {
     return makeAvailability("guidance", "unavailable", serviceUnavailableFallback);
   },
   async getGuidance() {
-    return unavailable("guidance", "Live guidance is not active in Issue 037.");
+    return unavailable("guidance", "AI guidance is limited access for controlled public launch.");
   },
 };
 
@@ -174,7 +174,7 @@ export const mapProvider: MapProvider = {
     return makeAvailability("map", "unavailable", serviceUnavailableFallback);
   },
   async findNearbyAccessPoints() {
-    return unavailable("map", "Map and geospatial discovery are not active in Issue 037.");
+    return unavailable("map", "Map and geospatial discovery require permission and approved provider readiness.");
   },
 };
 
@@ -190,7 +190,7 @@ function ok<T>(data: T, service: ServiceAvailability["service"]): ServiceResult<
   return {
     ok: true,
     data,
-    availability: makeAvailability(service, "available", "Local static fallback is available."),
+    availability: makeAvailability(service, "available", "Reviewed fallback is available."),
   };
 }
 

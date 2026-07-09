@@ -89,10 +89,10 @@ test("required resident trust and emergency copy is shared and rendered", () => 
   for (const phrase of [
     "Care for Every ZIP Code.",
     "No PHI. Consent-based. Non-clinical.",
-    "Nothing is submitted or stored in this version.",
+    "Nothing is submitted or stored on this screen.",
     "Voice Access provides non-clinical support and does not give medical advice.",
     "Providers keep their platforms. We help you get ready.",
-    "Location is not active in this version. Search by ZIP code, city, or county.",
+    "Location needs your permission before it can be used. Search by ZIP code, city, or county.",
     "If this is an emergency, call 911.",
     "If you may harm yourself or someone else, call or text 988 in the U.S.",
   ]) {
@@ -101,7 +101,7 @@ test("required resident trust and emergency copy is shared and rendered", () => 
 });
 
 test("Voice Access has consent, type fallback, topic fallback, and no raw audio storage", () => {
-  assert.match(consent, /Voice Access is not active in this version/);
+  assert.match(consent, /Voice Access is limited access/);
   assert.match(consent, /You can use guided text instead/);
   assert.match(mobileApp, /Type instead/);
   assert.match(mobileApp, /Choose topic/);
@@ -109,12 +109,12 @@ test("Voice Access has consent, type fallback, topic fallback, and no raw audio 
   assert.match(voiceProvider, /transcriptStored: false/);
 });
 
-test("location and map boundaries support permission refusal and static fallback", () => {
+test("location and map boundaries support permission refusal and list-first fallback", () => {
   assert.match(consent, /No background tracking/);
   assert.match(locationProvider, /backgroundTracking: false/);
   assert.match(locationProvider, /locationHistory: false/);
   assert.match(locationProvider, /movementTracking: false/);
-  assert.match(mapProvider, /mapReadyPlaceholder/);
+  assert.match(mapProvider, /requiresPermission/);
   assert.match(mobileApp, /ZIP code, city, or county/);
 });
 
@@ -173,14 +173,14 @@ test("privacy boundary includes data classification without activating storage",
     "AI transcript",
     "Event interest",
     "Hub search",
-    "Future account data",
+    "Saved preferences",
   ]) {
     assert.match(privacy, new RegExp(category));
   }
-  assert.match(privacy, /No persistent storage in V0/);
+  assert.match(privacy, /No persistent storage in controlled launch v1/);
 });
 
-test("service adapters are placeholders and do not activate live external services", () => {
+test("service adapters are gated and do not activate live external services", () => {
   for (const source of [aiProvider, voiceProvider, locationProvider, mapProvider, hubProvider, eventProvider]) {
     assert.doesNotMatch(source, /fetch\(|XMLHttpRequest|https?:\/\//);
   }

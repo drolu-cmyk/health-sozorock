@@ -40,7 +40,7 @@ test("consent gate exports exist", () => {
 test("adapter readiness exports exist and live runtime is always false", () => {
   for (const name of [
     "createUnavailableReadiness",
-    "createDocumentationOnlyReadiness",
+    "createSourceOfTruthReadiness",
     "defaultAdapterReadiness",
   ]) {
     assert.match(adapterReadiness, new RegExp(`export (function|const) ${name}`));
@@ -95,12 +95,12 @@ test("unavailable adapters return unavailable fallback states", async () => {
   assert.equal(voice.available, false);
   assert.equal(voice.ok, false);
   assert.equal(voice.liveRuntimeEnabled, false);
-  assert.match(voice.residentSafeExplanation, /Voice Access is not active/);
+  assert.match(voice.residentSafeExplanation, /Voice Access is limited access/);
   assert.equal(voice.noPhiBoundary, "No PHI. Consent-based. Non-clinical.");
 
   const guidance = await adapterModule.unavailableAiGuidanceAdapter.requestGuidance(
     adapterModule.createConsentGate({ capability: "aiGuidance", status: "unavailable" }),
-    "static support",
+    "guided text support",
   );
   assert.equal(guidance.available, false);
   assert.equal(guidance.liveRuntimeEnabled, false);
@@ -110,7 +110,7 @@ test("unavailable adapters return unavailable fallback states", async () => {
     "ZIP code",
   );
   assert.equal(map.available, false);
-  assert.match(map.residentSafeExplanation, /Map discovery is not active/);
+  assert.match(map.residentSafeExplanation, /Map discovery requires your permission/);
 
   const planning = await adapterModule.unavailableGeospatialPlanningAdapter.requestPlanningView(
     adapterModule.createConsentGate({ capability: "geospatialPlanning", status: "reviewRequired" }),
