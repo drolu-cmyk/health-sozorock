@@ -1,10 +1,10 @@
 const CUSTOM_BASE_URL = "https://health.sozorockfoundation.org";
 const FALLBACK_BASE_URL = "https://main.d1bmgq1fk26xqh.amplifyapp.com";
-const ROUTES = ["/", "/resident", "/county", "/about-model"];
+const ROUTES = ["/", "/resident", "/county"];
 const REQUIRED_PHRASES = [
   "Care for Every ZIP Code.",
-  "No PHI. Consent-based. Non-clinical.",
-  "Signal → Decision → Action → Assurance → Impact",
+  "Not a clinic.",
+  "No medical decisions or care plans.",
   "noindex",
 ];
 const CUSTOM_DOMAIN_RETRIES = 6;
@@ -29,6 +29,13 @@ async function main() {
     const result = await fetchRouteWithRetries(url);
     assertSuccessfulResponse(result, url);
     routeResults.push(result);
+  }
+
+  const aboutModel = await fetchRouteWithRetries(`${CUSTOM_BASE_URL}/about-model`);
+  if (!aboutModel.finalUrl.endsWith("/resident")) {
+    throw new Error(
+      `/about-model should redirect to /resident, saw ${aboutModel.finalUrl}`,
+    );
   }
 
   assertRequiredPhrases(
@@ -82,17 +89,19 @@ async function fetchWithRedirects(initialUrl) {
     seenUrls.add(currentUrl);
 
     const response = await fetch(currentUrl, {
-      redirect: "manual",
       headers: {
         "user-agent": "sozorock-health-domain-smoke-test",
       },
+      redirect: "manual",
     });
 
     if (response.status >= 300 && response.status < 400) {
       const location = response.headers.get("location");
 
       if (!location) {
-        throw new Error(`Redirect from ${currentUrl} did not include a location header.`);
+        throw new Error(
+          `Redirect from ${currentUrl} did not include a location header.`,
+        );
       }
 
       const nextUrl = new URL(location, currentUrl).toString();
@@ -127,11 +136,15 @@ function assertSuccessfulResponse(result, expectedUrl) {
 
 function validateSuccessfulHttpsResponse(result, expectedUrl) {
   if (!result.finalUrl.startsWith("https://")) {
-    throw new Error(`Final URL is not HTTPS for ${expectedUrl}: ${result.finalUrl}`);
+    throw new Error(
+      `Final URL is not HTTPS for ${expectedUrl}: ${result.finalUrl}`,
+    );
   }
 
   if (result.status < 200 || result.status >= 300) {
-    throw new Error(`Expected successful response for ${expectedUrl}, received ${result.status}`);
+    throw new Error(
+      `Expected successful response for ${expectedUrl}, received ${result.status}`,
+    );
   }
 }
 

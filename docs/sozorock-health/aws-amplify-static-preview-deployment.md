@@ -99,8 +99,8 @@ The public web deployment verifies:
 
 - `/`
 - `/resident`
-- `/county`
-- `/about-model`
+- `/county` as a direct operator route
+- `/about-model` redirects to `/resident`
 
 Publishing only `apps/mobile/dist` would replace those routes. Publishing `out` would revert the app to a static export and remove the dynamic resident journey APIs. The public web app therefore publishes `.next`.
 
@@ -157,8 +157,8 @@ Confirm:
 
 - live URL loads
 - `/resident` loads as an app experience
-- `/county` loads
-- `/about-model` loads
+- `/county` loads by direct URL
+- `/about-model` redirects to `/resident`
 - access search returns reviewed records or a useful empty state
 - AI guidance keeps non-clinical boundaries
 - Voice Access stays gated unless readiness and consent are satisfied

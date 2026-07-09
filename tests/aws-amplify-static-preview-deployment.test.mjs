@@ -109,7 +109,7 @@ test("Amplify docs preserve existing routes and avoid replacing them with only t
   for (const phrase of [
     "/resident",
     "/county",
-    "/about-model",
+    "/about-model` redirects to `/resident",
     "Publishing only `apps/mobile/dist` would replace those routes.",
     "Publishing `out` would revert the app to a static export",
     "public web app therefore publishes `.next`",
@@ -136,7 +136,7 @@ test("Amplify verification checklist covers live resident app checks", () => {
     "Amplify live URL loads",
     "/resident",
     "/county",
-    "/about-model",
+    "/about-model` redirects to `/resident",
     "need selection updates guidance",
     "search by ZIP code, city, or county",
     "Voice Access",
@@ -183,5 +183,5 @@ test("README links Amplify dynamic deployment docs", () => {
   assert.match(readme, /Amplify dynamic web verification checklist/);
   assert.match(readme, /amplify-live-preview-verification-checklist\.md/);
   assert.match(readme, /publish `\.next`/);
-  assert.match(readme, /preserve `\/resident`, `\/county`, and `\/about-model`/);
+  assert.match(readme, /redirect `\/about-model` back to `\/resident`/);
 });

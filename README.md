@@ -109,8 +109,8 @@ Routes:
 
 - `/`
 - `/resident`
-- `/county`
-- `/about-model`
+- `/county` direct operator route
+- `/about-model` redirects to `/resident` so old links do not expose a public explainer screen
 
 Local commands:
 
@@ -245,7 +245,7 @@ Resident adapter fallback states connect those unavailable/fallback states to th
 
 Static resident web export adds a local Expo web export command that produces `apps/mobile/dist` without deploying, changing infrastructure, enabling live services, adding backend runtime, or collecting resident data.
 
-AWS Amplify dynamic app deployment configures Amplify Hosting to build the public web app, publish `.next`, generate `apps/mobile/dist` for mobile-web QA, and preserve `/resident`, `/county`, and `/about-model` without exposing secrets, API keys, or privileged provider credentials in browser bundles.
+AWS Amplify dynamic app deployment configures Amplify Hosting to build the public web app, publish `.next`, generate `apps/mobile/dist` for mobile-web QA, preserve the resident app routes, keep `/county` as a direct operator route, and redirect `/about-model` back to `/resident` without exposing secrets, API keys, or privileged provider credentials in browser bundles.
 
 ## Brand Assets
 

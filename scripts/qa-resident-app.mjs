@@ -174,6 +174,11 @@ async function screenshot(client, name) {
   await writeFile(new URL(`${name}.png`, outDir), Buffer.from(image.data, "base64"));
 }
 
+async function screenshotViewport(client, name, width, height) {
+  await setViewport(client, width, height);
+  await screenshot(client, name);
+}
+
 async function setViewport(client, width, height) {
   await client.send("Emulation.setDeviceMetricsOverride", {
     deviceScaleFactor: 1,
@@ -261,7 +266,7 @@ async function run() {
     await screenshot(client, "04-voice-access");
 
     await clickSelector(client, 'button[aria-label="Open Prepare"]');
-    await assertContains(client, "Visit checklist");
+    await assertContains(client, "Prepare for your visit");
     await clickText(client, "Save my next step");
     await screenshot(client, "05-prepare");
 
@@ -280,6 +285,16 @@ async function run() {
     await assertContains(client, "Support request prepared");
     await screenshot(client, "07-support");
 
+    await clickSelector(client, 'button[aria-label="Open Saved"]');
+    await assertContains(client, "Saved step");
+    await assertContains(client, "Current saved step");
+    await screenshot(client, "08-saved");
+
+    await clickSelector(client, 'button[aria-label="Open Settings"]');
+    await assertContains(client, "Settings and privacy");
+    await assertContains(client, "The app works without microphone access.");
+    await screenshot(client, "09-settings");
+
     await clickText(client, "Sign out");
     await assertContains(client, "Log in");
     await clickSelector(client, '[data-testid="auth-login-tab"]');
@@ -288,6 +303,7 @@ async function run() {
     await fill(client, '[data-testid="auth-zip"]', "Durham");
     await clickSelector(client, '[data-testid="auth-submit"]');
     await assertContains(client, "Welcome, Olu");
+    await clickSelector(client, 'button[aria-label="Open Start"]');
 
     const bodyText = await evaluate(client, `document.body.innerText.toLowerCase()`);
     const bannedHits = bannedPublicTerms.filter((term) =>
@@ -305,7 +321,9 @@ async function run() {
     if (overflow > 2) {
       throw new Error(`Mobile overflow at 390px: ${overflow}px`);
     }
-    await screenshot(client, "08-mobile-390");
+    await screenshot(client, "10-mobile-390");
+    await screenshotViewport(client, "11-ios-mobile", 393, 852);
+    await screenshotViewport(client, "12-android-mobile", 412, 915);
 
     const scripts = await evaluate(
       client,
@@ -341,7 +359,11 @@ async function run() {
             "05-prepare.png",
             "06-hubs.png",
             "07-support.png",
-            "08-mobile-390.png",
+            "08-saved.png",
+            "09-settings.png",
+            "10-mobile-390.png",
+            "11-ios-mobile.png",
+            "12-android-mobile.png",
           ],
           status: "pass",
         },
