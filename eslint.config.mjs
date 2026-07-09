@@ -7,6 +7,7 @@ const config = [
   {
     ignores: [
       ".next/**",
+      "artifacts/qa/chrome-profile/**",
       "apps/mobile/dist/**",
       "node_modules/**",
       "out/**",

@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  const model = process.env.OPENAI_REALTIME_MODEL || "gpt-realtime";
+  const model = process.env.OPENAI_REALTIME_MODEL || "gpt-realtime-2";
   const response = await fetch("https://api.openai.com/v1/realtime/client_secrets", {
     body: JSON.stringify({
       session: {

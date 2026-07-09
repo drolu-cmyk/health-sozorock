@@ -348,7 +348,7 @@ function VoiceScreen({
       ) : null}
 
       <InfoSection title={aiGuidanceConsent.title} items={aiGuidanceConsent.bullets} />
-      <InfoSection title="AI guidance must not" items={aiGuidanceMustNotDo} />
+      <InfoSection title="What this app does not do" items={aiGuidanceMustNotDo} />
       <InfoSection title="AI response style" items={aiResponseStyle} />
 
       <View style={styles.cardStack}>

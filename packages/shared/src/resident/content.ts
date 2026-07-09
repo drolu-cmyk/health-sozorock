@@ -69,7 +69,7 @@ export const residentScreenStates: Record<ScreenStateName, string> = {
   offline: "You appear to be offline. Saved guidance and listed cards remain available.",
   permissionDenied: "This option needs your permission before it can be used. You can use ZIP code, city, county, or typing instead.",
   serviceUnavailable: "This option is temporarily unavailable. Guided text remains available.",
-  safetyBoundary: "SozoRock Health does not provide medical advice, diagnosis, treatment, or prescriptions.",
+  safetyBoundary: "SozoRock Health does not give medical advice or replace licensed care.",
 };
 
 export const accessibilitySupportText = [

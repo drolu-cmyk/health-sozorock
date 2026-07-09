@@ -66,7 +66,7 @@ export const hubCards: HubCard[] = [
     directionsLabel: "Directions are available soon.",
     verificationStatus: "Needs human review before public use",
     lastUpdated: "2026-06-01",
-    privacyNote: "No diagnosis, treatment, or insurance information is requested.",
+    privacyNote: "No medical or insurance information is requested.",
     partnerStatus: "Resource listing. Formal partnership is not implied.",
     latitude: 32.771,
     longitude: -96.79,

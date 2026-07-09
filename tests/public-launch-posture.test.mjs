@@ -100,7 +100,7 @@ test("consent matrix covers voice, AI, location, directory, support, denial, del
 
 test("non-clinical boundary, typing alternative, and ZIP city county search remain visible", () => {
   for (const phrase of [
-    "SozoRock Health does not diagnose, treat, write prescriptions, or replace licensed care.",
+    "SozoRock Health does not give medical advice or replace licensed care.",
     "Voice Access provides non-clinical support and does not give medical advice.",
     "Type instead",
     "ZIP code, city, or county",
