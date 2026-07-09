@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 @theme {
+  --color-white: #ffffff;
+  --color-blue-100: #dbeafe;
   --color-foundation-950: #071727;
   --color-foundation-900: #0b2136;
   --color-foundation-800: #12304a;
@@ -47,7 +49,6 @@ body {
 }
 
 a {
-  color: inherit;
   text-decoration: none;
 }
 

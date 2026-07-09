@@ -1,7 +1,7 @@
 export const mapProvider = {
-  status: "mapReadyPlaceholder",
+  status: "requiresPermission",
   label: "Map-ready access discovery",
   providerTarget: "Google Maps",
   boundary:
-    "Map display and directions are inactive until a reviewed map provider is configured. List-first cards remain available.",
+    "Map display and directions require permission and approved provider readiness. You can still use list-first access cards.",
 } as const;

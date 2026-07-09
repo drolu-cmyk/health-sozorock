@@ -59,10 +59,10 @@ test("resident content preserves locked boundary and operating logic language", 
 
 test("Voice Access is named correctly and not used as a live speech assistant", () => {
   assert.match(residentSharedSources, /Voice Access/);
-  assert.match(residentConsent, /Voice Access is not active in this version/);
+  assert.match(residentConsent, /Voice Access is limited access/);
   assert.match(residentContent, /Use guided text for non-clinical access guidance/);
-  assert.match(mobileApp, /accessibilityLabel="Use guided text support\. Voice Access is inactive\."/);
-  assert.match(mobileApp, /accessibilityLabel="Choose a static Voice Access topic"/);
+  assert.match(mobileApp, /accessibilityLabel="Use guided text support while Voice Access is limited access\."/);
+  assert.match(mobileApp, /accessibilityLabel="Choose a Voice Access guided text topic"/);
   assert.doesNotMatch(`${mobileSources}\n${residentSharedSources}`, /label="Speak"|Speak or type|speak to a live|live voice assistant/i);
   assert.doesNotMatch(`${mobileSources}\n${residentSharedSources}`, /Sozo Assistant|SozoBot|AI doctor|clinical assistant/i);
 });
@@ -73,7 +73,7 @@ test("resident accessibility labels describe static actions without misleading l
     "Open Voice Access guided text support",
     "Continue to the selected resident support option",
     "Search by ZIP code, city, or county",
-    "Open static guidance topic",
+    "Open guided text topic",
   ]) {
     assert.match(mobileApp, new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   }
@@ -115,17 +115,17 @@ test("resident navigation remains resident-only", () => {
   }
 });
 
-test("Voice Access, AI guidance, maps, and location remain inactive/static", () => {
+test("Voice Access, AI guidance, maps, and location remain gated", () => {
   assert.match(voiceProvider, /microphoneEnabled: false/);
   assert.match(voiceProvider, /rawAudioStored: false/);
   assert.match(voiceProvider, /transcriptStored: false/);
   assert.match(aiProvider, /staticFallback/);
-  assert.match(mapProvider, /mapReadyPlaceholder/);
+  assert.match(mapProvider, /requiresPermission/);
   assert.match(locationProvider, /backgroundTracking: false/);
   assert.match(locationProvider, /locationHistory: false/);
   assert.match(residentConsent, /No microphone capture is active/);
   assert.match(residentConsent, /No location permission prompt starts here/);
-  assert.match(residentHubs, /Location inactive in this version/);
+  assert.match(residentHubs, /Location requires your permission/);
   assert.doesNotMatch(mobileApp, /setMicrophonePermission\("granted"\)|setLocationPermission\("granted"\)/);
 });
 

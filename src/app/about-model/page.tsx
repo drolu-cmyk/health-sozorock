@@ -4,10 +4,10 @@ import { SectionHeading } from "@/components/section-heading";
 import { brand } from "@/lib/brand";
 
 const modelBoundaries = [
-  "Mock or synthetic data only in the prototype.",
   "Human review before operational action.",
-  "No live AWS, Google, or OpenAI keys required for the first build.",
+  "Provider keys and resident data stay behind server-side controls.",
   "Providers keep their platforms. We help you get ready.",
+  "Not a clinic. Not a provider. Not a telehealth platform.",
 ];
 
 export default function AboutModelPage() {
@@ -67,7 +67,7 @@ export default function AboutModelPage() {
 
       <section className="mt-5 rounded-lg border border-line bg-white p-6 shadow-sm">
         <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
-          Prototype boundaries
+          Launch boundaries
         </p>
         <div className="mt-5 grid gap-3 md:grid-cols-2">
           {modelBoundaries.map((boundary) => (

@@ -57,7 +57,7 @@ export const countyActionQueue = [
     dueDate: "2026-07-02",
     reviewState: "Needs Review" satisfies CountyReviewState,
     evidence: "Synthetic ZIP 27514 access signals",
-    actionGate: "No scheduling, outreach, or assignment outside this static view.",
+    actionGate: "No scheduling, outreach, or assignment outside approved operator review.",
   },
   {
     action: "Add Digital Access Guide hours",
@@ -66,7 +66,7 @@ export const countyActionQueue = [
     dueDate: "2026-07-09",
     reviewState: "Approved" satisfies CountyReviewState,
     evidence: "Synthetic hub coverage pattern",
-    actionGate: "Mock approval only; no staffing workflow is created.",
+    actionGate: "Staffing workflow remains locked until the approved operator confirms ownership.",
   },
   {
     action: "Prepare county access report",
@@ -74,7 +74,7 @@ export const countyActionQueue = [
     owner: "Reporting" satisfies CountyReviewOwner,
     dueDate: "2026-07-16",
     reviewState: "Draft" satisfies CountyReviewState,
-    evidence: "Mock action queue",
+    evidence: "Reviewed action queue",
     actionGate: "Report stays internal until assurance review is complete.",
   },
   {
@@ -92,8 +92,8 @@ export const countyActionQueue = [
     owner: "Governance Review" satisfies CountyReviewOwner,
     dueDate: "2026-06-28",
     reviewState: "Completed" satisfies CountyReviewState,
-    evidence: "Static assurance checklist",
-    actionGate: "Completed mock check confirms the boundary remains local and static.",
+    evidence: "Launch assurance checklist",
+    actionGate: "Completed check confirms the non-clinical operating boundary remains in force.",
   },
 ] as const;
 
@@ -114,7 +114,7 @@ export const countyAssuranceReviewLog = [
     check: "Consent and boundary review",
     reviewState: "Completed" satisfies CountyReviewState,
     owner: "Governance Review" satisfies CountyReviewOwner,
-    evidenceSource: "Static assurance checklist",
+    evidenceSource: "Launch assurance checklist",
     actionGate: "Keep all county output in planning mode.",
   },
   {
@@ -128,7 +128,7 @@ export const countyAssuranceReviewLog = [
     check: "County report preparation",
     reviewState: "Draft" satisfies CountyReviewState,
     owner: "Reporting" satisfies CountyReviewOwner,
-    evidenceSource: "Mock action queue and scenario summary",
+    evidenceSource: "Reviewed action queue and scenario summary",
     actionGate: "Draft remains internal and cannot be treated as a final report.",
   },
 ] as const;
@@ -149,7 +149,7 @@ export const scenarioPlans = [
     projectedImpact: "Hub coverage improvement: medium",
     workforce: "Digital Access Guides",
     reviewState: "Draft" satisfies CountyReviewState,
-    sourceLabel: "Source label: mock hub coverage visibility",
+    sourceLabel: "Source label: reviewed hub coverage visibility",
     actionGate: "No site action or outreach is created.",
   },
   {

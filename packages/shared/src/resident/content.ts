@@ -8,10 +8,10 @@ export const residentProductDefinition =
   "SozoRock Health is a resident-facing health access companion. It helps residents understand what kind of support they need, find trusted access points, discover Health Access Day events, use voice-guided support, prepare for provider-led care, and receive non-clinical next-step guidance.";
 
 export const residentRequiredCopy = {
-  noStorage: "Nothing is submitted or stored in this version.",
+  noStorage: "Nothing is submitted or stored on this screen.",
   voiceBoundary: "Voice Access provides non-clinical support and does not give medical advice.",
   providerPathway: "Providers keep their platforms. We help you get ready.",
-  locationBoundary: "Location is not active in this version. Search by ZIP code, city, or county.",
+  locationBoundary: "Location needs your permission before it can be used. Search by ZIP code, city, or county.",
   emergency: "If this is an emergency, call 911.",
   crisis: "If you may harm yourself or someone else, call or text 988 in the U.S.",
 } as const;
@@ -42,7 +42,7 @@ export const residentNeeds: ResidentNeed[] = [
     id: "voiceAccess",
     title: "Voice Access",
     description: "Use guided text for non-clinical access guidance.",
-    guidance: "Voice Access is not active in this version. Guided text support remains available.",
+    guidance: "Voice Access is limited access. Guided text support remains available.",
     nextScreen: "voice",
   },
   {
@@ -65,10 +65,10 @@ export const residentScreenStates: Record<ScreenStateName, string> = {
   default: "Ready to help with simple resident access guidance.",
   empty: "No matching items are available yet. You can still browse example guidance.",
   loading: "Checking available guidance.",
-  error: "Something did not load. Static guidance remains available.",
-  offline: "You appear to be offline. Saved guidance and example cards remain available.",
-  permissionDenied: "Permission-based tools are not active here. You can use ZIP code, city, county, or typing instead.",
-  serviceUnavailable: "Live service is unavailable. Static fallback guidance remains available.",
+  error: "Something did not load. Guided text remains available.",
+  offline: "You appear to be offline. Saved guidance and listed cards remain available.",
+  permissionDenied: "This option needs your permission before it can be used. You can use ZIP code, city, county, or typing instead.",
+  serviceUnavailable: "This option is temporarily unavailable. Guided text remains available.",
   safetyBoundary: "SozoRock Health does not provide medical advice, diagnosis, treatment, or prescriptions.",
 };
 
@@ -78,6 +78,6 @@ export const accessibilitySupportText = [
   "Guided text instead of live speech",
   "ZIP code, city, or county search instead of location sharing",
   "Screen reader friendly labels",
-  "Low-bandwidth fallback guidance",
+  "Low-bandwidth guided text",
   "Spanish-ready content structure for later translation",
 ] as const;

@@ -15,8 +15,8 @@ export type VoiceAccessSimulationItem = {
 export const voiceAccessSafetyCopy = {
   boundary: "Voice Access provides non-clinical support and does not give medical advice.",
   review: "Human review is required before follow-up or operational action.",
-  staticMode:
-    "Static simulation only. No listening, recording, live AI, storage, or external calls.",
+  serviceState:
+    "Voice Access is limited access. You can continue with guided text, and no microphone is required.",
 } as const;
 
 export const voiceAccessSimulationItems: VoiceAccessSimulationItem[] = [
@@ -24,7 +24,7 @@ export const voiceAccessSimulationItems: VoiceAccessSimulationItem[] = [
     prompt: "Find support near me.",
     category: "local support",
     response:
-      "Voice Access can point residents to nearby community access options using synthetic prototype examples.",
+      "Voice Access can help residents understand nearby community access options when the approved provider path is ready.",
     nextStep: "Review Health Equity Hubs or speak with a Digital Access Guide.",
   },
   {
@@ -38,7 +38,7 @@ export const voiceAccessSimulationItems: VoiceAccessSimulationItem[] = [
     prompt: "Find a Health Equity Hub.",
     category: "hub lookup",
     response:
-      "Voice Access can summarize library-based, community-based, and home-based support examples.",
+      "Voice Access can summarize listed library-based, community-based, and home-based support options.",
     nextStep: "Compare hub type, distance, hours, and available non-clinical support.",
   },
   {

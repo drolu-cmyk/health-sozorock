@@ -77,7 +77,7 @@ export const humanReviewQueue: HumanReviewQueueItem[] = [
     reviewNeed: "Confirm non-clinical language before any follow-up readiness support.",
     status: "Human review",
     reviewer: "Community Access Team",
-    evidence: "Static Voice Access simulation output",
+    evidence: "Voice Access guided text output",
     planningOutput: "Digital Access Guide readiness note",
   },
   {

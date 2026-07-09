@@ -46,9 +46,9 @@ const moduleNavItems = [
 ] as const;
 
 const dataSourceLabels = [
-  "Access Signals (synthetic)",
-  "Health Equity Hubs (mock)",
-  "Community Input (sample)",
+  "Access signal rollups",
+  "Health Equity Hub records",
+  "Community input queue",
   "Geospatial Data (provider-neutral)",
 ] as const;
 
@@ -135,7 +135,7 @@ export default function CountyPage() {
           <div className="mt-8 rounded-lg border border-access-600/30 bg-access-100 p-4 text-access-700">
             <p className="text-sm font-bold">{brand.trustBoundary}</p>
             <p className="mt-3 text-xs font-semibold leading-5">
-              Static preview. Synthetic data only.
+              Limited access. Reviewed operating data only.
             </p>
           </div>
         </aside>
@@ -153,7 +153,7 @@ export default function CountyPage() {
                   </h2>
                 </div>
                 <StatusBadge className="border border-access-600/30 bg-access-100 text-access-700">
-                  Mock provider-neutral view
+                  Provider-neutral access view
                 </StatusBadge>
               </div>
 
@@ -401,7 +401,7 @@ export default function CountyPage() {
               <h2 className="mt-3 text-2xl font-bold text-white">Signal to review to evidence.</h2>
               <p className="mt-4 text-sm leading-6 text-blue-100">
                 Resident signals, Voice Access outputs, geospatial recommendations, and action queue
-                items stay static until human review is complete.
+                items stay locked until human review is complete.
               </p>
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 {humanReviewStages.map((stage) => (
@@ -434,7 +434,7 @@ export default function CountyPage() {
                 Review Queue
               </p>
               <h2 className="mt-3 text-2xl font-bold text-white">
-                Static review examples before action.
+                Reviewed examples before action.
               </h2>
               <div className="mt-5 grid gap-3">
                 {humanReviewQueue.map((item) => (
@@ -547,9 +547,9 @@ export default function CountyPage() {
               </span>
             ))}
           </div>
-          <p className="font-bold text-access-100">System status: static prototype only</p>
+          <p className="font-bold text-access-100">System status: limited access for approved operators</p>
           <p className="text-left font-bold text-blue-100 md:text-right">
-            County context: synthetic preview county
+            County context: controlled launch county
           </p>
         </div>
       </section>

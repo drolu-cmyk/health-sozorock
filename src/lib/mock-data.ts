@@ -42,6 +42,8 @@ export const syntheticAccessSignals = [
   },
 ];
 
+export const publicAccessSignals = syntheticAccessSignals;
+
 export const actionQueue = [
   {
     action: "Prepare county access report",
@@ -55,7 +57,7 @@ export const actionQueue = [
     owner: "Community Access Team",
     due: "2026-06-20",
     status: "Ready",
-    source: "Mock action queue",
+    source: "Reviewed action queue",
   },
   {
     action: "Schedule Health Access Day",

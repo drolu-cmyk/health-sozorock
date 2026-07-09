@@ -131,7 +131,7 @@ test("safe backend mock services do not throw on label field names", async () =>
 
   const availability = await services.configProvider.getServiceAvailability();
   assert.equal(availability.ok, true);
-  assert.equal(availability.data[0].lastCheckedLabel, "Issue 037 local foundation");
+  assert.equal(availability.data[0].lastCheckedLabel, "Controlled public launch foundation");
 });
 
 test("safe model examples do not contain restricted fields", () => {
@@ -168,9 +168,9 @@ test("voice, guidance, and map providers remain unavailable no-op providers", ()
     assert.match(mockServices, new RegExp(`export const ${provider}`));
   }
 
-  assert.match(mockServices, /Voice Access capture is not active in Issue 037/);
-  assert.match(mockServices, /Live guidance is not active in Issue 037/);
-  assert.match(mockServices, /Map and geospatial discovery are not active in Issue 037/);
+  assert.match(mockServices, /Voice Access capture is limited access for controlled public launch/);
+  assert.match(mockServices, /AI guidance is limited access for controlled public launch/);
+  assert.match(mockServices, /Map and geospatial discovery require permission and approved provider readiness/);
 });
 
 test("no backend endpoint or cloud resource config is introduced", () => {

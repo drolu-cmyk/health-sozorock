@@ -2,6 +2,7 @@ import { AssuranceBadge } from "@/components/assurance-badge";
 import { SectionHeading } from "@/components/section-heading";
 import { brand } from "@/lib/brand";
 import { humanReviewBoundaryCopy } from "@/lib/human-review-data";
+import { consentByFeatureMatrix, launchFeatureStates } from "@/lib/launch-governance";
 import { residentModules } from "@/lib/mock-data";
 import {
   healthAccessDayEvents,
@@ -16,49 +17,49 @@ export default function ResidentPage() {
   return (
     <div className="bg-[linear-gradient(180deg,#ffffff_0%,#f7fafc_52%,#eef4f8_100%)]">
       <section className="mx-auto max-w-7xl px-5 py-8 md:py-12">
-        <div className="grid gap-6 lg:grid-cols-[0.86fr_1.14fr] lg:items-end">
-          <div>
+        <div className="grid min-w-0 gap-6 lg:grid-cols-[0.86fr_1.14fr] lg:items-end">
+          <div className="min-w-0">
             <SectionHeading
               eyebrow={brand.layers.resident.name}
               title={`${brand.layers.resident.standard}.`}
-              description="A resident-facing experience for starting access support with plain language, synthetic information, and clear boundaries."
+              description="A resident-facing experience for starting access support with plain language, clear service states, and non-clinical boundaries."
             />
           </div>
-          <div className="rounded-lg border border-access-600/20 bg-white p-4 shadow-sm sm:p-5">
+          <div className="min-w-0 rounded-lg border border-access-600/20 bg-white p-4 shadow-sm sm:p-5">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <AssuranceBadge />
               <span className="rounded-lg bg-surface px-3 py-2 text-sm font-bold text-foundation-700">
-                Static app preview
+                Controlled public launch
               </span>
             </div>
             <p className="mt-4 text-sm font-semibold leading-6 text-foundation-700">
-              No live AI, no external integrations, and no protected-data intake in this prototype.
+              Enabled paths are available now. Limited paths stay visible with a clear text alternative, support path, and permission boundary.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-5 px-5 pb-5 lg:grid-cols-[0.88fr_1.12fr]">
-        <article className="rounded-[1.75rem] border border-foundation-950/10 bg-foundation-950 p-3 shadow-xl" id="welcome">
+      <section className="mx-auto grid max-w-7xl min-w-0 gap-5 px-5 pb-5 lg:grid-cols-[0.88fr_1.12fr]">
+        <article className="min-w-0 overflow-hidden rounded-[1.75rem] border border-foundation-950/10 bg-foundation-950 p-3 shadow-xl" id="welcome">
           <div className="rounded-[1.35rem] bg-white p-5">
             <div className="mb-5 flex items-center justify-between text-xs font-bold text-foundation-950">
               <span>9:41</span>
-              <span>Static</span>
+              <span>Access</span>
             </div>
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
             Welcome
           </p>
-          <h1 className="mt-4 text-4xl font-bold tracking-normal text-foundation-950 md:text-5xl">
+          <h1 className="mt-4 text-3xl font-bold tracking-normal text-foundation-950 break-words sm:text-4xl md:text-5xl">
             {brand.promise}
           </h1>
-          <p className="mt-4 text-lg leading-8 text-foundation-700">
+          <p className="mt-4 text-base leading-7 text-foundation-700 break-words sm:text-lg sm:leading-8">
             Health access made easier for underserved communities.
           </p>
           <a
             className="mt-6 inline-flex min-w-36 items-center justify-center rounded-lg bg-access-700 px-5 py-3 text-sm font-bold text-white hover:bg-access-600"
             href="#access-start"
           >
-            Get Started
+            Start
           </a>
           <p className="mt-5 text-sm leading-6 text-foundation-700">
             Data collected: none on this screen.
@@ -71,7 +72,7 @@ export default function ResidentPage() {
           </div>
         </article>
 
-        <article className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6" id="access-start">
+        <article className="min-w-0 rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6" id="access-start">
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
             Access Start
           </p>
@@ -96,7 +97,7 @@ export default function ResidentPage() {
         </article>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-5 px-5 py-5 lg:grid-cols-[0.85fr_1.15fr]">
+      <section className="mx-auto grid max-w-7xl min-w-0 gap-5 px-5 py-5 lg:grid-cols-[0.85fr_1.15fr]">
         <article className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6" id="voice-access">
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-signal-600">
             Voice Access
@@ -105,8 +106,7 @@ export default function ResidentPage() {
             Speak or tap to find local support.
           </h2>
           <p className="mt-4 text-sm leading-6 text-foundation-700">
-            This static simulation shows prewritten resident support paths without listening,
-            recording, storage, or external calls.
+            SozoRock Health Voice Access is visible for controlled launch readiness. Guided text is available now and the app works without microphone access.
           </p>
           <div className="mt-5 grid gap-3">
             {voiceAccessSimulationItems.map((item) => (
@@ -136,8 +136,11 @@ export default function ResidentPage() {
           <p className="mt-4 rounded-lg border border-line bg-access-100 p-4 text-sm font-semibold leading-6 text-access-700">
             {brand.trustBoundary}
           </p>
+          <p className="mt-4 rounded-lg border border-line bg-surface p-4 text-sm font-semibold leading-6 text-foundation-700">
+            SozoRock Health does not diagnose, treat, write prescriptions, or replace licensed care.
+          </p>
           <p className="mt-4 text-sm leading-6 text-foundation-700">
-            {voiceAccessSafetyCopy.staticMode}
+            {voiceAccessSafetyCopy.serviceState}
           </p>
         </article>
 
@@ -195,7 +198,7 @@ export default function ResidentPage() {
             ))}
           </div>
           <p className="mt-5 text-sm leading-6 text-foundation-700">
-            Hub listings show non-clinical support availability using synthetic prototype data.
+            Hub listings show non-clinical support availability only where records are reviewed for controlled launch.
           </p>
         </article>
 
@@ -228,6 +231,45 @@ export default function ResidentPage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-5 py-5 pb-12">
+        <article className="mb-5 rounded-lg border border-line bg-white p-6 shadow-sm" id="feature-states">
+          <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
+            Service states
+          </p>
+          <h2 className="mt-3 text-2xl font-bold text-foundation-950">What is available now?</h2>
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            {launchFeatureStates.slice(0, 8).map((feature) => (
+              <div className="rounded-lg border border-line bg-surface p-4" key={feature.featureKey}>
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm font-bold text-foundation-950">{feature.label}</p>
+                  <span className="w-fit rounded-lg bg-white px-3 py-1 text-xs font-bold text-access-700">
+                    {feature.state}
+                  </span>
+                </div>
+                <p className="mt-3 text-sm leading-6 text-foundation-700">{feature.publicExplanation}</p>
+                <p className="mt-3 text-xs font-bold uppercase tracking-[0.1em] text-foundation-700">
+                  {feature.fallbackPath}
+                </p>
+              </div>
+            ))}
+          </div>
+        </article>
+
+        <article className="mb-5 rounded-lg border border-line bg-white p-6 shadow-sm" id="privacy-consent">
+          <p className="text-sm font-bold uppercase tracking-[0.14em] text-access-700">
+            Privacy and consent
+          </p>
+          <h2 className="mt-3 text-2xl font-bold text-foundation-950">The app works without microphone or location access.</h2>
+          <div className="mt-5 grid gap-3 md:grid-cols-2">
+            {consentByFeatureMatrix.slice(0, 5).map((item) => (
+              <div className="rounded-lg border border-line bg-surface p-4" key={item.feature}>
+                <p className="text-sm font-bold text-foundation-950">{item.feature}</p>
+                <p className="mt-2 text-sm leading-6 text-foundation-700">{item.dataUsed}</p>
+                <p className="mt-2 text-sm font-semibold text-access-700">If declined: {item.ifDenied}</p>
+              </div>
+            ))}
+          </div>
+        </article>
+
         <article className="rounded-lg border border-line bg-foundation-950 p-6 text-white shadow-sm">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div>

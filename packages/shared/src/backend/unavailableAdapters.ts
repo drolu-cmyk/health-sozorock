@@ -17,12 +17,12 @@ import type { HubRecord, ServiceResult } from "./types";
 const adapterNoPhiBoundary = "No PHI. Consent-based. Non-clinical." as const;
 
 const residentSafeExplanations: Record<AdapterCapability, string> = {
-  voiceAccess: "Voice Access is not active in this version. You can continue with guided text support.",
-  aiGuidance: "AI guidance is not active in this version. You can continue with static access guidance.",
+  voiceAccess: "Voice Access is limited access. You can continue with guided text support.",
+  aiGuidance: "AI guidance is limited access. You can continue with guided text.",
   mapDiscovery:
-    "Map discovery is not active in this version. You can search by ZIP code, city, county, or use listed hub information when available.",
-  hubDirectory: "Live hub directory services are not active. Static hub information may be shown when available.",
-  geospatialPlanning: "Geospatial planning is not active in this version. Planning remains static and review-only.",
+    "Map discovery requires your permission before it can be used. You can search by ZIP code, city, county, or use listed hub information when available.",
+  hubDirectory: "Expanded hub directory services are limited access. Reviewed hub information may be shown when available.",
+  geospatialPlanning: "Geospatial planning is limited access for approved operators. Planning remains review-only.",
 };
 
 export function createUnavailableAdapterResponse(

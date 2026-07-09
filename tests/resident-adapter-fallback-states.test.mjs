@@ -40,7 +40,7 @@ test("resident app references shared fallback and unavailable adapter states", (
 });
 
 test("Voice Access screen shows unavailable fallback without microphone activation", () => {
-  assert.match(fallbackSources, /Voice Access is not active in this version/);
+  assert.match(fallbackSources, /Voice Access is limited access/);
   assert.match(fallbackSources, /continue with guided text support|guided text support/i);
   assert.match(mobileApp, /No microphone capture/);
   assert.match(mobileApp, /No audio storage/);
@@ -55,54 +55,54 @@ test("Voice Access screen shows unavailable fallback without microphone activati
 });
 
 test("AI guidance fallback is visible and live AI remains inactive", () => {
-  assert.match(fallbackSources, /AI guidance is not active in this version/);
-  assert.match(fallbackSources, /static access guidance/);
+  assert.match(fallbackSources, /AI guidance is limited access/);
+  assert.match(fallbackSources, /guided text/);
   assert.match(aiProvider, /staticFallback/);
   assert.doesNotMatch(mobileSources, /Gemini|Vertex|OpenAI|generateContent|completion|chat\.completions/i);
 });
 
 test("map and location fallbacks are visible without maps or geolocation activation", () => {
-  assert.match(fallbackSources, /Map discovery is not active in this version/);
+  assert.match(fallbackSources, /Map discovery requires your permission/);
   assert.match(fallbackSources, /ZIP code, city, county, or use listed hub information/);
-  assert.match(mobileApp, /Planning tools are not active in the resident app/);
+  assert.match(mobileApp, /Planning tools are limited access for approved operators/);
   assert.doesNotMatch(mobileApp, /setLocationPermission\("granted"\)/);
   assert.doesNotMatch(mobileApp, /setLocationPermission\("denied"\)/);
   assert.match(mobileApp, /type PermissionState = "notAsked" \| "granted" \| "denied" \| "unavailable"/);
   assert.match(mobileApp, /showLocationUnavailable/);
   assert.match(mobileApp, /setLocationPermission\("unavailable"\)/);
   assert.match(mobileApp, /onPrimary=\{showLocationUnavailable\}/);
-  assert.match(mobileApp, /Location is not active in this version\. You can search by ZIP code, city, or county\./);
+  assert.match(mobileApp, /This option needs your permission before it can be used\. You can search by ZIP code, city, or county\./);
   assert.doesNotMatch(mobileSources, /navigator\.geolocation|getCurrentPosition|watchPosition|react-native-maps/i);
   assert.match(locationProvider, /backgroundTracking: false/);
   assert.match(locationProvider, /locationHistory: false/);
 });
 
 test("location unavailable state is neutral and does not imply resident denial", () => {
-  const unavailableStateStart = mobileApp.indexOf('title="Location unavailable state"');
+  const unavailableStateStart = mobileApp.indexOf('title="Location requires permission"');
   const unavailableStateEnd = mobileApp.indexOf(") : null}", unavailableStateStart);
   const unavailableState = mobileApp.slice(unavailableStateStart, unavailableStateEnd);
 
-  assert.match(unavailableState, /Location is not active in this version/);
+  assert.match(unavailableState, /This option needs your permission before it can be used/);
   assert.match(unavailableState, /ZIP code, city, or county/);
   assert.doesNotMatch(unavailableState, /Permission was not granted|denied/i);
 });
 
 test("credential readiness copy follows requiresCredentials", () => {
   assert.match(mobileApp, /fallback\.readiness\.requiresCredentials/);
-  assert.match(mobileApp, /Credentials not configured\. Live runtime disabled\./);
-  assert.match(mobileApp, /No credentials required for this fallback state\. Live runtime disabled\./);
+  assert.match(mobileApp, /Request access before this option can be enabled\./);
+  assert.match(mobileApp, /No extra permission is needed for this service state\./);
   assert.match(mobileApp, /credentialStatusCopy/);
 });
 
 test("Hub directory fallback does not display inaccurate credential-required copy", () => {
-  assert.match(adapterReadiness, /hubDirectory: createDocumentationOnlyReadiness/);
+  assert.match(adapterReadiness, /hubDirectory: createSourceOfTruthReadiness/);
   assert.match(adapterReadiness, /requiresCredentials: false/);
   assert.match(mobileApp, /title="Hub directory"/);
-  assert.doesNotMatch(mobileApp, /title="Hub directory"[\s\S]{0,320}Credentials not configured/);
+  assert.doesNotMatch(mobileApp, /title="Hub directory"[\s\S]{0,320}Request access before this option can be enabled/);
 });
 
 test("hub directory fallback stays local and does not call backend or network services", () => {
-  assert.match(fallbackSources, /Live hub directory services are not active/);
+  assert.match(fallbackSources, /Expanded hub directory services are limited access/);
   assert.match(hubProvider, /staticFallback/);
   assert.doesNotMatch(hubProvider, /fetch\(|XMLHttpRequest|WebSocket|https?:\/\//);
   assert.doesNotMatch(mobileSources, /BACKEND_URL|API_URL|DATABASE_URL|\/api\//i);

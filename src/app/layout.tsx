@@ -11,13 +11,13 @@ export const metadata: Metadata = {
   authors: [{ name: brand.foundationName }],
   creator: brand.foundationName,
   publisher: brand.foundationName,
-  category: "non-clinical health access intelligence prototype",
+  category: "non-clinical health access operating layer",
   keywords: [
     brand.programName,
     brand.foundationName,
     "Care for Every ZIP Code",
     "non-clinical access",
-    "synthetic data prototype",
+    "controlled public launch",
     "human review",
   ],
   openGraph: {
@@ -44,7 +44,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body>
         <SiteHeader />
         <main>{children}</main>

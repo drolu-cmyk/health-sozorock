@@ -57,6 +57,6 @@ export const healthAccessDayEvents: HealthAccessDayEvent[] = [
 
 export const healthAccessDayFallbacks = {
   empty: "No Health Access Day events match this search yet. You can still read what to expect.",
-  offline: "Event search is offline. Example event information remains available.",
-  serviceUnavailable: "Live event discovery is unavailable. Static event cards remain available.",
+  offline: "Event search is offline. Listed event information remains available.",
+  serviceUnavailable: "This option is temporarily unavailable. Listed event cards remain available.",
 } as const;

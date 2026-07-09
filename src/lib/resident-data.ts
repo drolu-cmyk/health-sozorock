@@ -79,5 +79,5 @@ export const healthAccessDayInfoActions = [
   "Event details",
   "Access support options",
   "What to expect",
-  "No sign-up in prototype",
+  "No sign-up required to read",
 ] as const;
