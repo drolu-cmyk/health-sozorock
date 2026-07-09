@@ -4,7 +4,10 @@ import test from "node:test";
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
-const residentPage = read("src/app/resident/page.tsx");
+const residentPage = [
+  read("src/app/resident/page.tsx"),
+  read("src/app/resident/resident-access-app.tsx"),
+].join("\n");
 const residentData = read("src/lib/resident-data.ts");
 const countyPage = read("src/app/county/page.tsx");
 const countyData = read("src/lib/county-data.ts");
@@ -15,9 +18,10 @@ test("resident page keeps the locked trust boundary visible", () => {
   assert.match(residentPage, /brand\.trustBoundary/);
 });
 
-test("resident page keeps Voice Access static and non-clinical", () => {
+test("resident page keeps Voice Access server-gated and non-clinical", () => {
   assert.match(residentPage, /voiceAccessSafetyCopy\.boundary/);
-  assert.match(residentPage, /voiceAccessSafetyCopy\.serviceState/);
+  assert.match(residentPage, /\/api\/voice\/session/);
+  assert.match(residentPage, /guided text/);
 });
 
 test("resident event labels avoid active signup and reminder language", () => {

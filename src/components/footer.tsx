@@ -19,7 +19,7 @@ export function Footer() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <AssuranceBadge />
           <Link
-            className="text-sm font-semibold text-foundation-700 hover:text-foundation-950"
+            className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-foundation-700 hover:bg-surface hover:text-foundation-950 focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
             href="/about-model"
           >
             About the model

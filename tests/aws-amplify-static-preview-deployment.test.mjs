@@ -17,21 +17,21 @@ const verificationDoc = read(verificationDocPath);
 const readme = read("README.md");
 const docs = `${deploymentDoc}\n${verificationDoc}`;
 
-test("Amplify static hosting build spec exists", () => {
+test("Amplify dynamic app build spec exists", () => {
   assert.equal(exists(amplifyPath), true);
 });
 
-test("Next preview build is configured for static export", () => {
-  assert.match(nextConfig, /output:\s*"export"/);
+test("Next web build is configured for dynamic app runtime", () => {
+  assert.doesNotMatch(nextConfig, /output:\s*"export"/);
 });
 
-test("Amplify build spec preserves existing preview routes while generating resident web export", () => {
+test("Amplify build spec deploys the dynamic web app while generating resident web export", () => {
   assert.match(amplifyConfig, /^version: 1$/m);
   assert.match(amplifyConfig, /^frontend:$/m);
   assert.match(amplifyConfig, /preBuild:\s*\r?\n\s+commands:\s*\r?\n\s+- npm install/);
   assert.match(amplifyConfig, /build:\s*\r?\n\s+commands:\s*\r?\n\s+- npm run build\s*\r?\n\s+- npm run mobile:export:web/);
-  assert.match(amplifyConfig, /baseDirectory: out/);
-  assert.doesNotMatch(amplifyConfig, /baseDirectory: \.next/);
+  assert.match(amplifyConfig, /baseDirectory: \.next/);
+  assert.doesNotMatch(amplifyConfig, /baseDirectory: out/);
   assert.doesNotMatch(amplifyConfig, /baseDirectory: apps\/mobile\/dist/);
   assert.match(amplifyConfig, /files:\s*\r?\n\s+- "\*\*\/\*"/);
 });
@@ -55,9 +55,9 @@ test("Amplify build spec has no backend phases, secrets, API keys, or runtime pr
 
 test("Amplify docs block incorrect deployment artifacts", () => {
   for (const phrase of [
-    "does not publish `.next`",
-    "does not publish `apps/mobile/dist` as the existing site root artifact",
-    "publishing `.next` instead of `out`",
+    "does not publish `out`",
+    "does not publish `apps/mobile/dist` as the site root artifact",
+    "public web app therefore publishes `.next`",
   ]) {
     assert.match(docs, new RegExp(escapeRegExp(phrase), "i"));
   }
@@ -79,11 +79,10 @@ test("Amplify deployment docs preserve required boundary language", () => {
 });
 
 test("locked operating logic phrase is exact when referenced", () => {
-  const lockedPhrase = "Signal → Decision → Action → Assurance → Impact";
+  const lockedPhrase = "Signal -> Decision -> Action -> Assurance -> Impact";
 
   assert.match(docs, new RegExp(escapeRegExp(lockedPhrase)));
-  assert.doesNotMatch(docs, /Signal -> Decision -> Action -> Assurance -> Impact/);
-  assert.doesNotMatch(docs, /Signal → Decision → Action → Assurance → Impact\./);
+  assert.doesNotMatch(docs, /Signal -> Decision -> Action -> Assurance -> Impact\./);
 });
 
 test("Voice Access is named correctly without assistant shorthand", () => {
@@ -91,90 +90,68 @@ test("Voice Access is named correctly without assistant shorthand", () => {
   assert.doesNotMatch(docs, /Sozo Assistant|SozoBot|AI doctor|clinical assistant/i);
 });
 
-test("Amplify docs document static hosting target, build command, and artifact directory", () => {
+test("Amplify docs document dynamic hosting target, build command, and artifact directory", () => {
   for (const phrase of [
     "AWS Amplify Hosting",
     "npm run build",
     "npm run mobile:export:web",
-    "out",
+    ".next",
     "apps/mobile/dist",
     "amplify.yml",
-    "frontend build configuration",
-    "static preview artifact publication",
+    "dynamic Next.js app",
+    "Public web deployment artifact",
   ]) {
     assert.match(docs, new RegExp(escapeRegExp(phrase)));
   }
 });
 
-test("Amplify docs preserve existing preview routes and avoid replacing them with only the resident export", () => {
+test("Amplify docs preserve existing routes and avoid replacing them with only the resident export", () => {
   for (const phrase of [
     "/resident",
     "/county",
     "/about-model",
-    "Publishing only `apps/mobile/dist` at the site root would replace those routes.",
-    "Publishing `.next` would violate the static-only boundary",
-    "publishes `out`",
-    "existing preview routes stay available",
+    "Publishing only `apps/mobile/dist` would replace those routes.",
+    "Publishing `out` would revert the app to a static export",
+    "public web app therefore publishes `.next`",
   ]) {
     assert.match(docs, new RegExp(escapeRegExp(phrase)));
   }
 });
 
-test("Amplify docs block backend categories and cloud/runtime expansion", () => {
+test("Amplify docs block unsafe runtime expansion", () => {
   for (const phrase of [
-    "Amplify backend categories",
-    "Amplify Auth",
-    "Amplify Data",
-    "Amplify Storage",
-    "Amplify Functions",
-    "GraphQL API",
-    "REST API",
-    "Lambda",
-    "DynamoDB",
-    "Cognito",
-    "CloudFront configuration changes",
-    "DNS changes",
-    "Route 53 changes",
-    "ACM changes",
-    "OIDC changes",
-    "Google Cloud resources",
-    "Firebase resources",
-    "runtime service adapters",
+    "client-side provider keys",
+    "privileged provider SDKs in browser bundles",
+    "diagnosis, treatment, prescribing, symptom triage, medication advice, clinical planning, or emergency response",
+    "microphone-only flows",
+    "location-only flows",
+    "formal partnership claims without approved source records",
   ]) {
     assert.match(docs, new RegExp(escapeRegExp(phrase)));
   }
 });
 
-test("Amplify verification checklist covers live resident preview checks", () => {
+test("Amplify verification checklist covers live resident app checks", () => {
   for (const phrase of [
     "Amplify live URL loads",
     "/resident",
     "/county",
     "/about-model",
-    "Home",
-    "Start",
+    "need selection updates guidance",
+    "search by ZIP code, city, or county",
     "Voice Access",
-    "Health Access Day",
-    "Hubs",
-    "Provider-Led Pathway",
-    "How SozoRock Health Works",
-    "Privacy Boundary",
-    "Accessibility",
-    "About SozoRock Health",
-    "menu drawer works",
-    "bottom navigation works",
-    "fallback preview cards render",
+    "guided text remains available without microphone access",
+    "Health Access Day information is visible",
+    "Health Equity Hubs are visible",
+    "provider-readiness checklist is interactive",
+    "support/contact path is visible",
+    "save-next-step action works locally",
     "no console errors",
-    "no unexpected network calls",
-    "no live AI behavior",
-    "no live maps behavior",
-    "no microphone capture",
-    "no location capture",
-    "no resident data capture",
+    "no failed route loads",
+    "no request exposes provider credentials",
     "no PHI workflow",
     "no clinical workflow",
-    "no county console exposure",
-    "existing preview routes remain available",
+    "no county console is exposed in resident navigation",
   ]) {
     assert.match(verificationDoc, new RegExp(escapeRegExp(phrase), "i"));
   }
@@ -192,20 +169,19 @@ test("Amplify deployment docs do not include secrets, env examples, SDK imports,
   assert.doesNotMatch(docs, /terraform apply|cdk deploy|amplify add|amplify push|firebase deploy|gcloud deploy/i);
 });
 
-test("Amplify deployment docs do not imply active live services or restricted workflows", () => {
-  assert.doesNotMatch(docs, /^-? ?Live AI is active\.?$/im);
-  assert.doesNotMatch(docs, /^-? ?Live maps are active\.?$/im);
-  assert.doesNotMatch(docs, /^-? ?Microphone capture is active\.?$/im);
-  assert.doesNotMatch(docs, /^-? ?Location capture is active\.?$/im);
-  assert.doesNotMatch(docs, /^-? ?Resident data capture is active\.?$/im);
+test("Amplify deployment docs do not imply unsafe active services or restricted workflows", () => {
+  assert.doesNotMatch(docs, /^-? ?Client-side provider keys are allowed\.?$/im);
+  assert.doesNotMatch(docs, /^-? ?Voice Access may return a provider session without consent and readiness\.?$/im);
+  assert.doesNotMatch(docs, /^-? ?AI guidance may provide diagnosis, treatment, prescribing, triage, medication advice, clinical planning, or emergency response\.?$/im);
   assert.doesNotMatch(docs, /^-? ?PHI workflow is active\.?$/im);
   assert.doesNotMatch(docs, /^-? ?Clinical workflow is active\.?$/im);
 });
 
-test("README links Amplify static deployment docs", () => {
-  assert.match(readme, /AWS Amplify static preview deployment/);
+test("README links Amplify dynamic deployment docs", () => {
+  assert.match(readme, /AWS Amplify dynamic app deployment/);
   assert.match(readme, /aws-amplify-static-preview-deployment\.md/);
-  assert.match(readme, /Amplify live preview verification checklist/);
+  assert.match(readme, /Amplify dynamic web verification checklist/);
   assert.match(readme, /amplify-live-preview-verification-checklist\.md/);
+  assert.match(readme, /publish `\.next`/);
   assert.match(readme, /preserve `\/resident`, `\/county`, and `\/about-model`/);
 });

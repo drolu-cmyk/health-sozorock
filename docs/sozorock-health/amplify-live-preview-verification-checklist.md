@@ -1,10 +1,10 @@
-# Amplify Live Preview Verification Checklist
+# Amplify Dynamic Web Verification Checklist
 
 ## Purpose
 
-Use this checklist after AWS Amplify Hosting publishes the existing static preview from `out` while generating the resident Expo web export artifact at `apps/mobile/dist`.
+Use this checklist after AWS Amplify Hosting publishes the dynamic Next.js app from `.next` while generating the resident Expo web export artifact at `apps/mobile/dist`.
 
-This checklist verifies the live static preview only. It does not authorize backend runtime, Amplify backend categories, secrets, API keys, SDK imports, infrastructure changes, live services, or resident data capture.
+This checklist verifies the controlled public web app posture. It does not approve new clinical workflows, provider replacement, insurance processing, emergency response, or client-side provider credentials.
 
 Required boundary:
 
@@ -20,7 +20,7 @@ Provider boundary:
 
 Locked operating logic:
 
-**Signal → Decision → Action → Assurance → Impact**
+**Signal -> Decision -> Action -> Assurance -> Impact**
 
 ## Amplify Build Check
 
@@ -30,16 +30,11 @@ Confirm the Amplify Hosting build:
 - runs `npm install`
 - runs `npm run build`
 - runs `npm run mobile:export:web`
-- publishes `out`
-- generates `apps/mobile/dist` for resident export verification
-- does not publish `.next`
-- does not publish `apps/mobile/dist` as the existing site root artifact
-- does not run backend phases
-- does not configure Amplify backend categories
-- does not require secrets
-- does not require API keys
-- does not require Google resources
-- does not require runtime service adapters
+- publishes `.next`
+- does not publish `out`
+- does not publish `apps/mobile/dist` as the site root artifact
+- generates `apps/mobile/dist` for resident mobile-web QA
+- does not expose secrets or provider keys in browser bundles
 
 ## Live URL Checks
 
@@ -50,36 +45,24 @@ Confirm:
 - `/county` loads
 - `/about-model` loads
 - page returns a successful response
-- preview reflects the expected release checkpoint
+- deployed commit matches the expected release checkpoint
 - no unexpected redirect appears
 - no hosting or infrastructure details appear in resident-facing copy
 
-## Resident Screen Checks
+## Resident App Checks
 
-Confirm each resident screen renders:
+Confirm the resident route behaves as an app:
 
-- Home
-- Start
-- Voice Access
-- Health Access Day
-- Hubs
-- Provider-Led Pathway
-- How SozoRock Health Works
-- Privacy Boundary
-- Accessibility
-- About SozoRock Health
-
-## Navigation Checks
-
-Confirm:
-
-- menu drawer works
-- bottom navigation works
-- fallback preview cards render
-- no broken navigation appears
-- existing preview routes remain available
-- no county console is visible in resident navigation
-- no backend, infrastructure, model, action queue, assurance log, synthetic signals, or administrative labels appear in resident navigation
+- need selection updates guidance
+- search by ZIP code, city, or county returns reviewed results or a useful empty state
+- Voice Access is visible
+- Voice Access requires permission and readiness before use
+- guided text remains available without microphone access
+- Health Access Day information is visible
+- Health Equity Hubs are visible
+- provider-readiness checklist is interactive
+- support/contact path is visible
+- save-next-step action works locally
 
 ## Required Language Checks
 
@@ -88,44 +71,33 @@ Confirm:
 - **No PHI. Consent-based. Non-clinical.** appears correctly
 - **Care for Every ZIP Code.** appears correctly
 - **Providers keep their platforms. We help you get ready.** appears correctly
-- **Signal → Decision → Action → Assurance → Impact** appears exactly if referenced
-- no ASCII-arrow operating logic phrase appears
+- **Signal -> Decision -> Action -> Assurance -> Impact** appears exactly if referenced
 - **Voice Access** is used as the voice feature name
-- "Sozo" is not used as an assistant or shorthand feature name
+- public UI does not use GPT-Live, provider names, or implementation labels as feature names
 
-## Inactive Service Checks
+## Dynamic Service Checks
 
 Confirm:
 
-- Voice Access remains inactive
-- AI guidance remains static/inactive
-- map discovery remains inactive
-- location remains inactive
-- hub information remains static/local-only
-- no live AI behavior appears
-- no live maps behavior appears
-- no microphone capture appears
-- no location capture appears
-- no resident data capture appears
-- no PHI workflow appears
-- no clinical workflow appears
-- no provider-patient messaging appears
-- no appointment scheduling appears
-- no insurance workflow appears
-- no backend runtime behavior appears
-- no county console exposure appears
+- `/api/access/search` returns customer-facing results or empty states
+- `/api/ai/guidance` keeps non-clinical boundaries
+- `/api/support` requires consent before submission
+- `/api/voice/session` requires consent and readiness before returning any provider session
+- no browser bundle contains `OPENAI_API_KEY`, `sk-`, provider bearer tokens, or privileged credentials
+- no resident route sends microphone audio unless Voice Access is enabled, consented, and server-authorized
+- no resident route requires location access to continue
 
 ## Browser And Network Checks
 
 Confirm:
 
 - no console errors
-- no unexpected network calls
-- no request to live AI providers
-- no request to live maps providers
-- no request to backend endpoints
-- no request to database, auth, or storage services
-- no SDK runtime behavior
+- no failed route loads
+- no request exposes provider credentials
+- no request to maps, notifications, or voice providers occurs from the browser before permission and readiness gates
+- no PHI workflow appears
+- no clinical workflow appears
+- no county console is exposed in resident navigation
 
 ## Viewport Checks
 
@@ -134,29 +106,23 @@ Confirm mobile and desktop viewports:
 - render successfully
 - remain readable
 - have usable navigation
-- show fallback preview cards clearly
-- avoid page-level horizontal overflow
-- keep privacy and accessibility screens readable
+- avoid page-level horizontal overflow at 390px width
+- keep tap targets usable
+- keep visible focus states
+- keep privacy, consent, and support screens readable
 
 ## Stop Rules
 
 Stop verification and report if:
 
-- Amplify build does not generate `apps/mobile/dist`
-- Amplify build replaces the existing preview routes with only the resident export
-- Amplify build publishes `.next` instead of `out`
+- Amplify build publishes `out` instead of `.next`
 - live URL does not load
 - `/resident`, `/county`, or `/about-model` no longer loads
 - required boundary language is missing
-- Voice Access appears live
-- AI guidance appears live
-- map discovery appears live
-- location capture appears live
-- hub information appears to call a backend
-- resident data capture appears
-- PHI workflow appears
-- clinical workflow appears
-- county console appears in resident navigation
+- Voice Access returns a provider session without consent and readiness
+- AI guidance provides diagnosis, treatment, prescribing, triage, medication advice, clinical planning, or emergency response
+- support/contact path is missing
+- ZIP, city, or county search is missing
+- public UI exposes internal build language
 - console errors indicate runtime failure
-- unexpected network calls appear
-- any step requires secrets, API keys, SDK imports, backend runtime, Amplify backend categories, infrastructure changes, or runtime service adapters
+- browser assets include secrets, provider keys, bearer tokens, or privileged endpoint configuration

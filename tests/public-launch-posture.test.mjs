@@ -7,6 +7,7 @@ const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf
 const publicResidentSources = [
   read("src/app/page.tsx"),
   read("src/app/resident/page.tsx"),
+  read("src/app/resident/resident-access-app.tsx"),
   read("src/app/about-model/page.tsx"),
   read("src/app/county/page.tsx"),
   read("src/lib/resident-data.ts"),
