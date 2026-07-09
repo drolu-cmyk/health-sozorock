@@ -1,10 +1,10 @@
-# AWS Amplify Static Preview Deployment
+# AWS Amplify Dynamic App Deployment
 
 ## Purpose
 
-Issue 045 configures AWS Amplify Hosting to build the existing static preview routes, publish the static Next.js export, and verify the resident Expo web export artifact.
+This document now records the controlled public web deployment posture for SozoRock Health as a dynamic Next.js app.
 
-This issue prepares deployment configuration only. It does not execute deployment from Codex, create cloud resources, activate backend runtime, enable live services, add secrets, add API keys, or add runtime service adapters.
+The earlier static preview path is superseded for public launch. The active web artifact is the Next.js runtime build in `.next`, while the Expo resident export at `apps/mobile/dist` remains a generated mobile-web QA artifact.
 
 Required boundary:
 
@@ -20,29 +20,7 @@ Provider boundary:
 
 Locked operating logic:
 
-**Signal → Decision → Action → Assurance → Impact**
-
-## Relation To Issue 044
-
-Issue 044 added the Expo static web export command:
-
-```bash
-npm run mobile:export:web
-```
-
-Issue 045 adds the Amplify Hosting build specification that runs that command after the existing Next.js preview build.
-
-The resident Expo export is generated at:
-
-```text
-apps/mobile/dist
-```
-
-The static Next.js deployment artifact is generated at:
-
-```text
-out
-```
+**Signal -> Decision -> Action -> Assurance -> Impact**
 
 ## Deployment Target
 
@@ -52,27 +30,30 @@ Deployment target:
 AWS Amplify Hosting
 ```
 
-Build command:
+Build commands:
 
 ```bash
+npm run build
 npm run mobile:export:web
 ```
 
-Resident export output directory:
+Public web deployment artifact:
+
+```text
+.next
+```
+
+Resident mobile-web QA artifact:
 
 ```text
 apps/mobile/dist
 ```
 
-Static deployment output directory:
-
-```text
-out
-```
+The active site root must not publish `out` or `apps/mobile/dist`.
 
 ## Build Specification
 
-The repository root now includes:
+The repository root includes:
 
 ```text
 amplify.yml
@@ -82,106 +63,61 @@ The build specification:
 
 - runs from the repository root
 - installs npm dependencies
-- runs `npm run build` for the existing preview routes
-- runs `npm run mobile:export:web`
-- publishes `out` so the existing preview routes stay available as static files
-- keeps `apps/mobile/dist` as a generated resident export artifact for verification
-- caches npm workspace dependency folders
-- does not publish `.next`
-- does not publish `apps/mobile/dist` as the existing site root artifact
-- does not configure backend phases
+- runs `npm run build` for the dynamic Next.js app
+- runs `npm run mobile:export:web` for parallel resident mobile-web QA
+- publishes `.next` for the public web app
+- does not publish `out`
+- does not publish `apps/mobile/dist` as the site root artifact
 - does not configure Amplify backend categories
-- does not add secrets
-- does not add API keys
-- does not add Google resources
-- does not add runtime adapters
+- does not expose secrets or provider keys to browser bundles
 
-## Static Hosting Boundary
+## Dynamic Runtime Boundary
 
-This configuration is for static hosting only.
+Allowed for controlled public launch:
 
-Allowed:
-
-- AWS Amplify Hosting frontend build configuration
-- static preview artifact publication from `out`
-- resident Expo export generation at `apps/mobile/dist`
-- dependency cache paths
-- post-deploy static preview verification
+- Next.js dynamic server routes under `src/app/api`
+- server-side AI guidance boundary through the Responses API when `OPENAI_API_KEY` is configured
+- server-side Voice Access session preparation through the approved realtime provider adapter when all readiness gates pass
+- consent-gated support submissions
+- reviewed access-directory search
+- no-store responses for runtime guidance, voice, support, and directory calls
+- generated `apps/mobile/dist` artifact for mobile-web QA only
 
 Not allowed:
 
-- Amplify backend categories
-- Amplify Auth
-- Amplify Data
-- Amplify Storage
-- Amplify Functions
-- GraphQL API
-- REST API
-- Lambda
-- DynamoDB
-- Cognito
-- S3 uploads beyond Amplify Hosting artifact handling
-- CloudFront configuration changes
-- DNS changes
-- Route 53 changes
-- ACM changes
-- OIDC changes
-- infrastructure-as-code
-- Google Cloud resources
-- Firebase resources
-- Google Maps runtime
-- Vertex AI runtime
-- Gemini runtime
-- OpenAI runtime
-- secrets
-- API keys
-- SDK imports
-- network calls
-- runtime service adapters
+- client-side provider API keys
+- privileged provider SDKs in browser bundles
+- diagnosis, treatment, prescribing, symptom triage, medication advice, clinical planning, or emergency response
+- microphone-only flows
+- location-only flows
+- formal partnership claims without approved source records
+- enabling Voice Access without consent, rate limits, logging rules, support ownership, cost controls, and provider readiness
 
 ## Route Preservation
 
-The existing Amplify preview still advertises and verifies the following routes:
+The public web deployment verifies:
 
 - `/`
 - `/resident`
 - `/county`
 - `/about-model`
 
-Publishing only `apps/mobile/dist` at the site root would replace those routes. Publishing `.next` would violate the static-only boundary because `.next` is not this repository's static deploy artifact. The Amplify build spec therefore publishes `out` while still generating the resident Expo export during the build.
+Publishing only `apps/mobile/dist` would replace those routes. Publishing `out` would revert the app to a static export and remove the dynamic resident journey APIs. The public web app therefore publishes `.next`.
 
-## What The Build Produces
+## What The Dynamic App Provides
 
-The resident Expo export artifact includes:
+The controlled public web app includes:
 
-- `index.html`
-- `metadata.json`
-- `_expo/static/js/web/...` assets
-- resident app shell
-- resident navigation
-- static guidance screens
-- fallback preview cards
-- Voice Access inactive state
-- AI guidance static/inactive state
-- map and location inactive states
-- static/local-only hub information
-- privacy and accessibility boundary screens
-
-The published preview and generated resident export do not include:
-
-- live AI
-- live maps
-- microphone capture
-- location capture
-- backend runtime
-- resident account
-- forms
-- PHI collection
-- clinical workflow
-- appointment scheduling
-- insurance workflow
-- provider messaging
-- county console
+- a functional resident access journey
+- server-backed search by ZIP code, city, or county
+- AI-native access guidance with non-clinical boundaries
+- Voice Access visible with readiness, consent, and server-side gates
+- guided text alternative when voice is unavailable
+- Health Access Day and Health Equity Hub discovery surfaces
+- provider-readiness checklist
+- privacy and consent language
+- support/contact pathway
+- customer-facing service states for unavailable options
 
 ## Pre-Deploy Verification
 
@@ -196,25 +132,23 @@ npm run build
 npm run guardrails
 npm run verify
 npm audit --audit-level=moderate
-node scripts/smoke-test-health-domain.mjs --fallback-only
 npm run mobile:export:web
+git diff --check
 ```
 
 Confirm:
 
-- export command completes
-- existing preview build completes
-- `out` exists for the published static preview artifact
-- `apps/mobile/dist` exists
-- `apps/mobile/dist/index.html` exists
-- static assets exist
-- no secrets are present in output
-- no API keys are present in output
-- no backend endpoint config is present
+- `npm run build` completes
+- `.next` exists for the public web artifact
+- `apps/mobile/dist` exists for mobile-web QA
+- dynamic API routes compile
+- no secrets are present in emitted browser assets
+- no provider keys are present in emitted browser assets
+- no public route shows customer-facing internal build language
 
 ## Post-Deploy Verification
 
-After the existing Amplify Hosting pipeline publishes the static artifact, use:
+After Amplify Hosting publishes the dynamic app, use:
 
 - `docs/sozorock-health/amplify-live-preview-verification-checklist.md`
 - `docs/sozorock-health/post-deployment-verification-checklist.md`
@@ -222,66 +156,29 @@ After the existing Amplify Hosting pipeline publishes the static artifact, use:
 Confirm:
 
 - live URL loads
-- `/resident` loads
+- `/resident` loads as an app experience
 - `/county` loads
 - `/about-model` loads
-- resident screens render
-- fallback preview cards render
-- required boundary language appears correctly
-- no console errors appear
-- no unexpected network calls appear
-- no live AI behavior appears
-- no live maps behavior appears
-- no microphone capture appears
-- no location capture appears
-- no resident data capture appears
-- no PHI workflow appears
-- no clinical workflow appears
-- no county console appears in resident navigation
+- access search returns reviewed records or a useful empty state
+- AI guidance keeps non-clinical boundaries
+- Voice Access stays gated unless readiness and consent are satisfied
+- support/contact path is visible
+- no client-side secrets or provider keys appear
+- no page-level horizontal overflow appears at 390px width
 
 ## Stop Rules
 
-Stop deployment configuration work if any step requires:
+Stop deployment work if any step requires or reveals:
 
-- deployment execution from Codex
-- replacing the existing preview routes with only `apps/mobile/dist`
-- publishing `.next` instead of `out`
-- new Amplify backend setup
-- Amplify Auth
-- Amplify Data
-- Amplify Storage
-- Amplify Functions
-- GraphQL API
-- REST API
-- Lambda
-- DynamoDB
-- Cognito
-- CloudFront configuration changes
-- DNS changes
-- Route 53 changes
-- ACM changes
-- OIDC changes
-- infrastructure-as-code
-- Google Cloud resources
-- Firebase resources
-- Google Maps runtime
-- Vertex AI runtime
-- Gemini runtime
-- OpenAI runtime
-- secrets
-- API keys
-- SDK imports
-- network calls
-- runtime service adapters
-- live AI
-- live maps
-- microphone capture
-- location capture
-- resident data capture
-- submitted forms
-- PHI workflow
-- clinical workflow
+- client-side provider keys
+- direct browser access to privileged OpenAI, map, notification, or voice provider credentials
+- enabled Voice Access without consent, readiness, logging, rate-limit, support, and cost-control gates
+- enabled AI guidance without non-clinical boundary testing
+- public copy that claims diagnosis, treatment, prescribing, symptom triage, emergency response, insurance processing, or provider replacement
+- public routes that expose internal build language
+- missing support ownership
+- missing rollback or feature-disable path
 
 ## Recommended Next Issue
 
-Issue 046 - Verify Amplify live static preview and public-readiness cleanup
+Controlled public dynamic web deployment verification and app-store readiness continuation.

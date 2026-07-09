@@ -19,7 +19,7 @@ export function SiteNav({ navItems }: { navItems: NavItem[] }) {
     <nav className="flex flex-wrap gap-2" aria-label="Primary navigation">
       {visibleNavItems.map((item) => (
         <Link
-          className="rounded-lg px-3 py-2 text-sm font-semibold text-foundation-700 hover:bg-surface hover:text-foundation-950"
+          className="inline-flex min-h-11 items-center rounded-lg px-3 py-2 text-sm font-semibold text-foundation-700 hover:bg-surface hover:text-foundation-950 focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
           href={item.href}
           key={item.href}
         >

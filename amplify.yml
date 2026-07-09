@@ -9,7 +9,7 @@ frontend:
         - npm run build
         - npm run mobile:export:web
   artifacts:
-    baseDirectory: out
+    baseDirectory: .next
     files:
       - "**/*"
   cache:

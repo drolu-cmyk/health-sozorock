@@ -76,7 +76,7 @@ Automate everything safe to automate. Require human review where trust, complian
 
 ## Current status
 
-Issue 001 scaffold is underway as a standalone Next.js App Router prototype.
+SozoRock Health is now moving through the controlled public web launch track as a dynamic Next.js App Router application.
 
 Routes:
 
@@ -98,26 +98,47 @@ npm run verify
 npm audit --audit-level=moderate
 ```
 
-This first build uses mock or synthetic data only and does not require AWS, Google, or OpenAI keys.
+The resident route is an app experience, not a document. It uses server routes for access search, AI-native guidance, Voice Access readiness, and support/contact handling while preserving the non-clinical boundary.
 
-## Preview deployment safety
+## Dynamic app posture
 
-Preview deployment is a manual approval step. Do not deploy from Codex unless explicitly authorized.
+Controlled public web launch uses the Next.js dynamic runtime.
 
-The current prototype is preview-ready only when these boundaries remain true:
+Active runtime paths:
+
+- `src/app/api/access/search/route.ts`
+- `src/app/api/ai/guidance/route.ts`
+- `src/app/api/support/route.ts`
+- `src/app/api/voice/session/route.ts`
+
+Resident app surface:
+
+- `src/app/resident/resident-access-app.tsx`
+
+Deployment posture:
+
+- Amplify builds with `npm run build`.
+- Amplify publishes `.next`.
+- `npm run mobile:export:web` still produces `apps/mobile/dist` for mobile-web QA.
+- `out` is not the public web launch artifact.
+- Provider keys and privileged credentials stay server-side.
+- Voice Access is visible but gated by permission, readiness, support, rate-limit, cost, logging, and provider controls.
+- ZIP, city, and county search remains available without microphone or location access.
+
+Controlled public launch remains valid only when these boundaries stay true:
 
 - **No PHI. Consent-based. Non-clinical.**
-- Prototype uses synthetic data only.
-- Voice Access is static and non-clinical.
-- Geospatial view is mock/provider-neutral.
+- SozoRock Health is access-only: no clinical determinations, medical interventions, medication orders, symptom sorting, provider replacement, insurance processing, or emergency response.
+- Providers keep their platforms. We help residents get ready.
+- Voice Access uses a server-side provider-agnostic adapter and never exposes provider credentials to the browser.
+- The app works without microphone access.
+- The app works without location access.
+- Typing and ZIP/city/county search remain available.
 - Human review required before action.
-- Planning support, not automated decision-making.
-- No environment variables or secrets are required.
-- No AWS resources, Google APIs, OpenAI APIs, backend services, database, authentication, storage, notifications, email, SMS, or paid services are required.
-- No real resident data capture is active.
+- Public routes use resident-facing service states instead of internal build language.
 - No unsupported county, library, provider, or partner claim is present.
 
-Before manual preview deployment, run the local commands above and complete:
+Before controlled public deployment, run the local commands above and complete:
 
 - `docs/sozorock-health/preview-deployment-checklist.md`
 - `docs/sozorock-health/manual-preview-smoke-test.md`
@@ -147,8 +168,8 @@ Before manual preview deployment, run the local commands above and complete:
 - [Post-deployment verification checklist](docs/sozorock-health/post-deployment-verification-checklist.md)
 - [Static resident web export](docs/sozorock-health/static-resident-web-export.md)
 - [Static export artifact checklist](docs/sozorock-health/static-export-artifact-checklist.md)
-- [AWS Amplify static preview deployment](docs/sozorock-health/aws-amplify-static-preview-deployment.md)
-- [Amplify live preview verification checklist](docs/sozorock-health/amplify-live-preview-verification-checklist.md)
+- [AWS Amplify dynamic app deployment](docs/sozorock-health/aws-amplify-static-preview-deployment.md)
+- [Amplify dynamic web verification checklist](docs/sozorock-health/amplify-live-preview-verification-checklist.md)
 
 ## Native resident app foundation
 
@@ -165,7 +186,7 @@ npm run mobile:android
 npm run mobile:typecheck
 ```
 
-The mobile app foundation is frontend-only in this issue. It does not add live AI, live maps, backend services, resident data capture, protected-health-data workflows, clinical workflows, DNS changes, CloudFront changes, Route 53 changes, ACM changes, OIDC changes, or AWS infrastructure changes.
+The mobile app foundation remains gated separately from the controlled public web launch. It does not add protected-health-data workflows, clinical workflows, DNS changes, CloudFront changes, Route 53 changes, ACM changes, OIDC changes, or AWS infrastructure changes.
 
 Native build readiness is documented for future EAS-based iOS and Android builds. No EAS build, EAS submit, App Store submission, Google Play submission, credentials, secrets, live services, or cloud resources are introduced by the readiness docs.
 
@@ -175,17 +196,9 @@ Consent-gated adapter shells prepare unavailable/fallback states for future voic
 
 Resident adapter fallback states connect those unavailable/fallback states to the resident app UI without activating live services, SDKs, network calls, backend runtime, resident data capture, PHI workflows, or clinical workflows.
 
-Resident fallback preview quality keeps those fallback states readable for internal review while preserving disabled live services, no resident data capture, and the No PHI. Consent-based. Non-clinical. boundary.
-
-Resident content accessibility audit reviews static resident copy, accessibility labels, navigation clarity, and inactive-service wording without activating live services or backend runtime.
-
-Static preview deployment readiness documents the final pre-preview checklist and manual QA posture without deploying, changing infrastructure, activating live services, or adding backend runtime.
-
-Static resident preview deployment release documents the existing-pipeline release boundary and post-deployment verification checklist without executing deployment, creating infrastructure, enabling live services, or adding backend runtime.
-
 Static resident web export adds a local Expo web export command that produces `apps/mobile/dist` without deploying, changing infrastructure, enabling live services, adding backend runtime, or collecting resident data.
 
-AWS Amplify static preview deployment configures Amplify Hosting to build the existing preview routes, publish the static `out` artifact, generate `apps/mobile/dist`, and preserve `/resident`, `/county`, and `/about-model` without adding backend runtime, secrets, API keys, live services, or infrastructure-as-code.
+AWS Amplify dynamic app deployment configures Amplify Hosting to build the public web app, publish `.next`, generate `apps/mobile/dist` for mobile-web QA, and preserve `/resident`, `/county`, and `/about-model` without exposing secrets, API keys, or privileged provider credentials in browser bundles.
 
 ## Brand Assets
 

@@ -18,7 +18,7 @@ export function BrandIdentity({ className = "", showPromise = true }: BrandIdent
 
   return (
     <Link
-      className={`flex items-center gap-3 ${className}`}
+      className={`inline-flex min-h-11 items-center gap-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2 ${className}`}
       href={brand.homeHref}
       aria-label={`${brand.programName} home`}
     >
