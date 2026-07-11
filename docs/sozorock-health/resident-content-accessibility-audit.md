@@ -1,4 +1,4 @@
-# Resident Content Accessibility Audit
+﻿# Resident Content Accessibility Audit
 
 ## Purpose
 
@@ -38,10 +38,10 @@ Issue 041 builds on that work by auditing static resident copy and accessibility
 - Health Access Day
 - Hubs
 - Provider-Led Pathway
-- How SozoRock Health Works
+- How it works
 - Privacy Boundary
 - Accessibility
-- About SozoRock Health
+- What we do
 - menu drawer
 - bottom navigation
 
@@ -115,10 +115,10 @@ Allowed resident navigation:
 - Health Access Day
 - Hubs
 - Provider-Led Pathway
-- How SozoRock Health Works
+- How it works
 - Privacy Boundary
 - Accessibility
-- About SozoRock Health
+- What we do
 
 Resident navigation must not expose:
 

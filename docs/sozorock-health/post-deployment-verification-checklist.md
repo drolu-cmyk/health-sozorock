@@ -1,4 +1,4 @@
-# Post-Deployment Verification Checklist
+﻿# Post-Deployment Verification Checklist
 
 ## Purpose
 
@@ -42,10 +42,10 @@ Check each screen:
 - Health Access Day renders
 - Hubs renders
 - Provider-Led Pathway renders
-- How SozoRock Health Works renders
+- How it works renders
 - Privacy Boundary renders
 - Accessibility renders
-- About SozoRock Health renders
+- What we do renders
 
 ## Navigation
 
@@ -56,7 +56,7 @@ Check:
 - fallback preview cards render
 - no broken navigation appears
 - no county console is visible in resident navigation
-- no backend, infrastructure, model, action queue, assurance log, synthetic signals, or administrative labels appear in resident navigation
+- no backend, infrastructure, model, Action review, Assurance checks, synthetic signals, or administrative labels appear in resident navigation
 
 ## Required Language
 

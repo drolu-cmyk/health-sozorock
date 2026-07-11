@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "SozoRock Health",
+    "name": "SozoRock® Health",
     "slug": "sozorock-health",
     "scheme": "sozorockhealth",
     "version": "0.1.0",
@@ -25,7 +25,7 @@
       "output": "single"
     },
     "extra": {
-      "liveServicesEnabled": false,
+      "controlledLaunchReady": false,
       "trustBoundary": "No PHI. Consent-based. Non-clinical."
     }
   }

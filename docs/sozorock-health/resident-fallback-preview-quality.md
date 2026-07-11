@@ -1,4 +1,4 @@
-# Resident Fallback Preview Quality
+﻿# Resident Fallback Preview Quality
 
 ## Purpose
 

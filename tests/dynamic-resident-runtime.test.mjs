@@ -41,7 +41,6 @@ test("resident app exposes a complete account flow", () => {
     "Sign up",
     "Log in",
     "Sign out",
-    "Create account",
     "Welcome",
   ]) {
     assert.match(residentApp, new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));

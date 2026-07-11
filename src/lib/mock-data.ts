@@ -8,11 +8,11 @@ export const residentModules = [
 ];
 
 export const countyModules = [
-  "Geospatial Access Operating Picture",
-  "AI Decision Support",
-  "Action Queue",
-  "Assurance Log",
-  "Scenario Planning",
+  "Access gap review",
+  "Decision support",
+  "Action review",
+  "Assurance checks",
+  "Planning examples",
 ];
 
 export const syntheticAccessSignals = [
@@ -50,7 +50,7 @@ export const actionQueue = [
     owner: "Data and Insights Support",
     due: "2026-06-18",
     status: "Human review",
-    source: "Synthetic ZIP access signals",
+    source: "Illustrative ZIP access signals",
   },
   {
     action: "Run assurance review",
@@ -64,7 +64,7 @@ export const actionQueue = [
     owner: "Access Workforce",
     due: "2026-07-02",
     status: "Draft",
-    source: "Synthetic readiness trend",
+    source: "Illustrative readiness trend",
   },
 ];
 

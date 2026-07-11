@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { Footer } from "@/components/footer";
 import type { AccessRecord } from "@/lib/access-directory";
 import { brand } from "@/lib/brand";
 import {
@@ -79,7 +80,7 @@ declare global {
 const profileStorageKey = "sozorock-health-resident-profiles";
 const savedStepStorageKey = "sozorock-health-next-step";
 const publicBoundary =
-  "SozoRock Health does not give medical advice or replace licensed care.";
+  "SozoRock® Health does not give medical advice or replace licensed care.";
 const accessFallback =
   "The app works without microphone or location access.";
 
@@ -171,7 +172,7 @@ const needs: Array<{
   },
   {
     description:
-      "Understand what SozoRock Health does and what licensed providers keep responsible for.",
+      "Understand what SozoRock® Health does and what licensed providers keep responsible for.",
     key: "provider-readiness",
     label: "Provider-led pathway",
     nextStep: "Review readiness steps and boundaries.",
@@ -189,13 +190,13 @@ const readinessChecklist = [
 
 const aiGuidanceByNeed: Record<NeedKey, string> = {
   "digital-readiness":
-    "Start with your visit checklist. SozoRock Health can help you organize what to bring and what to ask, but the provider makes care decisions.",
+    "Start with your visit checklist. SozoRock® Health can help you organize what to bring and what to ask, but the provider makes care decisions.",
   "health-access-day":
     "Review the listed Health Access Day details, check the location and time, and use support if no event is listed near you right now.",
   "local-support":
     "Search by ZIP code, city, or county. If a nearby access point is not listed, use the support path so an approved operator can review the gap.",
   "provider-readiness":
-    "Providers keep their platforms. SozoRock Health helps you get ready, understand the path, and ask clearer questions before provider-led care.",
+    "Providers keep their platforms. SozoRock® Health helps you get ready, understand the path, and ask clearer questions before provider-led care.",
   "voice-access":
     "Voice Access is visible, but guided text is available now. The app works without microphone access.",
 };
@@ -723,26 +724,25 @@ export function ResidentAccessApp() {
     return (
       <main className="min-h-screen bg-white text-foundation-950">
         <section className="mx-auto grid min-h-screen max-w-6xl gap-6 px-5 py-6 lg:grid-cols-[0.9fr_1fr] lg:items-center">
-          <div className="relative overflow-hidden rounded-[2rem] bg-foundation-950 p-8 text-white shadow-2xl shadow-foundation-950/20 sm:p-10">
-            <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-access-600/25 to-transparent" />
-            <div className="relative">
+          <div className="overflow-hidden rounded-lg bg-teal-900 p-8 text-white shadow-xl shadow-foundation-950/10 sm:p-10">
+            <div>
               <p className="text-base font-bold tracking-normal">
-                SozoRock Health
+                {brand.publicLockup}
               </p>
               <h1 className="mt-10 max-w-xl text-4xl font-bold leading-tight tracking-normal sm:text-6xl">
                 {brand.promise}
               </h1>
-              <p className="mt-5 max-w-lg text-lg leading-8 text-blue-100">
-                Find a clear next step for care access, readiness, and support.
+              <p className="mt-5 max-w-lg text-lg leading-8 text-white">
+                Find a clear next step for access, readiness, and support.
               </p>
-              <div className="mt-10 rounded-2xl border border-white/15 bg-white/8 p-5 backdrop-blur">
+              <div className="mt-10 rounded-lg border border-white/20 bg-teal-800 p-5">
                 <p className="text-lg font-bold">
                   Not a clinic. Not a provider.
                 </p>
                 <p className="mt-1 text-lg font-bold">
                   No medical decisions or care plans.
                 </p>
-                <p className="mt-4 text-sm leading-6 text-blue-100">
+                <p className="mt-4 text-sm leading-6 text-white">
                   Search by ZIP code, city, or county. Type instead of using the
                   microphone. Ask support for help when the app cannot find the
                   right path.
@@ -751,14 +751,14 @@ export function ResidentAccessApp() {
             </div>
           </div>
 
-          <div className="rounded-[2rem] border border-line bg-white p-5 shadow-2xl shadow-foundation-950/10 sm:p-8">
+          <div className="rounded-lg border border-line bg-white p-5 shadow-xl shadow-foundation-950/10 sm:p-8">
             <div className="mb-8 flex items-center justify-between gap-4">
               <div>
-                <p className="text-sm font-bold text-access-700">
+                <p className="text-sm font-bold text-teal-700">
                   Resident app
                 </p>
                 <h2 className="mt-1 text-3xl font-bold">
-                  {authMode === "signup" ? "Create account" : "Welcome back"}
+                  {authMode === "signup" ? "Sign up" : "Welcome back"}
                 </h2>
               </div>
               <span className="rounded-full border border-line px-4 py-2 text-sm font-bold text-foundation-700">
@@ -767,15 +767,15 @@ export function ResidentAccessApp() {
             </div>
             <div
               aria-label="Choose account action"
-              className="grid rounded-2xl border border-line bg-surface p-1 sm:grid-cols-2"
+              className="grid rounded-lg border border-line bg-surface p-1 sm:grid-cols-2"
               role="tablist"
             >
               {(["signup", "login"] as const).map((mode) => (
                 <button
                   aria-selected={authMode === mode}
-                  className={`min-h-12 rounded-xl px-4 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2 ${
+                  className={`min-h-12 rounded-lg px-4 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2 ${
                     authMode === mode
-                      ? "bg-foundation-950 text-white"
+                      ? "bg-teal-900 text-white"
                       : "text-foundation-800 hover:bg-white"
                   }`}
                   data-testid={`auth-${mode}-tab`}
@@ -803,7 +803,7 @@ export function ResidentAccessApp() {
                   Name or initials
                   <input
                     autoComplete="name"
-                    className="min-h-14 rounded-2xl border border-line px-4 text-base font-normal outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
+                    className="min-h-14 rounded-lg border border-line px-4 text-base font-normal outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
                     data-testid="auth-name"
                     name="name"
                     onChange={(event) => setAuthName(event.target.value)}
@@ -816,7 +816,7 @@ export function ResidentAccessApp() {
                 Email
                 <input
                   autoComplete="email"
-                  className="min-h-14 rounded-2xl border border-line px-4 text-base font-normal outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
+                  className="min-h-14 rounded-lg border border-line px-4 text-base font-normal outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
                   data-testid="auth-email"
                   name="email"
                   onChange={(event) => setAuthEmail(event.target.value)}
@@ -831,7 +831,7 @@ export function ResidentAccessApp() {
                   autoComplete={
                     authMode === "signup" ? "new-password" : "current-password"
                   }
-                  className="min-h-14 rounded-2xl border border-line px-4 text-base font-normal outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
+                  className="min-h-14 rounded-lg border border-line px-4 text-base font-normal outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
                   data-testid="auth-passcode"
                   minLength={6}
                   name="passcode"
@@ -845,7 +845,7 @@ export function ResidentAccessApp() {
                 ZIP code, city, or county
                 <input
                   autoComplete="postal-code"
-                  className="min-h-14 rounded-2xl border border-line px-4 text-base font-normal outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
+                  className="min-h-14 rounded-lg border border-line px-4 text-base font-normal outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
                   data-testid="auth-zip"
                   name="zip"
                   onChange={(event) => setAuthZip(event.target.value)}
@@ -854,7 +854,7 @@ export function ResidentAccessApp() {
                 />
               </label>
               <button
-                className="min-h-14 rounded-2xl bg-foundation-950 px-5 text-base font-bold text-white shadow-lg shadow-foundation-950/15 hover:bg-foundation-800 focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2 disabled:opacity-60"
+                className="min-h-14 rounded-lg bg-teal-900 px-5 text-base font-bold text-white shadow-lg shadow-foundation-950/15 hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-900 focus:ring-offset-2 disabled:opacity-60"
                 data-testid="auth-submit"
                 disabled={authBusy || !isHydrated}
                 type="submit"
@@ -864,12 +864,12 @@ export function ResidentAccessApp() {
                   : authBusy
                   ? "Working..."
                   : authMode === "signup"
-                    ? "Create account"
+                    ? "Sign up"
                     : "Log in"}
               </button>
               {authMessage ? (
                 <p
-                  className="rounded-2xl border border-line bg-surface p-3 text-sm font-semibold text-foundation-800"
+                  className="rounded-lg border border-line bg-surface p-3 text-sm font-semibold text-foundation-800"
                   role="status"
                 >
                   {authMessage}
@@ -882,6 +882,7 @@ export function ResidentAccessApp() {
             </p>
           </div>
         </section>
+        <Footer />
       </main>
     );
   }
@@ -889,14 +890,12 @@ export function ResidentAccessApp() {
   return (
     <main className="min-h-screen bg-white text-foundation-950">
       <div className="mx-auto grid min-h-screen max-w-[1440px] lg:grid-cols-[280px_1fr]">
-        <aside className="hidden bg-foundation-950 p-6 text-white lg:flex lg:flex-col">
+        <aside className="hidden bg-teal-900 p-6 text-white lg:flex lg:flex-col">
           <div>
             <p className="text-2xl font-bold leading-tight">
-              SozoRock
-              <br />
-              Health
+              {brand.publicLockup}
             </p>
-            <p className="mt-2 text-sm font-semibold text-blue-100">
+            <p className="mt-2 text-sm font-semibold text-white">
               {brand.promise}
             </p>
           </div>
@@ -907,16 +906,16 @@ export function ResidentAccessApp() {
             {appScreens.map((screen) => (
               <button
                 aria-label={`Open ${screen.label}`}
-                className={`flex min-h-14 items-center gap-3 rounded-2xl px-4 text-left text-base font-bold focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2 ${
+                className={`flex min-h-14 items-center gap-3 rounded-lg px-4 text-left text-base font-bold focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2 ${
                   activeScreen === screen.key
-                    ? "bg-white/12 text-white shadow-lg shadow-black/15"
-                    : "text-blue-100 hover:bg-white/8 hover:text-white"
+                    ? "bg-white text-teal-900 shadow-lg shadow-black/15"
+                    : "text-white hover:bg-teal-800"
                 }`}
                 key={screen.key}
                 onClick={() => setActiveScreen(screen.key)}
                 type="button"
               >
-                <span className="grid size-9 place-items-center rounded-xl border border-white/15 bg-white/8">
+                <span className="grid size-9 place-items-center rounded-lg border border-white/20 bg-teal-800">
                   <AppIcon className="size-5" name={appIcons[screen.key]} />
                 </span>
                 <span>{screen.label}</span>
@@ -924,10 +923,10 @@ export function ResidentAccessApp() {
             ))}
           </nav>
 
-          <div className="mt-auto rounded-3xl border border-white/15 bg-white/8 p-5">
+          <div className="mt-auto rounded-lg border border-white/20 bg-teal-800 p-5">
             <p className="text-base font-bold">Not a clinic.</p>
             <p className="text-base font-bold">Not a provider.</p>
-            <p className="mt-2 text-sm leading-6 text-blue-100">
+            <p className="mt-2 text-sm leading-6 text-white">
               {brand.trustBoundary} Your information is private and secure.
             </p>
           </div>
@@ -937,7 +936,7 @@ export function ResidentAccessApp() {
           <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-sm font-bold text-access-700">
-                SozoRock Health
+                {brand.publicLockup}
               </p>
               <h1 className="mt-1 text-3xl font-bold tracking-normal sm:text-4xl">
                 Welcome, {firstName}
@@ -952,7 +951,7 @@ export function ResidentAccessApp() {
                 Request support
               </button>
               <button
-                className="min-h-11 rounded-full border border-line px-4 text-sm font-bold text-foundation-800 hover:bg-surface focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
+                className="min-h-11 rounded-full border border-line px-4 text-sm font-bold text-foundation-800 hover:bg-surface focus:outline-none focus:ring-2 focus:ring-teal-900 focus:ring-offset-2"
                 onClick={signOut}
                 type="button"
               >
@@ -967,9 +966,9 @@ export function ResidentAccessApp() {
           >
             {appScreens.map((screen) => (
               <button
-                className={`min-h-12 rounded-2xl px-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2 ${
+                className={`min-h-12 rounded-lg px-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2 ${
                   activeScreen === screen.key
-                    ? "bg-foundation-950 text-white"
+                    ? "bg-teal-900 text-white"
                     : "border border-line bg-white text-foundation-800"
                 }`}
                 key={screen.key}
@@ -981,7 +980,7 @@ export function ResidentAccessApp() {
             ))}
           </nav>
 
-          <article className="relative overflow-hidden rounded-[2rem] border border-line bg-gradient-to-br from-white via-white to-access-100/50 p-5 shadow-xl shadow-foundation-950/5 sm:p-8">
+          <article className="relative overflow-hidden rounded-lg border border-line bg-warm-100 p-5 shadow-xl shadow-foundation-950/5 sm:p-8">
             <div className="relative grid gap-6 xl:grid-cols-[1fr_320px] xl:items-end">
               <div>
                 <h2 className="text-3xl font-bold tracking-normal sm:text-4xl">
@@ -995,13 +994,13 @@ export function ResidentAccessApp() {
                   Search by ZIP code, city, or county
                   <div className="flex flex-col gap-3 sm:flex-row">
                     <input
-                      className="min-h-14 flex-1 rounded-2xl border border-line bg-white px-4 text-base font-normal outline-none shadow-sm focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
+                      className="min-h-14 flex-1 rounded-lg border border-line bg-white px-4 text-base font-normal outline-none shadow-sm focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
                       onChange={(event) => setQuery(event.target.value)}
                       type="search"
                       value={query}
                     />
                     <button
-                      className="min-h-14 rounded-2xl bg-access-700 px-7 text-base font-bold text-white shadow-lg shadow-access-700/20 hover:bg-access-600 focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
+                      className="min-h-14 rounded-lg bg-access-700 px-7 text-base font-bold text-white shadow-lg shadow-access-700/20 hover:bg-access-600 focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
                       onClick={() => setActiveScreen("find")}
                       type="button"
                     >
@@ -1010,7 +1009,7 @@ export function ResidentAccessApp() {
                   </div>
                 </label>
               </div>
-              <div className="rounded-3xl border border-access-600/20 bg-white/80 p-5 shadow-sm backdrop-blur">
+              <div className="rounded-lg border border-access-600/20 bg-white p-5 shadow-sm">
                 <p className="text-sm font-bold text-access-700">
                   Guided next step
                 </p>
@@ -1021,7 +1020,7 @@ export function ResidentAccessApp() {
                   {isGuidanceLoading ? "Preparing guidance..." : guidance}
                 </p>
                 <button
-                  className="mt-4 min-h-11 w-full rounded-2xl bg-foundation-950 px-4 text-sm font-bold text-white hover:bg-foundation-800 focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
+                  className="mt-4 min-h-11 w-full rounded-lg bg-teal-900 px-4 text-sm font-bold text-white hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-900 focus:ring-offset-2"
                   onClick={saveNextStep}
                   type="button"
                 >
@@ -1031,7 +1030,7 @@ export function ResidentAccessApp() {
             </div>
             {savedStep ? (
               <p
-                className="mt-5 rounded-2xl border border-access-600/30 bg-access-100 p-3 text-sm font-bold text-access-700"
+                className="mt-5 rounded-lg border border-access-600/30 bg-access-100 p-3 text-sm font-bold text-access-700"
                 role="status"
               >
                 Saved: {savedStep}
@@ -1041,7 +1040,7 @@ export function ResidentAccessApp() {
 
           {activeScreen === "start" ? (
             <article className="grid gap-5 xl:grid-cols-[1fr_0.9fr]">
-              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+              <div className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
                 <h2 className="text-2xl font-bold">Choose one path</h2>
                 <p className="mt-2 text-sm leading-6 text-foundation-700">
                   Start with the thing you need now. You can switch anytime.
@@ -1049,7 +1048,7 @@ export function ResidentAccessApp() {
                 <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 {needs.map((need) => (
                   <button
-                    className={`min-h-32 rounded-3xl border p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2 ${
+                    className={`min-h-32 rounded-lg border p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2 ${
                       selectedNeed === need.key
                         ? "border-access-600 bg-access-100 shadow-sm"
                         : "border-line bg-white hover:-translate-y-0.5 hover:shadow-md"
@@ -1058,7 +1057,7 @@ export function ResidentAccessApp() {
                     onClick={() => chooseNeed(need.key)}
                     type="button"
                   >
-                    <span className="mb-4 grid size-10 place-items-center rounded-2xl bg-foundation-950 text-white">
+                    <span className="mb-4 grid size-10 place-items-center rounded-lg bg-teal-900 text-white">
                       <AppIcon className="size-5" name={needIcons[need.key]} />
                     </span>
                     <span className="block text-base font-bold text-foundation-950">
@@ -1073,7 +1072,7 @@ export function ResidentAccessApp() {
               </div>
 
               <div className="grid gap-5">
-                <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+                <div className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
                   <div className="flex items-center justify-between gap-4">
                     <h2 className="text-2xl font-bold">Voice Access</h2>
                     <span className="rounded-full border border-signal-600/25 bg-signal-100 px-3 py-1 text-xs font-bold text-signal-600">
@@ -1085,14 +1084,14 @@ export function ResidentAccessApp() {
                   </p>
                   <div className="mt-4 grid gap-3">
                     <button
-                      className="min-h-12 rounded-2xl bg-foundation-950 px-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
+                      className="min-h-12 rounded-lg bg-teal-900 px-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-teal-900 focus:ring-offset-2"
                       onClick={() => setActiveScreen("voice")}
                       type="button"
                     >
                       Start talking
                     </button>
                     <button
-                      className="min-h-12 rounded-2xl border border-line px-4 text-sm font-bold text-foundation-950 focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
+                      className="min-h-12 rounded-lg border border-line px-4 text-sm font-bold text-foundation-950 focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
                       onClick={() => setActiveScreen("voice")}
                       type="button"
                     >
@@ -1101,13 +1100,13 @@ export function ResidentAccessApp() {
                   </div>
                 </div>
 
-                <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+                <div className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
                   <h2 className="text-2xl font-bold">Support</h2>
                   <p className="mt-3 text-sm leading-6 text-foundation-700">
                     If the app cannot help, ask a person to review your request.
                   </p>
                   <button
-                    className="mt-4 min-h-12 w-full rounded-2xl bg-access-700 px-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
+                    className="mt-4 min-h-12 w-full rounded-lg bg-access-700 px-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
                     onClick={() => setActiveScreen("support")}
                     type="button"
                   >
@@ -1120,7 +1119,7 @@ export function ResidentAccessApp() {
 
           {activeScreen === "find" ? (
             <article className="grid gap-5 xl:grid-cols-[1fr_360px]">
-              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+              <div className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
                 <div className="flex items-end justify-between gap-4">
                   <div>
                     <p className="text-sm font-bold text-access-700">
@@ -1142,7 +1141,7 @@ export function ResidentAccessApp() {
                   {results.length > 0 ? (
                     results.map((result) => (
                       <button
-                        className="rounded-3xl border border-line bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
+                        className="rounded-lg border border-line bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
                         key={result.id}
                         onClick={() => {
                           setSelectedNeed("local-support");
@@ -1174,7 +1173,7 @@ export function ResidentAccessApp() {
                       </button>
                     ))
                   ) : (
-                    <div className="rounded-3xl border border-line bg-surface p-6">
+                    <div className="rounded-lg border border-line bg-surface p-6">
                       <p className="text-base font-bold">
                         We could not find a nearby access point yet.
                       </p>
@@ -1187,7 +1186,7 @@ export function ResidentAccessApp() {
                 </div>
               </div>
 
-              <div className="rounded-[2rem] border border-access-600/20 bg-access-100 p-5 shadow-sm sm:p-6">
+              <div className="rounded-lg border border-access-600/20 bg-access-100 p-5 shadow-sm sm:p-6">
                 <h2 className="text-2xl font-bold">Your next step</h2>
                 <p className="mt-3 text-sm leading-6 text-foundation-800">
                   {results[0]
@@ -1195,7 +1194,7 @@ export function ResidentAccessApp() {
                     : "Search first. If nothing appears, request support."}
                 </p>
                 <button
-                  className="mt-5 min-h-12 w-full rounded-2xl bg-foundation-950 px-4 text-sm font-bold text-white"
+                  className="mt-5 min-h-12 w-full rounded-lg bg-teal-900 px-4 text-sm font-bold text-white"
                   onClick={saveNextStep}
                   type="button"
                 >
@@ -1207,11 +1206,11 @@ export function ResidentAccessApp() {
 
           {activeScreen === "voice" ? (
             <article className="grid gap-5 xl:grid-cols-[1fr_360px]">
-              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+              <div className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div>
                     <p className="text-sm font-bold text-signal-600">
-                      SozoRock Health Voice Access
+                      SozoRock® Health Voice Access
                     </p>
                     <h2 className="mt-2 text-2xl font-bold">
                       Talk, or type instead.
@@ -1226,7 +1225,7 @@ export function ResidentAccessApp() {
                   if voice is not available in your area yet.
                 </p>
                 <div className="mt-5 grid gap-4">
-                  <label className="flex min-h-12 items-start gap-3 rounded-2xl border border-line bg-surface px-4 py-3 text-sm font-bold text-foundation-900">
+                  <label className="flex min-h-12 items-start gap-3 rounded-lg border border-line bg-surface px-4 py-3 text-sm font-bold text-foundation-900">
                     <input
                       checked={voiceConsent}
                       className="mt-1 size-4 accent-access-700"
@@ -1237,7 +1236,7 @@ export function ResidentAccessApp() {
                   </label>
                   <div className="grid gap-3 sm:grid-cols-3">
                     <button
-                      className="min-h-12 rounded-2xl bg-foundation-950 px-4 text-sm font-bold text-white hover:bg-foundation-800 focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
+                      className="min-h-12 rounded-lg bg-teal-900 px-4 text-sm font-bold text-white hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-900 focus:ring-offset-2"
                       onClick={startTalking}
                       type="button"
                     >
@@ -1245,7 +1244,7 @@ export function ResidentAccessApp() {
                     </button>
                     {isListening ? (
                       <button
-                        className="min-h-12 rounded-2xl border border-foundation-800 px-4 text-sm font-bold text-foundation-950 hover:bg-white focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
+                        className="min-h-12 rounded-lg border border-foundation-800 px-4 text-sm font-bold text-foundation-950 hover:bg-white focus:outline-none focus:ring-2 focus:ring-teal-900 focus:ring-offset-2"
                         onClick={stopTalking}
                         type="button"
                       >
@@ -1253,7 +1252,7 @@ export function ResidentAccessApp() {
                       </button>
                     ) : null}
                     <button
-                      className="min-h-12 rounded-2xl border border-line px-4 text-sm font-bold text-foundation-950 hover:bg-surface focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
+                      className="min-h-12 rounded-lg border border-line px-4 text-sm font-bold text-foundation-950 hover:bg-surface focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
                       onClick={requestVoiceAccess}
                       type="button"
                     >
@@ -1263,7 +1262,7 @@ export function ResidentAccessApp() {
                   <label className="grid gap-2 text-sm font-bold text-foundation-950">
                     Type instead
                     <textarea
-                      className="min-h-36 rounded-3xl border border-line bg-white px-4 py-3 text-base font-normal leading-7 outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
+                      className="min-h-36 rounded-lg border border-line bg-white px-4 py-3 text-base font-normal leading-7 outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
                       onChange={(event) => setTypedVoiceText(event.target.value)}
                       value={typedVoiceText}
                     />
@@ -1274,7 +1273,7 @@ export function ResidentAccessApp() {
                     </p>
                   ) : null}
                   <p
-                    className="rounded-2xl border border-line bg-surface p-3 text-sm font-semibold text-foundation-800"
+                    className="rounded-lg border border-line bg-surface p-3 text-sm font-semibold text-foundation-800"
                     role="status"
                   >
                     {voiceMessage} The app works without microphone or location
@@ -1288,15 +1287,15 @@ export function ResidentAccessApp() {
                 </div>
               </div>
 
-              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+              <div className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
                 <h2 className="text-2xl font-bold">What voice can do</h2>
                 <ul className="mt-4 grid gap-3 text-sm leading-6 text-foundation-700">
                   <li>Explain what you need in plain words.</li>
                   <li>Help you prepare for provider-led care.</li>
                   <li>Help you keep searching by ZIP code, city, or county.</li>
                 </ul>
-                <p className="mt-5 rounded-2xl border border-line bg-surface p-4 text-sm font-bold leading-6 text-foundation-900">
-                  SozoRock Health does not give medical advice or replace
+                <p className="mt-5 rounded-lg border border-line bg-surface p-4 text-sm font-bold leading-6 text-foundation-900">
+                  SozoRock® Health does not give medical advice or replace
                   licensed care. {accessFallback}
                 </p>
               </div>
@@ -1304,7 +1303,7 @@ export function ResidentAccessApp() {
           ) : null}
 
           {activeScreen === "prepare" ? (
-            <article className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+            <article className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
               <p className="text-sm font-bold text-access-700">
                 Prepare for your visit
               </p>
@@ -1314,7 +1313,7 @@ export function ResidentAccessApp() {
               <div className="mt-6 grid gap-3">
                 {readinessChecklist.map((item) => (
                   <label
-                    className="flex min-h-12 items-start gap-3 rounded-2xl border border-line bg-white px-4 py-3 text-sm font-bold text-foundation-900 shadow-sm"
+                    className="flex min-h-12 items-start gap-3 rounded-lg border border-line bg-white px-4 py-3 text-sm font-bold text-foundation-900 shadow-sm"
                     key={item}
                   >
                     <input
@@ -1327,7 +1326,7 @@ export function ResidentAccessApp() {
                   </label>
                 ))}
               </div>
-              <p className="mt-5 rounded-2xl border border-access-600/30 bg-access-100 p-4 text-sm font-bold leading-6 text-access-700">
+              <p className="mt-5 rounded-lg border border-access-600/30 bg-access-100 p-4 text-sm font-bold leading-6 text-access-700">
                 {completedItems.length} of {readinessChecklist.length} steps
                 selected.
               </p>
@@ -1336,14 +1335,14 @@ export function ResidentAccessApp() {
 
           {activeScreen === "hubs" ? (
             <article className="grid gap-5 xl:grid-cols-2">
-              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+              <div className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
                 <h2 className="text-2xl font-bold">
                   Health Access Day information
                 </h2>
                 <div className="mt-5 grid gap-3">
                   {healthAccessDayEvents.map((event) => (
                     <div
-                      className="rounded-3xl border border-line bg-white p-4 shadow-sm"
+                      className="rounded-lg border border-line bg-white p-4 shadow-sm"
                       key={`${event.title}-${event.date}`}
                     >
                       <p className="font-bold">{event.title}</p>
@@ -1360,12 +1359,12 @@ export function ResidentAccessApp() {
                   ))}
                 </div>
               </div>
-              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+              <div className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
                 <h2 className="text-2xl font-bold">Health Equity Hubs</h2>
                 <div className="mt-5 grid gap-3">
                   {residentHubExamples.map((hub) => (
                     <div
-                      className="rounded-3xl border border-line bg-white p-4 shadow-sm"
+                      className="rounded-lg border border-line bg-white p-4 shadow-sm"
                       key={hub.name}
                     >
                       <p className="font-bold">{hub.name}</p>
@@ -1386,7 +1385,7 @@ export function ResidentAccessApp() {
           ) : null}
 
           {activeScreen === "support" ? (
-            <article className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+            <article className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
               <p className="text-sm font-bold text-access-700">
                 Request support
               </p>
@@ -1397,30 +1396,30 @@ export function ResidentAccessApp() {
                 <label className="grid gap-2 text-sm font-bold text-foundation-950">
                   What should support understand?
                   <textarea
-                    className="min-h-36 rounded-3xl border border-line bg-white px-4 py-3 text-base font-normal leading-7 outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
+                    className="min-h-36 rounded-lg border border-line bg-white px-4 py-3 text-base font-normal leading-7 outline-none focus:border-access-600 focus:ring-2 focus:ring-access-600/25"
                     onChange={(event) => setSupportMessage(event.target.value)}
                     value={supportMessage}
                   />
                 </label>
-                <label className="flex min-h-12 items-start gap-3 rounded-2xl border border-line bg-surface px-4 py-3 text-sm font-bold text-foundation-900">
+                <label className="flex min-h-12 items-start gap-3 rounded-lg border border-line bg-surface px-4 py-3 text-sm font-bold text-foundation-900">
                   <input
                     checked={supportConsent}
                     className="mt-1 size-4 accent-access-700"
                     onChange={(event) => setSupportConsent(event.target.checked)}
                     type="checkbox"
                   />
-                  I give permission for SozoRock Health support to respond to
+                  I give permission for SozoRock® Health support to respond to
                   this request.
                 </label>
                 <div className="flex flex-col gap-3 sm:flex-row">
                   <button
-                    className="min-h-12 rounded-2xl bg-foundation-950 px-4 text-sm font-bold text-white hover:bg-foundation-800 focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
+                    className="min-h-12 rounded-lg bg-teal-900 px-4 text-sm font-bold text-white hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-900 focus:ring-offset-2"
                     type="submit"
                   >
                     Prepare support request
                   </button>
                   <a
-                    className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-line px-4 text-sm font-bold text-foundation-950 hover:bg-surface focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
+                    className="inline-flex min-h-12 items-center justify-center rounded-lg border border-line px-4 text-sm font-bold text-foundation-950 hover:bg-surface focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
                     href={`mailto:support@sozorockfoundation.org?subject=SozoRock%20Health%20support%20request&body=${encodeURIComponent(
                       supportMessage || "I need help with an access next step.",
                     )}`}
@@ -1442,14 +1441,14 @@ export function ResidentAccessApp() {
 
           {activeScreen === "saved" ? (
             <article className="grid gap-5 xl:grid-cols-[1fr_360px]">
-              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+              <div className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
                 <p className="text-sm font-bold text-access-700">
                   Saved step
                 </p>
                 <h2 className="mt-2 text-2xl font-bold">
                   Keep your next step easy to find.
                 </h2>
-                <div className="mt-6 rounded-3xl border border-access-600/25 bg-access-100 p-5">
+                <div className="mt-6 rounded-lg border border-access-600/25 bg-access-100 p-5">
                   <p className="text-sm font-bold text-access-700">
                     Current saved step
                   </p>
@@ -1459,14 +1458,14 @@ export function ResidentAccessApp() {
                 </div>
                 <div className="mt-5 grid gap-3 sm:grid-cols-2">
                   <button
-                    className="min-h-12 rounded-2xl bg-foundation-950 px-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
+                    className="min-h-12 rounded-lg bg-teal-900 px-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-teal-900 focus:ring-offset-2"
                     onClick={saveNextStep}
                     type="button"
                   >
                     Save my next step
                   </button>
                   <button
-                    className="min-h-12 rounded-2xl border border-line px-4 text-sm font-bold text-foundation-950 focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
+                    className="min-h-12 rounded-lg border border-line px-4 text-sm font-bold text-foundation-950 focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
                     onClick={() => setActiveScreen("find")}
                     type="button"
                   >
@@ -1474,14 +1473,14 @@ export function ResidentAccessApp() {
                   </button>
                 </div>
               </div>
-              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+              <div className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
                 <h2 className="text-2xl font-bold">What to do next</h2>
                 <p className="mt-3 text-sm leading-6 text-foundation-700">
                   Bring this step with you, ask support to review it, or update
                   it after a new search.
                 </p>
                 <button
-                  className="mt-5 min-h-12 w-full rounded-2xl bg-access-700 px-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
+                  className="mt-5 min-h-12 w-full rounded-lg bg-access-700 px-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-access-600 focus:ring-offset-2"
                   onClick={() => setActiveScreen("support")}
                   type="button"
                 >
@@ -1493,7 +1492,7 @@ export function ResidentAccessApp() {
 
           {activeScreen === "settings" ? (
             <article className="grid gap-5 xl:grid-cols-[1fr_360px]">
-              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+              <div className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
                 <p className="text-sm font-bold text-access-700">
                   Settings and privacy
                 </p>
@@ -1508,7 +1507,7 @@ export function ResidentAccessApp() {
                     "We do not sell your data.",
                   ].map((item) => (
                     <div
-                      className="rounded-2xl border border-line bg-surface p-4 text-sm font-bold text-foundation-900"
+                      className="rounded-lg border border-line bg-surface p-4 text-sm font-bold text-foundation-900"
                       key={item}
                     >
                       {item}
@@ -1516,13 +1515,13 @@ export function ResidentAccessApp() {
                   ))}
                 </div>
               </div>
-              <div className="rounded-[2rem] border border-line bg-white p-5 shadow-sm sm:p-6">
+              <div className="rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
                 <h2 className="text-2xl font-bold">Account</h2>
                 <p className="mt-3 text-sm leading-6 text-foundation-700">
                   Signed in as {session.email}. Sign out when you are finished.
                 </p>
                 <button
-                  className="mt-5 min-h-12 w-full rounded-2xl bg-foundation-950 px-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-foundation-950 focus:ring-offset-2"
+                  className="mt-5 min-h-12 w-full rounded-lg bg-teal-900 px-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-teal-900 focus:ring-offset-2"
                   onClick={signOut}
                   type="button"
                 >
@@ -1539,6 +1538,7 @@ export function ResidentAccessApp() {
           </footer>
         </section>
       </div>
+      <Footer />
     </main>
   );
 }

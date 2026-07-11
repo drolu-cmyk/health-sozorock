@@ -1,4 +1,4 @@
-# Static Resident Preview Deployment Release
+﻿# Static Resident Preview Deployment Release
 
 ## Purpose
 

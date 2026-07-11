@@ -1,4 +1,4 @@
-import assert from "node:assert/strict";
+﻿import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 
@@ -41,11 +41,11 @@ test("deployment release documents preserve required boundary language", () => {
 });
 
 test("locked operating logic phrase is exact when referenced", () => {
-  const lockedPhrase = "Signal → Decision → Action → Assurance → Impact";
+  const lockedPhrase = "Signal \u2192 Decision \u2192 Action \u2192 Assurance \u2192 Impact";
 
   assert.match(docs, new RegExp(escapeRegExp(lockedPhrase)));
   assert.doesNotMatch(docs, /Signal -> Decision -> Action -> Assurance -> Impact/);
-  assert.doesNotMatch(docs, /Signal → Decision → Action → Assurance → Impact\./);
+  assert.doesNotMatch(docs, /Signal \u2192 Decision \u2192 Action \u2192 Assurance \u2192 Impact\./);
 });
 
 test("Voice Access is named correctly without assistant shorthand", () => {
@@ -104,10 +104,10 @@ test("post-deployment verification checklist covers required live preview checks
     "Health Access Day renders",
     "Hubs renders",
     "Provider-Led Pathway renders",
-    "How SozoRock Health Works renders",
+    "How it works renders",
     "Privacy Boundary renders",
     "Accessibility renders",
-    "About SozoRock Health renders",
+    "What we do renders",
     "menu drawer works",
     "bottom navigation works",
     "fallback preview cards render",

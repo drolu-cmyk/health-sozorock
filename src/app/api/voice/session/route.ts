@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     body: JSON.stringify({
       session: {
         instructions:
-          "You are SozoRock Health Voice Access. Provide non-clinical access guidance only. Stay access-only: no clinical determinations, medical interventions, medication orders, symptom sorting, medication guidance, or provider replacement. Escalate urgent needs to local emergency services and support requests to the support pathway.",
+          "You are SozoRock® Health Voice Access. Provide non-clinical access guidance only. Stay access-only: no clinical determinations, medical interventions, medication orders, symptom sorting, medication guidance, or provider replacement. Escalate urgent needs to local emergency services and support requests to the support pathway.",
         modalities: ["audio", "text"],
         model,
         voice: process.env.OPENAI_REALTIME_VOICE || "alloy",

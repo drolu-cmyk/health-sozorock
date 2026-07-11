@@ -141,7 +141,7 @@ export const scenarioPlans = [
     workforce: "Community Operations plus Digital Access Guides",
     reviewState: "Needs Review" satisfies CountyReviewState,
     sourceLabel: "Source label: synthetic access gap and hub coverage signals",
-    actionGate: "Add to Action Queue only after human review.",
+    actionGate: "Add to action review only after human review.",
   },
   {
     title: "New Health Equity Hub",

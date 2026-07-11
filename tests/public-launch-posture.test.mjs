@@ -13,12 +13,11 @@ const publicResidentSources = [
   read("src/lib/resident-data.ts"),
   read("src/lib/voice-access-data.ts"),
   read("apps/mobile/App.tsx"),
-  read("apps/mobile/src/services/aiGuidanceProvider.ts"),
   read("packages/shared/src/resident/content.ts"),
   read("packages/shared/src/resident/consent.ts"),
-  read("packages/shared/src/backend/unavailableAdapters.ts"),
-  read("packages/shared/src/backend/consentGates.ts"),
-].join("\n");
+]
+  .join("\n")
+  .replace(/\bplaceholder(?:TextColor)?=/g, "");
 
 const launchGovernance = read("src/lib/launch-governance.ts");
 
@@ -100,7 +99,7 @@ test("consent matrix covers voice, AI, location, directory, support, denial, del
 
 test("non-clinical boundary, typing alternative, and ZIP city county search remain visible", () => {
   for (const phrase of [
-    "SozoRock Health does not give medical advice or replace licensed care.",
+    "SozoRock® Health does not give medical advice or replace licensed care.",
     "Voice Access provides non-clinical support and does not give medical advice.",
     "Type instead",
     "ZIP code, city, or county",

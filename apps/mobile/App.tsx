@@ -484,7 +484,7 @@ function ProviderPathwayScreen({ navigate }: { navigate: (screen: ResidentScreen
     <ScreenFrame
       eyebrow="Provider-Led Pathway"
       title={providerPathwayRequiredCopy}
-      description="Prepare for provider-led care without SozoRock Health replacing licensed care."
+      description="Prepare for provider-led care without SozoRock® Health replacing licensed care."
     >
       <View style={styles.cardStack}>
         {providerPathwayOptions.map((option) => (
@@ -496,7 +496,7 @@ function ProviderPathwayScreen({ navigate }: { navigate: (screen: ResidentScreen
       </View>
       <InfoSection title="Preparation checklist" items={preparationChecklist} />
       <InfoSection title="Questions to ask a provider" items={providerQuestions} />
-      <InfoSection title="What SozoRock Health does not do" items={providerBoundaryItems} />
+      <InfoSection title="What SozoRock® Health does not do" items={providerBoundaryItems} />
       <View style={styles.rowWrap}>
         <ActionButton label="Use Voice Access" onPress={() => navigate("voice")} variant="primary" />
         <ActionButton label="Find nearby hubs" onPress={() => navigate("hubs")} variant="secondary" />
@@ -556,9 +556,9 @@ function AccessibilityScreen() {
 
 function AboutScreen({ navigate }: { navigate: (screen: ResidentScreenId) => void }) {
   return (
-    <ScreenFrame eyebrow="About SozoRock Health" title="A resident-facing health access companion." description={residentTrustLine}>
+    <ScreenFrame eyebrow="About SozoRock® Health" title="A resident-facing health access companion." description={residentTrustLine}>
       <Text style={styles.bodyText}>
-        SozoRock Health helps residents understand support options, prepare for access, find hubs,
+        SozoRock® Health helps residents understand support options, prepare for access, find hubs,
         review Health Access Day information, and use provider-led pathways.
       </Text>
       <InfoSection title="Support channels" items={["Voice Access", "Health Access Day", "Hubs", "Provider-Led Pathways"]} />

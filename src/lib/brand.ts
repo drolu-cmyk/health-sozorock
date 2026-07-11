@@ -1,21 +1,25 @@
 export const brand = {
-  programName: "SozoRock Health",
+  programName: "SozoRock® Health",
+  publicLockup: "SozoRock® Health",
   foundationName: "The SozoRock Foundation, Inc.",
   homeHref: "/",
   promise: "Care for Every ZIP Code.",
   positioning:
-    "SozoRock Health turns hidden access barriers into visible action for underserved communities.",
-  operatingLine: "Residents get access. Counties get intelligence. Providers keep their platforms.",
+    "SozoRock® Health helps people find a clear next step for health access.",
+  operatingLine: "Residents get support. Counties see gaps. Providers keep their platforms.",
   providerPathway: "Providers keep their platforms. We help you get ready.",
-  trustBoundary: "No PHI. Consent-based. Non-clinical.",
+  trustBoundary: "Non-clinical support only.",
+  legalDisclaimer:
+    "Non-clinical support only. We do not diagnose, treat, or give medical advice.",
+  contactEmail: "support@sozorockfoundation.org",
   layers: {
     resident: {
       name: "Resident Access Layer",
       standard: "simple, clear, private, human",
     },
     county: {
-      name: "County Operating Intelligence Layer",
-      standard: "geospatial, decision-driven, action-oriented, assurance-controlled",
+      name: "County access review",
+      standard: "clear, reviewed, accountable, privacy-aware",
     },
   },
   assets: {

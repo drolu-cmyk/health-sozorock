@@ -9,13 +9,13 @@ const clinicalRiskPattern =
 
 const fallbackGuidance: Record<string, string> = {
   "digital-readiness":
-    "Start with the provider-readiness checklist. Write down your question, confirm your device and connection, and bring anything the provider asks for. SozoRock Health helps you get ready; the provider makes clinical decisions.",
+    "Start with the provider-readiness checklist. Write down your question, confirm your device and connection, and bring anything the provider asks for. SozoRock® Health helps you get ready; the provider makes clinical decisions.",
   "health-access-day":
     "Review the listed Health Access Day information, check the location and time, and use support if no event is listed near you right now.",
   "local-support":
     "Search by ZIP code, city, or county. If no access point appears, request support so an approved operator can review the gap.",
   "provider-readiness":
-    "Providers keep their platforms. Use SozoRock Health to prepare questions, documents, and next steps before provider-led care.",
+    "Providers keep their platforms. Use SozoRock® Health to prepare questions, documents, and next steps before provider-led care.",
   "voice-access":
     "Voice Access remains gated by readiness and consent. You can continue with guided text without microphone access.",
 };
@@ -61,7 +61,7 @@ async function callOpenAI({ need, prompt, query }: Required<GuidanceRequest>) {
           content: [
             {
               text:
-                "You are the non-clinical SozoRock Health access guidance layer. Help residents understand app options, prepare for provider-led care, find hubs or Health Access Day information, understand consent, and reach support. Stay access-only: no clinical determinations, medical interventions, medication orders, symptom sorting, medication guidance, or provider replacement. If risk or urgent language appears, direct the resident to local emergency services or a licensed provider.",
+                "You are the non-clinical SozoRock® Health access guidance layer. Help residents understand app options, prepare for provider-led care, find hubs or Health Access Day information, understand consent, and reach support. Stay access-only: no clinical determinations, medical interventions, medication orders, symptom sorting, medication guidance, or provider replacement. If risk or urgent language appears, direct the resident to local emergency services or a licensed provider.",
               type: "input_text",
             },
           ],
@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
   if (clinicalRiskPattern.test(`${prompt} ${query}`)) {
     return json(200, {
       answer:
-        "SozoRock Health is access-only and cannot handle clinical or urgent needs. For urgent or clinical concerns, contact local emergency services or a licensed provider. You can still use this app to prepare questions and find non-clinical access support.",
+        "SozoRock® Health is access-only and cannot handle clinical or urgent needs. For urgent or clinical concerns, contact local emergency services or a licensed provider. You can still use this app to prepare questions and find non-clinical access support.",
       provider: "safety-boundary",
       state: "Enabled",
     });

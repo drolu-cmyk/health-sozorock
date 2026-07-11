@@ -1,4 +1,4 @@
-# Static Preview Deployment Readiness Checklist
+﻿# Static Preview Deployment Readiness Checklist
 
 ## Purpose
 
@@ -121,7 +121,7 @@ Confirm the resident app:
 - keeps the top app bar and resident menu clear
 - keeps bottom navigation limited to resident screens
 - does not expose county operating tools
-- does not expose backend, infrastructure, model, queue, assurance log, or synthetic signal tools
+- does not expose backend, infrastructure, model, queue, Assurance checks, or synthetic signal tools
 
 ## Content Checklist
 
@@ -219,10 +219,10 @@ Check:
 - Health Access Day renders.
 - Hubs renders.
 - Provider-Led Pathway renders.
-- How SozoRock Health Works renders.
+- How it works renders.
 - Privacy Boundary renders.
 - Accessibility renders.
-- About SozoRock Health renders.
+- What we do renders.
 - menu drawer opens and closes.
 - bottom navigation works.
 - fallback preview cards are visible.

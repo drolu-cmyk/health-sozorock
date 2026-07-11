@@ -7,9 +7,14 @@
   --color-foundation-900: #0b2136;
   --color-foundation-800: #12304a;
   --color-foundation-700: #174363;
+  --color-teal-900: #063f3a;
+  --color-teal-800: #07564f;
+  --color-teal-700: #0b6b61;
   --color-access-700: #047857;
   --color-access-600: #059669;
   --color-access-100: #d1fae5;
+  --color-warm-200: #f6dfb6;
+  --color-warm-100: #fff5df;
   --color-signal-600: #2563eb;
   --color-signal-100: #dbeafe;
   --color-assurance-600: #7c3aed;
@@ -56,23 +61,9 @@ a {
 }
 
 .map-grid {
-  background-image:
-    linear-gradient(rgba(217, 226, 236, 0.82) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(217, 226, 236, 0.82) 1px, transparent 1px);
-  background-size: 28px 28px;
+  background-color: #f7fafc;
 }
 
 .map-grid-dark {
-  background-image:
-    linear-gradient(rgba(209, 250, 229, 0.12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(209, 250, 229, 0.12) 1px, transparent 1px),
-    radial-gradient(circle at 45% 42%, rgba(202, 138, 4, 0.34), transparent 8rem),
-    radial-gradient(circle at 70% 30%, rgba(5, 150, 105, 0.28), transparent 7rem),
-    radial-gradient(circle at 20% 70%, rgba(37, 99, 235, 0.22), transparent 7rem);
-  background-size:
-    28px 28px,
-    28px 28px,
-    auto,
-    auto,
-    auto;
+  background-color: #063f3a;
 }
