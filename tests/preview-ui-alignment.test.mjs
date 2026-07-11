@@ -37,27 +37,36 @@ test("resident provider pathway keeps approved platform readiness language", () 
   assert.match(residentData, /Prepare for a provider platform/);
 });
 
-test("county page keeps the locked operating logic visible", () => {
-  for (const stage of ["Signal", "Decision", "Action", "Assurance", "Impact"]) {
-    assert.match(countyPage, new RegExp(stage));
+test("county page keeps CB-CAP purpose and sample framing visible", () => {
+  for (const phrase of [
+    "CB-CAP sample view",
+    "Illustrative data",
+    "From need to action",
+    "Full access",
+  ]) {
+    assert.match(countyPage, new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   }
 });
 
-test("county page uses a dark operating dashboard shell", () => {
-  assert.match(countyPage, /bg-\[#061521\]/);
-  assert.match(countyPage, /County Operating Intelligence Layer/);
+test("county page uses a warm accessible CB-CAP shell", () => {
+  assert.match(countyPage, /bg-surface/);
+  assert.match(countyPage, /bg-white/);
+  assert.match(countyPage, /bg-warm-100/);
+  assert.doesNotMatch(countyPage, /bg-\[#061521\]/);
 });
 
 test("county desktop has module navigation for operating sections", () => {
-  assert.match(countyPage, /County module navigation/);
-  assert.match(countyPage, /Operating Picture/);
-  assert.match(countyPage, /Action Queue/);
-  assert.match(countyPage, /Assurance Log/);
+  assert.match(countyPage, /CB-CAP sections/);
+  assert.match(countyPage, /Sample view/);
+  assert.match(countyPage, /Access gaps/);
+  assert.match(countyPage, /Action review/);
+  assert.match(countyPage, /Assurance/);
 });
 
-test("county geospatial detail cards are hidden inside the map on mobile", () => {
-  assert.match(countyPage, /hidden w-44 rounded-lg/);
-  assert.match(countyPage, /md:block/);
+test("county access gaps use accessible tables and mobile cards", () => {
+  assert.match(countyPage, /Illustrative county access gaps by ZIP code/);
+  assert.match(countyPage, /overflow-x-auto/);
+  assert.match(countyPage, /md:hidden/);
   assert.match(countyPage, /countyOperatingPicture\.accessSignals\.map/);
 });
 

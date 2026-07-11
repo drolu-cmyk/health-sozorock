@@ -5,7 +5,7 @@ export const residentPromise = "Care for Every ZIP Code.";
 export const residentTrustLine = "No PHI. Consent-based. Non-clinical.";
 
 export const residentProductDefinition =
-  "SozoRock Health is a resident-facing health access companion. It helps residents understand what kind of support they need, find trusted access points, discover Health Access Day events, use voice-guided support, prepare for provider-led care, and receive non-clinical next-step guidance.";
+  "SozoRock® Health helps residents understand what support they may need, find trusted access points, discover Health Access Day information, use guided text, prepare for provider-led care, and see a clear next step.";
 
 export const residentRequiredCopy = {
   noStorage: "Nothing is submitted or stored on this screen.",
@@ -69,7 +69,7 @@ export const residentScreenStates: Record<ScreenStateName, string> = {
   offline: "You appear to be offline. Saved guidance and listed cards remain available.",
   permissionDenied: "This option needs your permission before it can be used. You can use ZIP code, city, county, or typing instead.",
   serviceUnavailable: "This option is temporarily unavailable. Guided text remains available.",
-  safetyBoundary: "SozoRock Health does not give medical advice or replace licensed care.",
+  safetyBoundary: "SozoRock® Health does not give medical advice or replace licensed care.",
 };
 
 export const accessibilitySupportText = [

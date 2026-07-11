@@ -4,7 +4,7 @@ export const providerPathwayOptions = [
   {
     id: "already-provider",
     title: "I already have a provider",
-    guidance: "Use your provider's own platform. SozoRock Health can help you prepare questions and digital access steps.",
+    guidance: "Use your provider's own platform. SozoRock® Health can help you prepare questions and digital access steps.",
   },
   {
     id: "prepare-access",
@@ -23,7 +23,7 @@ export const preparationChecklist = [
   "Bring your device if you use one.",
   "Bring provider portal information if you already have it.",
   "Ask the provider how they want you to use their platform.",
-  "Do not share private health information in SozoRock Health unless a future consent model clearly asks for it.",
+  "Do not share private health information in SozoRock® Health unless a consent step clearly asks for it.",
 ] as const;
 
 export const providerQuestions = [
@@ -34,7 +34,7 @@ export const providerQuestions = [
 ] as const;
 
 export const providerBoundaryItems = [
-  "SozoRock Health does not create provider-patient messaging.",
-  "SozoRock Health does not schedule clinical care.",
+  "SozoRock® Health does not create provider-patient messaging.",
+  "SozoRock® Health does not schedule clinical care.",
   "Licensed providers remain responsible for their own care, systems, records, and judgment.",
 ] as const;

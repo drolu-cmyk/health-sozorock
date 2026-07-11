@@ -99,7 +99,7 @@ export const humanReviewQueue: HumanReviewQueueItem[] = [
     planningOutput: "Hub coverage update for review",
   },
   {
-    source: "Action Queue",
+    source: "Action review",
     signal: "Prepare county access report",
     reviewNeed: "Confirm report controls before county-facing output is prepared.",
     status: "Human review",

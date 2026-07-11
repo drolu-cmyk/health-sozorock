@@ -1,4 +1,4 @@
-import assert from "node:assert/strict";
+﻿import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
@@ -43,10 +43,10 @@ test("resident app exposes required bottom tabs and menu drawer items", () => {
 
   for (const label of [
     "Provider-Led Pathway",
-    "How SozoRock Health Works",
+    "How it works",
     "Privacy Boundary",
     "Accessibility",
-    "About SozoRock Health",
+    "What we do",
   ]) {
     assert.match(navigation, new RegExp(`label: "${label}"`));
   }
@@ -56,8 +56,8 @@ test("resident app navigation excludes internal county and infrastructure labels
   const residentNavigation = `${navigation}\n${mobileApp}`;
   for (const forbidden of [
     "County Operating Intelligence",
-    "Action Queue",
-    "Assurance Log",
+    "Action review",
+    "Assurance checks",
     "Scenario Planning",
     "Administrative controls",
     "System configuration",

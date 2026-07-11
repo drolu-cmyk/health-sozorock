@@ -1,7 +1,7 @@
 import type { ResidentScreenId } from "./types";
 
 export const residentTopBar = {
-  title: "SozoRock Health",
+  title: "SozoRock® Health",
   menuLabel: "Menu",
 } as const;
 
@@ -29,8 +29,8 @@ export const residentMenuItems: Array<{
   },
   {
     id: "howItWorks",
-    label: "How SozoRock Health Works",
-    description: "See the simple resident journey.",
+    label: "How it works",
+    description: "See the simple resident path.",
   },
   {
     id: "privacy",
@@ -44,7 +44,7 @@ export const residentMenuItems: Array<{
   },
   {
     id: "about",
-    label: "About SozoRock Health",
-    description: "Learn what SozoRock Health does and does not do.",
+    label: "What we do",
+    description: "Learn what SozoRock® Health does and does not do.",
   },
 ];

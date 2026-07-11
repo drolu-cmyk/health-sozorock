@@ -25,6 +25,7 @@ const fps = 30;
 const framesPerSlide = Math.round(secondsPerSlide * fps);
 
 const screenshots = screenshotNames.map((name) => resolve(screenshotDir, name));
+const totalDuration = screenshots.length * secondsPerSlide;
 const missing = screenshots.filter((path) => !existsSync(path));
 
 if (missing.length > 0) {
@@ -53,14 +54,27 @@ const result = spawnSync(
   [
     "-y",
     ...inputs,
+    "-f",
+    "lavfi",
+    "-t",
+    String(totalDuration),
+    "-i",
+    "aevalsrc=0.012*(sin(2*PI*196*t)+sin(2*PI*247*t)+sin(2*PI*294*t)):s=44100",
     "-filter_complex",
     filter,
     "-map",
     "[v]",
+    "-map",
+    `${screenshots.length}:a`,
     "-movflags",
     "+faststart",
     "-c:v",
     "libx264",
+    "-c:a",
+    "aac",
+    "-b:a",
+    "128k",
+    "-shortest",
     "-preset",
     "medium",
     "-crf",

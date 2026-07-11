@@ -1,4 +1,4 @@
-import assert from "node:assert/strict";
+﻿import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
@@ -118,11 +118,11 @@ test("resident navigation still excludes county operating console language", () 
 
   for (const forbidden of [
     "County Operating Intelligence",
-    "Action Queue",
-    "Assurance Log",
+    "Action review",
+    "Assurance checks",
     "Scenario Planning",
     "County Layer",
-    "AI Decision Support",
+    "Decision support",
     "Synthetic Signals",
     "Backend architecture",
   ]) {
@@ -136,7 +136,7 @@ test("resident fallback preview quality documentation records scope and next iss
     "No PHI. Consent-based. Non-clinical.",
     "Care for Every ZIP Code.",
     "Providers keep their platforms. We help you get ready.",
-    "Signal → Decision → Action → Assurance → Impact",
+    "Signal \u2192 Decision \u2192 Action \u2192 Assurance \u2192 Impact",
     "What Remains Inactive",
     "Issue 041 - Static resident content readiness and accessibility audit",
   ]) {

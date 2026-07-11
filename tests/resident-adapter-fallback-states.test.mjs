@@ -1,4 +1,4 @@
-import assert from "node:assert/strict";
+﻿import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
@@ -143,11 +143,11 @@ test("resident navigation does not expose county operating console labels", () =
 
   for (const forbidden of [
     "County Operating Intelligence",
-    "Action Queue",
-    "Assurance Log",
+    "Action review",
+    "Assurance checks",
     "Scenario Planning",
     "County Layer",
-    "AI Decision Support",
+    "Decision support",
     "Synthetic Signals",
     "Backend architecture",
   ]) {

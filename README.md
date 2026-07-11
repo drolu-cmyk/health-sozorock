@@ -1,8 +1,10 @@
-# SozoRock Health
+﻿# SozoRockÂ® Health
 
 ## TL;DR
 
-SozoRock Health is a dynamic, AI-native, non-clinical health access app for helping residents move from uncertainty to a clear next step. It supports access search, guided text, Voice Access readiness, provider-readiness preparation, Health Access Day and Health Equity Hub discovery, and support/contact pathways while keeping privileged provider credentials server-side.
+SozoRockÂ® Health is a non-clinical health access app. It helps residents find a clear next step, prepare for provider-led care, search for nearby support, use guided text, request help, and see Health Access Day and Health Equity Hub information.
+
+It is not a clinic or medical provider. It stays non-clinical. Provider keys and privileged credentials stay server-side.
 
 Quick start:
 
@@ -27,9 +29,9 @@ Voice Access consent gates, prepares the support flow, signs out, checks mobile
 width, scans public copy, and verifies client bundles do not expose provider
 keys.
 
-SozoRock Health is a non-clinical health access intelligence and activation program of The SozoRock Foundation, Inc.
+SozoRockÂ® Health is a non-clinical health access program of The SozoRock Foundation, Inc.
 
-It helps underserved communities turn hidden access barriers into visible action through trusted access points, Voice Access, Health Access Day, Health Equity Hubs, provider-led pathways, workforce capacity, and county operating intelligence.
+It helps underserved communities turn access barriers into reviewed next steps through trusted access points, Voice Access, Health Access Day, Health Equity Hubs, provider-led pathways, and county access review.
 
 ## Locked promise
 
@@ -54,23 +56,23 @@ Resident-facing modules:
 - Health Equity Hubs
 - Provider-Led Pathways
 
-### County Operating Intelligence Layer
+### County Access Review Layer
 
-Geospatial, decision-driven, action-oriented, assurance-controlled.
+Clear, reviewed, accountable, privacy-aware.
 
-Institutional modules:
+Partner modules:
 
-- Geospatial Access Operating Picture
-- AI Decision Support
-- Action Queue
-- Assurance Log
-- Scenario Planning
+- Access gap review
+- Decision support
+- Action review
+- Assurance checks
+- Planning examples
 
 ## Trust boundary
 
 **No PHI. Consent-based. Non-clinical.**
 
-SozoRock Health does not give medical advice or replace licensed care.
+SozoRockÂ® Health does not give medical advice or replace licensed care.
 
 ## Provider pathway language
 
@@ -103,7 +105,7 @@ Automate everything safe to automate. Require human review where trust, complian
 
 ## Current status
 
-SozoRock Health is now moving through the controlled public web launch track as a dynamic Next.js App Router application.
+SozoRockÂ® Health is moving through the controlled public web launch track as a dynamic Next.js App Router application.
 
 Routes:
 
@@ -125,7 +127,7 @@ npm run verify
 npm audit --audit-level=moderate
 ```
 
-The resident route is an app experience, not a document. It uses server routes for access search, AI-native guidance, Voice Access readiness, and support/contact handling while preserving the non-clinical boundary.
+The resident route is an app experience, not a document. It uses server routes for access search, access guidance, Voice Access readiness, and support/contact handling while preserving the non-clinical boundary.
 
 ## Dynamic app posture
 
@@ -175,7 +177,7 @@ with visible on-screen text because timeline autoplay is often muted.
 Controlled public launch remains valid only when these boundaries stay true:
 
 - **No PHI. Consent-based. Non-clinical.**
-- SozoRock Health is access-only: no clinical determinations, medical interventions, medication orders, symptom sorting, provider replacement, insurance processing, or emergency response.
+- SozoRockÂ® Health is access-only: no clinical determinations, medical interventions, medication orders, symptom sorting, provider replacement, insurance processing, or emergency response.
 - Providers keep their platforms. We help residents get ready.
 - Voice Access uses a server-side provider-agnostic adapter and never exposes provider credentials to the browser.
 - The app works without microphone access.

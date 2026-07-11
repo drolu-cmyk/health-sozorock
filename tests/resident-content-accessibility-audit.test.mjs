@@ -1,4 +1,4 @@
-import assert from "node:assert/strict";
+﻿import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
@@ -52,9 +52,9 @@ test("resident content preserves locked boundary and operating logic language", 
   assert.match(residentSharedSources, /Care for Every ZIP Code\./);
   assert.match(residentSharedSources, /No PHI\. Consent-based\. Non-clinical\./);
   assert.match(residentPathways, /Providers keep their platforms\. We help you get ready\./);
-  assert.match(auditDoc, /Signal → Decision → Action → Assurance → Impact/);
+  assert.match(auditDoc, /Signal \u2192 Decision \u2192 Action \u2192 Assurance \u2192 Impact/);
   assert.doesNotMatch(residentDocs, /Signal -> Decision -> Action -> Assurance -> Impact/);
-  assert.doesNotMatch(auditDoc, /Signal → Decision → Action → Assurance → Impact\./);
+  assert.doesNotMatch(auditDoc, /Signal \u2192 Decision \u2192 Action \u2192 Assurance \u2192 Impact\./);
 });
 
 test("Voice Access is named correctly and not used as a live speech assistant", () => {
@@ -89,10 +89,10 @@ test("resident navigation remains resident-only", () => {
     "Day",
     "Hubs",
     "Provider-Led Pathway",
-    "How SozoRock Health Works",
+    "How it works",
     "Privacy Boundary",
     "Accessibility",
-    "About SozoRock Health",
+    "What we do",
   ]) {
     assert.match(residentNavigation, new RegExp(label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   }
@@ -176,7 +176,7 @@ test("resident content accessibility audit documentation captures scope and stop
     "No PHI. Consent-based. Non-clinical.",
     "Care for Every ZIP Code.",
     "Providers keep their platforms. We help you get ready.",
-    "Signal → Decision → Action → Assurance → Impact",
+    "Signal \u2192 Decision \u2192 Action \u2192 Assurance \u2192 Impact",
     "Accessibility Label Rules",
     "Inactive Services Confirmed",
     "Issue 042 - Static preview deployment readiness checklist",

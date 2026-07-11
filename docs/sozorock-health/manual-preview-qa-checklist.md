@@ -1,4 +1,4 @@
-# Manual Preview QA Checklist
+﻿# Manual Preview QA Checklist
 
 ## Purpose
 
@@ -100,11 +100,11 @@ Check:
 - Copy does not imply SozoRock Health provides clinical care.
 - Copy does not imply provider-patient messaging, appointment scheduling, insurance processing, or EHR integration.
 
-## How SozoRock Health Works
+## How it works
 
 Check:
 
-- How SozoRock Health Works renders without errors.
+- How it works renders without errors.
 - The explanation remains resident-safe and plain-language.
 - If the operating logic is referenced, it appears exactly as **Signal → Decision → Action → Assurance → Impact**.
 - Copy does not expose backend, infrastructure, or administrative labels.
@@ -128,11 +128,11 @@ Check:
 - Location alternatives do not imply live location sharing.
 - Text remains readable on mobile and desktop.
 
-## About SozoRock Health
+## What we do
 
 Check:
 
-- About SozoRock Health renders without errors.
+- What we do renders without errors.
 - Copy remains non-clinical.
 - Copy does not imply medical device operation, clinical service operation, government adoption, or formal provider partnership.
 - Public-facing copy names The SozoRock Foundation, Inc. where legal identity is needed.
@@ -145,7 +145,7 @@ Check:
 - Menu items are resident-safe.
 - Menu items have understandable labels.
 - Menu does not include county operating tools.
-- Menu does not include backend, infrastructure, model, action queue, assurance log, synthetic signals, administrative labels, or county console behavior.
+- Menu does not include backend, infrastructure, model, Action review, Assurance checks, synthetic signals, administrative labels, or county console behavior.
 
 ## Bottom Navigation
 

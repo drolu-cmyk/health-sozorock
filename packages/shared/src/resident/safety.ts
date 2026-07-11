@@ -2,7 +2,7 @@ export const emergencyAndCrisisMessages = [
   "If this is an emergency, call 911.",
   "If you may harm yourself or someone else, call or text 988 in the U.S.",
   "For urgent health concerns, contact emergency services or a licensed medical professional.",
-  "SozoRock Health does not give medical advice or replace licensed care.",
+  "SozoRock® Health does not give medical advice or replace licensed care.",
 ] as const;
 
 export const aiGuidanceCanDo = [

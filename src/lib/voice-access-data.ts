@@ -52,7 +52,7 @@ export const voiceAccessSimulationItems: VoiceAccessSimulationItem[] = [
     prompt: "How do provider-led pathways work?",
     category: "provider-led readiness",
     response:
-      "Voice Access can explain that SozoRock Health supports access readiness while providers remain responsible for their own services.",
+      "Voice Access can explain that SozoRock® Health supports access readiness while providers remain responsible for their own services.",
     nextStep: "Review provider-led pathway information before using a provider platform.",
   },
 ] as const;

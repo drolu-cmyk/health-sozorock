@@ -235,11 +235,11 @@ async function run() {
     await client.send("Page.navigate", { url: baseUrl });
     await wait(900);
     await waitForAppReady(client);
-    await assertContains(client, "SozoRock Health");
+    await assertContains(client, "SozoRock® Health");
     await assertContains(client, "Sign up");
     await clickSelector(client, '[data-testid="auth-signup-tab"]');
     const submitLabel = await textOf(client, '[data-testid="auth-submit"]');
-    if (submitLabel !== "Create account") {
+    if (submitLabel !== "Sign up") {
       throw new Error(`Expected signup submit label, saw: ${submitLabel}`);
     }
     await screenshot(client, "01-auth");
