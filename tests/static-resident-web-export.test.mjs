@@ -101,12 +101,10 @@ test("static export docs do not imply active live services or restricted workflo
   assert.doesNotMatch(docs, /^-? ?Clinical workflow is active\.?$/im);
 });
 
-test("README links to static resident web export docs", () => {
-  assert.match(readme, /Static resident web export/);
-  assert.match(readme, /static-resident-web-export\.md/);
-  assert.match(readme, /Static export artifact checklist/);
-  assert.match(readme, /static-export-artifact-checklist\.md/);
-  assert.match(readme, /npm run mobile:export:web/);
+test("README preserves public trust and review boundaries", () => {
+  assert.match(readme, /No PHI\. Consent-based\. Non-clinical\./);
+  assert.match(readme, /Human review is required before action\./);
+  assert.doesNotMatch(readme, /AWS|Amplify|CloudFront|Route 53/i);
 });
 
 test("generated static export artifact is ignored by lint", () => {

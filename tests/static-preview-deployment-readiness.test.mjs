@@ -136,9 +136,8 @@ test("manual QA checklist blocks county console exposure and live service behavi
   }
 });
 
-test("README links the static preview readiness docs", () => {
-  assert.match(readme, /Static preview deployment readiness/);
-  assert.match(readme, /static-preview-deployment-readiness\.md/);
-  assert.match(readme, /Manual preview QA checklist/);
-  assert.match(readme, /manual-preview-qa-checklist\.md/);
+test("README preserves public trust and review boundaries", () => {
+  assert.match(readme, /No PHI\. Consent-based\. Non-clinical\./);
+  assert.match(readme, /Human review is required before action\./);
+  assert.doesNotMatch(readme, /AWS|Amplify|CloudFront|Route 53/i);
 });

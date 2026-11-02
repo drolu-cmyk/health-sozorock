@@ -144,7 +144,8 @@ test("resident fallback preview quality documentation records scope and next iss
   }
 });
 
-test("README links the resident fallback preview quality documentation", () => {
-  assert.match(readme, /Resident fallback preview quality/);
-  assert.match(readme, /resident-fallback-preview-quality\.md/);
+test("README preserves public trust and review boundaries", () => {
+  assert.match(readme, /No PHI\. Consent-based\. Non-clinical\./);
+  assert.match(readme, /Human review is required before action\./);
+  assert.doesNotMatch(readme, /AWS|Amplify|CloudFront|Route 53/i);
 });

@@ -177,11 +177,8 @@ test("Amplify deployment docs do not imply unsafe active services or restricted 
   assert.doesNotMatch(docs, /^-? ?Clinical workflow is active\.?$/im);
 });
 
-test("README links Amplify dynamic deployment docs", () => {
-  assert.match(readme, /AWS Amplify dynamic app deployment/);
-  assert.match(readme, /aws-amplify-static-preview-deployment\.md/);
-  assert.match(readme, /Amplify dynamic web verification checklist/);
-  assert.match(readme, /amplify-live-preview-verification-checklist\.md/);
-  assert.match(readme, /publish `\.next`/);
-  assert.match(readme, /redirect `\/about-model` back to `\/resident`/);
+test("README preserves public trust and review boundaries", () => {
+  assert.match(readme, /No PHI\. Consent-based\. Non-clinical\./);
+  assert.match(readme, /Human review is required before action\./);
+  assert.doesNotMatch(readme, /AWS|Amplify|CloudFront|Route 53/i);
 });

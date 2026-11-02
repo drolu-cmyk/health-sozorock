@@ -93,57 +93,9 @@ AI must not support:
 
 All AI-generated operational actions require human review before execution.
 
-## AWS target architecture
+## Service readiness
 
-AWS should be the default cloud foundation where applicable.
-
-MVP should remain lightweight and cost-controlled.
-
-Potential AWS resources by maturity stage:
-
-### Prototype stage
-
-- AWS Amplify or Vercel for quick frontend deployment if speed is the priority
-- Amazon S3 for static public assets and controlled exports
-- Amazon CloudFront for content delivery when using AWS-native hosting
-- AWS IAM Identity Center or scoped IAM users for controlled admin access
-- AWS CloudWatch for logs if backend services exist
-
-### Pilot-ready stage
-
-- Amazon Cognito for role-based access if authentication is needed
-- Amazon API Gateway for controlled API endpoints
-- AWS Lambda for serverless action workflows
-- Amazon DynamoDB for non-clinical access signals and action records
-- Amazon S3 for generated county reports and exports
-- AWS WAF for public app protection
-- AWS CloudTrail for account-level audit logs
-- AWS CloudWatch for operational monitoring
-- AWS Secrets Manager or Parameter Store for API keys and environment variables
-
-### Later-stage architecture
-
-- Amazon EventBridge for workflow orchestration
-- AWS Step Functions for approval and review workflows
-- Amazon Bedrock for AWS-native AI workflows if selected later
-- Amazon QuickSight for stakeholder dashboards if needed
-- AWS Security Hub and GuardDuty for security monitoring
-
-## Suggested deployment stance
-
-For urgent first deployment, prioritize fast public preview with strict no-PHI mock data.
-
-Recommended path:
-
-1. Build static Next.js prototype.
-2. Deploy preview quickly.
-3. Add CI checks.
-4. Add AWS architecture documentation.
-5. Move backend workflows to AWS only when requirements are stable.
-
-If the user requires AWS-only hosting, use Amplify or S3 plus CloudFront depending on app needs.
-
-If deployment speed matters most, use Vercel for preview while preserving AWS target architecture documentation.
+Changes to live services require human review, appropriate security and cost controls, and verification before activation.
 
 ## Data model boundaries
 
