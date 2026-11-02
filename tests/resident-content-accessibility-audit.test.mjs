@@ -185,7 +185,8 @@ test("resident content accessibility audit documentation captures scope and stop
   }
 });
 
-test("README links the resident content accessibility audit", () => {
-  assert.match(readme, /Resident content accessibility audit/);
-  assert.match(readme, /resident-content-accessibility-audit\.md/);
+test("README preserves public trust and review boundaries", () => {
+  assert.match(readme, /No PHI\. Consent-based\. Non-clinical\./);
+  assert.match(readme, /Human review is required before action\./);
+  assert.doesNotMatch(readme, /AWS|Amplify|CloudFront|Route 53/i);
 });

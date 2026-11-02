@@ -151,9 +151,8 @@ test("deployment docs do not imply active live services or restricted workflows"
   assert.doesNotMatch(docs, /^-? ?Clinical workflow is active\.?$/im);
 });
 
-test("README links to deployment release documents", () => {
-  assert.match(readme, /Static resident preview deployment release/);
-  assert.match(readme, /static-preview-deployment-release\.md/);
-  assert.match(readme, /Post-deployment verification checklist/);
-  assert.match(readme, /post-deployment-verification-checklist\.md/);
+test("README preserves public trust and review boundaries", () => {
+  assert.match(readme, /No PHI\. Consent-based\. Non-clinical\./);
+  assert.match(readme, /Human review is required before action\./);
+  assert.doesNotMatch(readme, /AWS|Amplify|CloudFront|Route 53/i);
 });
